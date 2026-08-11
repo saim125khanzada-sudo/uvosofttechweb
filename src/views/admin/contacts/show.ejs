@@ -1,0 +1,44 @@
+
+<div class="content-header">
+  <h2>Contact Submission</h2>
+  <a href="/admin/contacts" class="btn btn-outline">Back to Contacts</a>
+</div>
+
+<div class="detail-card">
+  <div class="detail-row">
+    <label>Name:</label>
+    <span><%= contact.name %></span>
+  </div>
+  <div class="detail-row">
+    <label>Email:</label>
+    <span><a href="mailto:<%= contact.email %>"><%= contact.email %></a></span>
+  </div>
+  <div class="detail-row">
+    <label>Date:</label>
+    <span><%= new Date(contact.createdAt).toLocaleString() %></span>
+  </div>
+  <div class="detail-row">
+    <label>Status:</label>
+    <span>
+      <% if (contact.respondedAt) { %>
+        <span class="badge badge-success">Responded on <%= new Date(contact.respondedAt).toLocaleString() %></span>
+      <% } else if (contact.isRead) { %>
+        <span class="badge badge-info">Read</span>
+      <% } else { %>
+        <span class="badge badge-warning">Unread</span>
+      <% } %>
+    </span>
+  </div>
+  <div class="detail-row">
+    <label>Message:</label>
+    <div class="detail-message"><%= contact.message %></div>
+  </div>
+  <div class="form-actions">
+    <% if (!contact.respondedAt) { %>
+      <button class="btn btn-primary btn-mark-responded" data-id="<%= contact.id %>">Mark as Responded</button>
+    <% } %>
+    <button class="btn btn-danger btn-delete" data-entity="contacts" data-id="<%= contact.id %>">Delete</button>
+    <a href="/admin/contacts" class="btn btn-outline">Back</a>
+  </div>
+</div>
+

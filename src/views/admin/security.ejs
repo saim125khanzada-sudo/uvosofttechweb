@@ -1,0 +1,86 @@
+<!-- Admin Security & 2FA Control Panel Hub -->
+<div style="padding: 24px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+    <div>
+      <h1 class="gradient-text" style="font-size: 2rem; margin: 0;">Cybersecurity & 2FA Audit Hub</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">Monitor system security posture, Helmet HTTP headers, rate limiters, and 2FA status.</p>
+    </div>
+    <a href="/auth/2fa/setup" class="btn btn-primary">
+      ⚙️ Manage 2FA TOTP Settings
+    </a>
+  </div>
+
+  <div class="grid-3" style="margin-bottom: 36px;">
+    <!-- 2FA Status -->
+    <div class="glass-panel">
+      <small style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Account 2FA Status</small>
+      <h3 style="font-size: 1.6rem; margin: 12px 0; color: <%= user.isTwoFactorEnabled ? 'var(--accent-neon)' : 'var(--accent-coral)' %>;">
+        <%= user.isTwoFactorEnabled ? '🛡️ ENABLED (ACTIVE)' : '⚠️ DISABLED' %>
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        <%= user.isTwoFactorEnabled ? 'Your account requires TOTP codes during sign in.' : 'Recommended: Enable 2FA to secure Admin/Manager access.' %>
+      </p>
+    </div>
+
+    <!-- Security Middleware Header Check -->
+    <div class="glass-panel">
+      <small style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">HTTP Security Headers</small>
+      <h3 style="font-size: 1.6rem; margin: 12px 0; color: var(--primary-cyan);">
+        HELMET ENFORCED
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        XSS Filter, HPP, Clickjacking protection & CSRF tokens active across all endpoints.
+      </p>
+    </div>
+
+    <!-- Rate Limiting Metrics -->
+    <div class="glass-panel">
+      <small style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Brute-Force Rate Limiting</small>
+      <h3 style="font-size: 1.6rem; margin: 12px 0; color: var(--accent-neon);">
+        PROTECTED
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">
+        Strict window limiting on <code>/auth/login</code> and <code>/auth/2fa/verify</code> routes.
+      </p>
+    </div>
+  </div>
+
+  <!-- Realtime Activity Log Stream -->
+  <div class="glass-panel">
+    <h3 style="font-size: 1.3rem; margin-bottom: 16px;">Security Audit Log Stream</h3>
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border-glass); color: var(--text-muted);">
+            <th style="padding: 12px;">Timestamp</th>
+            <th style="padding: 12px;">User</th>
+            <th style="padding: 12px;">Action</th>
+            <th style="padding: 12px;">IP Address</th>
+            <th style="padding: 12px;">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (typeof logs !== 'undefined' && logs.length > 0) { %>
+            <% logs.forEach(log => { %>
+              <tr style="border-bottom: 1px solid var(--border-glass);">
+                <td style="padding: 12px; color: var(--text-dim);"><%= new Date(log.createdAt).toLocaleString() %></td>
+                <td style="padding: 12px;"><%= log.user ? log.user.firstName + ' ' + log.user.lastName : 'Anonymous' %></td>
+                <td style="padding: 12px;">
+                  <span class="btn-glass" style="padding: 2px 8px; font-size: 0.75rem; color: var(--primary-cyan);">
+                    <%= log.action %>
+                  </span>
+                </td>
+                <td style="padding: 12px; font-family: monospace; color: var(--text-muted);"><%= log.ipAddress || '127.0.0.1' %></td>
+                <td style="padding: 12px; color: var(--text-muted); font-size: 0.8rem;"><%= JSON.stringify(log.details || {}) %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="5" style="padding: 20px; text-align: center; color: var(--text-muted);">No security logs recorded yet.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

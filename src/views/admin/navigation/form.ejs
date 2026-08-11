@@ -1,0 +1,50 @@
+
+<div class="content-header">
+  <h2><%= title %></h2>
+  <a href="/admin/navigation" class="btn btn-outline">Back to Navigation</a>
+</div>
+
+<div class="form-card">
+  <form id="navigationForm" data-entity="navigation" data-id="<%= item ? item.id : '' %>" class="admin-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="label">Label *</label>
+        <input type="text" id="label" name="label" required maxlength="100" value="<%= item ? item.label : '' %>">
+      </div>
+      <div class="form-group">
+        <label for="href">URL *</label>
+        <input type="text" id="href" name="href" required maxlength="500" value="<%= item ? item.href : '' %>">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="target">Target</label>
+        <select id="target" name="target">
+          <option value="_self" <%= item && item.target === '_self' ? 'selected' : '' %>>Same Window (_self)</option>
+          <option value="_blank" <%= item && item.target === '_blank' ? 'selected' : '' %>>New Tab (_blank)</option>
+          <option value="_parent" <%= item && item.target === '_parent' ? 'selected' : '' %>>Parent Frame (_parent)</option>
+          <option value="_top" <%= item && item.target === '_top' ? 'selected' : '' %>>Full Window (_top)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sortOrder">Sort Order</label>
+        <input type="number" id="sortOrder" name="sortOrder" min="0" value="<%= item ? item.sortOrder : 0 %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cssClass">CSS Class</label>
+      <input type="text" id="cssClass" name="cssClass" maxlength="200" value="<%= item ? (item.cssClass || '') : '' %>">
+    </div>
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox" name="isVisible" value="true" <%= item ? (item.isVisible ? 'checked' : '') : 'checked' %>>
+        Visible
+      </label>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="/admin/navigation" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+

@@ -1,0 +1,59 @@
+
+<div class="dashboard">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.users %></div>
+      <div class="stat-label">Users</div>
+      <a href="/admin/users" class="stat-link">Manage</a>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.services %></div>
+      <div class="stat-label">Services</div>
+      <a href="/admin/services" class="stat-link">Manage</a>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.blogPosts %></div>
+      <div class="stat-label">Blog Posts</div>
+      <a href="/admin/blog" class="stat-link">Manage</a>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.products %></div>
+      <div class="stat-label">Products</div>
+      <a href="/admin/products" class="stat-link">Manage</a>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= stats.unreadContacts %></div>
+      <div class="stat-label">Unread Contacts</div>
+      <a href="/admin/contacts" class="stat-link">View</a>
+    </div>
+  </div>
+
+  <div class="dashboard-section">
+    <h2>Recent Activity</h2>
+    <% if (typeof recentLogs !== 'undefined' && recentLogs.length > 0) { %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Entity</th>
+            <th>User</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentLogs.forEach(function(log) { %>
+            <tr>
+              <td><span class="badge badge-<%= log.action === 'create' ? 'success' : log.action === 'delete' ? 'danger' : 'info' %>"><%= log.action %></span></td>
+              <td><%= log.entityType %></td>
+              <td><%= log.user ? log.user.firstName + ' ' + log.user.lastName : 'System' %></td>
+              <td><%= new Date(log.createdAt).toLocaleString() %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>No recent activity.</p>
+    <% } %>
+  </div>
+</div>
+

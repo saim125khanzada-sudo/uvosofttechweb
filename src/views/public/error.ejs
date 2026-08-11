@@ -1,0 +1,10 @@
+<section class="error-page">
+  <div class="container">
+    <div class="error-content">
+      <h1><%= typeof statusCode !== 'undefined' ? statusCode : 500 %></h1>
+      <h2>Something went wrong</h2>
+      <p><%= typeof error !== 'undefined' ? error : 'An unexpected error occurred.' %></p>
+      <a href="/" class="btn btn-primary">Go Back Home</a>
+    </div>
+  </div>
+</section>

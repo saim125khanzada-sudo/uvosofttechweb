@@ -1,0 +1,333 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum BlogStatus {
+  draft
+  published
+  archived
+}
+
+enum EntityType {
+  User
+  Page
+  PageSection
+  Service
+  ServiceCategory
+  BlogPost
+  Product
+  Media
+  ContactSubmission
+  SiteSetting
+  Role
+  NavigationItem
+  SocialLink
+  ChatbotResponse
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  firstName    String    @map("first_name")
+  lastName     String    @map("last_name")
+  avatarUrl            String?   @map("avatar_url")
+  isActive             Boolean   @default(true) @map("is_active")
+  twoFactorSecret      String?   @map("two_factor_secret")
+  isTwoFactorEnabled   Boolean   @default(false) @map("is_two_factor_enabled")
+  twoFactorBackupCodes String?   @map("two_factor_backup_codes")
+  lastLoginAt          DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  roles          UserRole[]
+  blogPosts      BlogPost[]
+  activityLogs   ActivityLog[]
+  uploadedMedia  Media[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false) @map("is_system")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  users       UserRole[]
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  category    String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  roles RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String     @map("role_id") @db.Uuid
+  permissionId String     @map("permission_id") @db.Uuid
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserRole {
+  userId    String   @map("user_id") @db.Uuid
+  roleId    String   @map("role_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model Session {
+  sid  String @id
+  sess Json
+  expire DateTime
+
+  @@index([expire])
+  @@map("session")
+}
+
+model SiteSetting {
+  id        String   @id @default(uuid()) @db.Uuid
+  key       String   @unique
+  value     Json
+  group     String
+  type      String
+  label     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([group])
+  @@map("site_settings")
+}
+
+model Page {
+  id              String   @id @default(uuid()) @db.Uuid
+  slug            String   @unique
+  title           String
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+  metaKeywords    String?  @map("meta_keywords")
+  ogImageUrl      String?  @map("og_image_url")
+  isPublished     Boolean  @default(true) @map("is_published")
+  sortOrder       Int      @default(0) @map("sort_order")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  sections PageSection[]
+
+  @@map("pages")
+}
+
+model PageSection {
+  id        String   @id @default(uuid()) @db.Uuid
+  pageId    String   @map("page_id") @db.Uuid
+  slug      String
+  title     String?
+  content   Json
+  sortOrder Int      @default(0) @map("sort_order")
+  isVisible Boolean  @default(true) @map("is_visible")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId])
+  @@map("page_sections")
+}
+
+model NavigationItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  label     String
+  href      String
+  sortOrder Int      @default(0) @map("sort_order")
+  isVisible Boolean  @default(true) @map("is_visible")
+  target    String   @default("_self")
+  cssClass  String?  @map("css_class")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([sortOrder])
+  @@map("navigation_items")
+}
+
+model ServiceCategory {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  slug        String    @unique
+  description String?
+  iconUrl     String?   @map("icon_url")
+  sortOrder   Int       @default(0) @map("sort_order")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  services Service[]
+
+  @@map("service_categories")
+}
+
+model Service {
+  id          String   @id @default(uuid()) @db.Uuid
+  categoryId  String   @map("category_id") @db.Uuid
+  title       String
+  description String?
+  iconUrl     String?  @map("icon_url")
+  imageUrl    String?  @map("image_url")
+  sortOrder   Int      @default(0) @map("sort_order")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  category ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@map("services")
+}
+
+model BlogPost {
+  id              String      @id @default(uuid()) @db.Uuid
+  title           String
+  slug            String      @unique
+  excerpt         String?
+  content         String
+  featuredImageUrl String?    @map("featured_image_url")
+  authorId        String      @map("author_id") @db.Uuid
+  status          String      @default("draft")
+  publishedAt     DateTime?   @map("published_at")
+  metaTitle       String?     @map("meta_title")
+  metaDescription String?     @map("meta_description")
+  metaKeywords    String?     @map("meta_keywords")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([status])
+  @@index([publishedAt])
+  @@index([authorId])
+  @@map("blog_posts")
+}
+
+model Product {
+  id          String   @id @default(uuid()) @db.Uuid
+  brand       String
+  model       String
+  price       Decimal  @db.Decimal(10, 2)
+  ram         String?
+  ssd         String?
+  hdd         String?
+  gpu         String?
+  imageUrl    String?  @map("image_url")
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([isActive])
+  @@index([brand])
+  @@map("products")
+}
+
+model Media {
+  id           String   @id @default(uuid()) @db.Uuid
+  filename     String
+  originalName String   @map("original_name")
+  mimeType     String   @map("mime_type")
+  size         Int
+  path         String
+  altText      String?  @map("alt_text")
+  uploadedBy   String?  @map("uploaded_by") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  uploader User? @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
+
+  @@index([uploadedBy])
+  @@map("media")
+}
+
+model ContactSubmission {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  email       String
+  message     String
+  isRead      Boolean   @default(false) @map("is_read")
+  respondedAt DateTime? @map("responded_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("contact_submissions")
+}
+
+model ChatbotResponse {
+  id             String   @id @default(uuid()) @db.Uuid
+  triggerKeywords String[] @map("trigger_keywords")
+  responseText   String   @map("response_text")
+  priority       Int      @default(0)
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([isActive])
+  @@map("chatbot_responses")
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  action    String
+  entityType String  @map("entity_type")
+  entityId  String?  @map("entity_id") @db.Uuid
+  details   Json?
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("activity_logs")
+}
+
+model SocialLink {
+  id        String   @id @default(uuid()) @db.Uuid
+  platform  String
+  url       String
+  iconName  String   @map("icon_name")
+  sortOrder Int      @default(0) @map("sort_order")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([sortOrder])
+  @@map("social_links")
+}

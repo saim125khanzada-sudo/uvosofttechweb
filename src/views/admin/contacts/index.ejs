@@ -1,0 +1,46 @@
+
+<div class="content-header">
+  <h2>Contact Submissions</h2>
+</div>
+
+<div class="table-responsive">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Message</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof contacts !== 'undefined' && contacts.length > 0) { %>
+        <% contacts.forEach(function(contact) { %>
+          <tr class="<%= !contact.isRead ? 'unread-row' : '' %>">
+            <td><strong><%= contact.name %></strong></td>
+            <td><%= contact.email %></td>
+            <td class="text-truncate" style="max-width:250px;"><%= contact.message %></td>
+            <td>
+              <% if (contact.respondedAt) { %>
+                <span class="badge badge-success">Responded</span>
+              <% } else if (contact.isRead) { %>
+                <span class="badge badge-info">Read</span>
+              <% } else { %>
+                <span class="badge badge-warning">Unread</span>
+              <% } %>
+            </td>
+            <td><%= new Date(contact.createdAt).toLocaleString() %></td>
+            <td>
+              <a href="/admin/contacts/<%= contact.id %>" class="btn btn-sm btn-outline">View</a>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="6">No contact submissions.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+

@@ -1,0 +1,40 @@
+
+<div class="content-header">
+  <h2>Navigation</h2>
+  <a href="/admin/navigation/create" class="btn btn-primary">Add Item</a>
+</div>
+
+<div class="table-responsive">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Label</th>
+        <th>URL</th>
+        <th>Target</th>
+        <th>Order</th>
+        <th>Visible</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof items !== 'undefined' && items.length > 0) { %>
+        <% items.forEach(function(item) { %>
+          <tr>
+            <td><%= item.label %></td>
+            <td><%= item.href %></td>
+            <td><%= item.target %></td>
+            <td><%= item.sortOrder %></td>
+            <td><span class="badge badge-<%= item.isVisible ? 'success' : 'danger' %>"><%= item.isVisible ? 'Yes' : 'No' %></span></td>
+            <td>
+              <a href="/admin/navigation/<%= item.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+              <button class="btn btn-sm btn-danger btn-delete" data-entity="navigation" data-id="<%= item.id %>">Delete</button>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="6">No navigation items found.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+

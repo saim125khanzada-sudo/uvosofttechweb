@@ -1,0 +1,107 @@
+<!-- Contact Us - Multi-Region Regional Hub -->
+<section style="padding: 140px 0 60px; text-align: center;">
+  <div class="section-header">
+    <span class="section-tag">GLOBAL REGIONAL CONTACT</span>
+    <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 16px;">
+      Connect with UVO <span class="gradient-text">SoftTech Experts</span>
+    </h1>
+    <p class="section-desc" style="max-width: 700px; margin: 0 auto;">
+      Get immediate assistance from our dedicated solution architects in 
+      <strong>USA 🇺🇸, Canada 🇨🇦, Saudi Arabia 🇸🇦, and Pakistan 🇵🇰</strong>.
+    </p>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+    
+    <!-- Multi-Region Offices List -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div class="glass-panel card-3d">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-size: 1.25rem; margin: 0;">🇺🇸 United States HQ</h3>
+          <span class="btn-neon" style="padding: 2px 8px; font-size: 0.75rem;">North America</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px;">1200 Tech Boulevard, Suite 400, Dallas, TX 75201</p>
+        <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+          <span style="color: var(--primary-cyan);">📞 +1 (800) 555-UVO1</span>
+          <span style="color: var(--text-muted);">✉️ us@uvosofttech.com</span>
+        </div>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-size: 1.25rem; margin: 0;">🇨🇦 Canada Regional Hub</h3>
+          <span class="btn-neon" style="padding: 2px 8px; font-size: 0.75rem;">Canada</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px;">250 Bay Street, Floor 18, Toronto, ON M5H 2Y2</p>
+        <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+          <span style="color: var(--primary-cyan);">📞 +1 (800) 555-UVO2</span>
+          <span style="color: var(--text-muted);">✉️ ca@uvosofttech.com</span>
+        </div>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-size: 1.25rem; margin: 0;">🇸🇦 Saudi Arabia Office</h3>
+          <span class="btn-neon" style="padding: 2px 8px; font-size: 0.75rem;">Middle East / KSA</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px;">King Fahd Road, Digital City, Riyadh 12371, KSA</p>
+        <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+          <span style="color: var(--primary-cyan);">📞 +966 11 555 UVO3</span>
+          <span style="color: var(--text-muted);">✉️ sa@uvosofttech.com</span>
+        </div>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-size: 1.25rem; margin: 0;">🇵🇰 Pakistan Tech Center</h3>
+          <span class="btn-neon" style="padding: 2px 8px; font-size: 0.75rem;">South Asia</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px;">Blue Area, G-7/2, Islamabad, 44000</p>
+        <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+          <span style="color: var(--primary-cyan);">📞 +92 42 3555 UVO4</span>
+          <span style="color: var(--text-muted);">✉️ pk@uvosofttech.com</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="glass-panel card-3d">
+      <h3 style="font-size: 1.5rem; margin-bottom: 12px;" class="gradient-text">Send Direct Inquiry</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">
+        Fill out the form below. Your request will be routed directly to the solution architect team in your region.
+      </p>
+
+      <form action="/api/v1/contact" method="POST" id="contactForm">
+        <div class="form-group">
+          <label class="form-label">Your Full Name *</label>
+          <input type="text" name="name" class="form-control" placeholder="John Doe" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Corporate Email Address *</label>
+          <input type="email" name="email" class="form-control" placeholder="john@company.com" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Target Region / Office</label>
+          <select name="region" class="form-control" style="background:#0F172A; color:#FFF;">
+            <option value="us">🇺🇸 United States HQ</option>
+            <option value="ca">🇨🇦 Canada Office</option>
+            <option value="sa">🇸🇦 Saudi Arabia Office</option>
+            <option value="pk">🇵🇰 Pakistan Tech Center</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Detailed Message / Scope *</label>
+          <textarea name="message" class="form-control" rows="5" placeholder="Describe your ERP, Cloud, Security, or Hardware store needs..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Message</button>
+      </form>
+    </div>
+
+  </div>
+</section>

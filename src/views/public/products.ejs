@@ -1,0 +1,120 @@
+<!-- Hardware Store & Laptops Catalog Page -->
+<section style="padding: 140px 0 60px; text-align: center;">
+  <div class="section-header">
+    <span class="section-tag">UVO HARDWARE STORE</span>
+    <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 16px;">
+      Enterprise Laptops & <span class="gradient-text">Computing Gear</span>
+    </h1>
+    <p class="section-desc" style="max-width: 700px; margin: 0 auto;">
+      High-performance laptops, mobile workstations, and servers customized with high RAM, fast NVMe storage, and dedicated GPUs for corporate teams across 
+      <strong>USA, Canada, Saudi Arabia, and Pakistan</strong>.
+    </p>
+  </div>
+</section>
+
+<section class="section" style="padding-top: 0;">
+  <div class="grid-3">
+    <% if (typeof products !== 'undefined' && products.length > 0) { %>
+      <% products.forEach(function(product) { %>
+        <div class="glass-panel card-3d">
+          <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 30px; text-align: center; margin-bottom: 20px; border: 1px solid var(--border-glass);">
+            <span style="font-size: 4rem;">💻</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="color: var(--primary-cyan); font-weight: 700; font-size: 0.85rem;"><%= product.brand %></span>
+            <span style="color: var(--accent-neon); font-weight: 700; font-size: 1.2rem;">
+              <%= typeof activeRegion !== 'undefined' ? activeRegion.symbol : '$' %><%= product.price %>
+            </span>
+          </div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 12px;"><%= product.model %></h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+            <%= product.description || 'Enterprise-grade laptop certified for corporate MDM and development.' %>
+          </p>
+
+          <div style="background: #070913; padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid var(--border-glass);">
+            <table style="width: 100%; font-size: 0.85rem; color: var(--text-muted);">
+              <% if (product.ram) { %><tr><td>Memory (RAM):</td><td style="color: var(--text-main); text-align: right;"><%= product.ram %></td></tr><% } %>
+              <% if (product.ssd) { %><tr><td>Storage (SSD):</td><td style="color: var(--text-main); text-align: right;"><%= product.ssd %></td></tr><% } %>
+              <% if (product.gpu) { %><tr><td>Graphics (GPU):</td><td style="color: var(--text-main); text-align: right;"><%= product.gpu %></td></tr><% } %>
+            </table>
+          </div>
+
+          <button class="btn btn-primary trigger-quote-modal" style="width: 100%;">Inquire Purchase Stock</button>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <!-- Demo Stock Catalog -->
+      <div class="glass-panel card-3d">
+        <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 30px; text-align: center; margin-bottom: 20px; border: 1px solid var(--border-glass);">
+          <span style="font-size: 4rem;">💻</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="color: var(--primary-cyan); font-weight: 700; font-size: 0.85rem;">DELL LATITUDE</span>
+          <span style="color: var(--accent-neon); font-weight: 700; font-size: 1.2rem;">
+            <%= typeof activeRegion !== 'undefined' ? activeRegion.symbol : '$' %>1,250
+          </span>
+        </div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 12px;">Dell Latitude 5540 Pro Workstation</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Tested & certified for corporate MDM deployment.</p>
+
+        <div style="background: #070913; padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid var(--border-glass);">
+          <table style="width: 100%; font-size: 0.85rem; color: var(--text-muted);">
+            <tr><td>RAM:</td><td style="color: var(--text-main); text-align: right;">32GB DDR5</td></tr>
+            <tr><td>SSD:</td><td style="color: var(--text-main); text-align: right;">1TB NVMe M.2</td></tr>
+            <tr><td>GPU:</td><td style="color: var(--text-main); text-align: right;">Intel Iris Xe</td></tr>
+          </table>
+        </div>
+
+        <button class="btn btn-primary trigger-quote-modal" style="width: 100%;">Inquire Purchase Stock</button>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 30px; text-align: center; margin-bottom: 20px; border: 1px solid var(--border-glass);">
+          <span style="font-size: 4rem;">💻</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="color: var(--primary-cyan); font-weight: 700; font-size: 0.85rem;">LENOVO THINKPAD</span>
+          <span style="color: var(--accent-neon); font-weight: 700; font-size: 1.2rem;">
+            <%= typeof activeRegion !== 'undefined' ? activeRegion.symbol : '$' %>1,450
+          </span>
+        </div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 12px;">ThinkPad X1 Carbon Gen 11</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Ultra-lightweight executive carbon-fiber laptop.</p>
+
+        <div style="background: #070913; padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid var(--border-glass);">
+          <table style="width: 100%; font-size: 0.85rem; color: var(--text-muted);">
+            <tr><td>RAM:</td><td style="color: var(--text-main); text-align: right;">32GB LPDDR5</td></tr>
+            <tr><td>SSD:</td><td style="color: var(--text-main); text-align: right;">1TB NVMe PCIe 4.0</td></tr>
+            <tr><td>Processor:</td><td style="color: var(--text-main); text-align: right;">Intel i7-1365U</td></tr>
+          </table>
+        </div>
+
+        <button class="btn btn-primary trigger-quote-modal" style="width: 100%;">Inquire Purchase Stock</button>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 30px; text-align: center; margin-bottom: 20px; border: 1px solid var(--border-glass);">
+          <span style="font-size: 4rem;">💻</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="color: var(--primary-cyan); font-weight: 700; font-size: 0.85rem;">APPLE MACBOOK</span>
+          <span style="color: var(--accent-neon); font-weight: 700; font-size: 1.2rem;">
+            <%= typeof activeRegion !== 'undefined' ? activeRegion.symbol : '$' %>1,999
+          </span>
+        </div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 12px;">MacBook Pro 16" M3 Pro</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Heavyweight performance for developer environments.</p>
+
+        <div style="background: #070913; padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid var(--border-glass);">
+          <table style="width: 100%; font-size: 0.85rem; color: var(--text-muted);">
+            <tr><td>RAM:</td><td style="color: var(--text-main); text-align: right;">36GB Unified</td></tr>
+            <tr><td>SSD:</td><td style="color: var(--text-main); text-align: right;">512GB Fast SSD</td></tr>
+            <tr><td>GPU:</td><td style="color: var(--text-main); text-align: right;">18-Core GPU</td></tr>
+          </table>
+        </div>
+
+        <button class="btn btn-primary trigger-quote-modal" style="width: 100%;">Inquire Purchase Stock</button>
+      </div>
+    <% } %>
+  </div>
+</section>

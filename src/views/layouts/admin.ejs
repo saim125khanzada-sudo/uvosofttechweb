@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' - Admin' : 'Admin Panel' %></title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+  <div class="admin-wrapper">
+    <%- include('../partials/admin/sidebar') %>
+    <div class="admin-main">
+      <%- include('../partials/admin/topbar') %>
+      <div class="admin-content">
+        <% if (typeof flash !== 'undefined' && flash) { %>
+          <% if (flash.success) { %>
+            <% flash.success.forEach(function(msg) { %>
+              <div class="alert alert-success"><%= msg %></div>
+            <% }); %>
+          <% } %>
+          <% if (flash.error) { %>
+            <% flash.error.forEach(function(msg) { %>
+              <div class="alert alert-error"><%= msg %></div>
+            <% }); %>
+          <% } %>
+        <% } %>
+        <%- body %>
+      </div>
+    </div>
+  </div>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

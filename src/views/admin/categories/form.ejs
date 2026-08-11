@@ -1,0 +1,43 @@
+
+<div class="content-header">
+  <h2><%= title %></h2>
+  <a href="/admin/categories" class="btn btn-outline">Back to Categories</a>
+</div>
+
+<div class="form-card">
+  <form id="categoryForm" data-entity="categories" data-id="<%= category ? category.id : '' %>" class="admin-form">
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input type="text" id="name" name="name" required maxlength="100" value="<%= category ? category.name : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="slug">Slug (auto-generated if empty)</label>
+      <input type="text" id="slug" name="slug" maxlength="100" pattern="[a-z0-9-]+" value="<%= category ? category.slug : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="3"><%= category ? (category.description || '') : '' %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="iconUrl">Icon URL</label>
+      <input type="url" id="iconUrl" name="iconUrl" value="<%= category ? (category.iconUrl || '') : '' %>">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="sortOrder">Sort Order</label>
+        <input type="number" id="sortOrder" name="sortOrder" min="0" value="<%= category ? category.sortOrder : 0 %>">
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="isActive" value="true" <%= category ? (category.isActive ? 'checked' : '') : 'checked' %>>
+          Active
+        </label>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="/admin/categories" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+

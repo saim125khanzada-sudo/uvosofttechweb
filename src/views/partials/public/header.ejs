@@ -1,0 +1,23 @@
+<header>
+  <a href="/" class="nav-logo"><div class="logo-dot"></div> UVOSOFT TECH</a>
+  <nav>
+    <ul>
+      <li><a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Home</a></li>
+      <li><a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a></li>
+      <li><a href="/services" class="<%= currentPath === '/services' ? 'active' : '' %>">Services</a></li>
+      <li><a href="/store" class="<%= currentPath === '/store' || currentPath === '/products' ? 'active' : '' %>">Store</a></li>
+      <li><a href="/blog" class="<%= currentPath.startsWith('/blog') ? 'active' : '' %>">Blog</a></li>
+      <li><a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-actions">
+    <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/admin" class="btn-login">Dashboard</a>
+    <% } else { %>
+      <a href="/auth/login" class="btn-login">Client Login</a>
+    <% } %>
+  </div>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</header>

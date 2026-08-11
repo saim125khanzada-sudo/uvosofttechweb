@@ -1,0 +1,39 @@
+
+<div class="content-header">
+  <h2>Service Categories</h2>
+  <a href="/admin/categories/create" class="btn btn-primary">Add Category</a>
+</div>
+
+<div class="table-responsive">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Slug</th>
+        <th>Services</th>
+        <th>Order</th>
+        <th>Active</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+        <% categories.forEach(function(cat) { %>
+          <tr>
+            <td><%= cat.name %></td>
+            <td><%= cat.slug %></td>
+            <td><%= cat._count.services %></td>
+            <td><%= cat.sortOrder %></td>
+            <td><span class="badge badge-<%= cat.isActive ? 'success' : 'danger' %>"><%= cat.isActive ? 'Yes' : 'No' %></span></td>
+            <td>
+              <a href="/admin/categories/<%= cat.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="6">No categories found.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+

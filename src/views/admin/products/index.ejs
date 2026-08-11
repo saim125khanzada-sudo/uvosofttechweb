@@ -1,0 +1,44 @@
+
+<div class="content-header">
+  <h2>Products</h2>
+  <a href="/admin/products/create" class="btn btn-primary">Add Product</a>
+</div>
+
+<div class="table-responsive">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Specs</th>
+        <th>Active</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof products !== 'undefined' && products.length > 0) { %>
+        <% products.forEach(function(product) { %>
+          <tr>
+            <td><%= product.brand %></td>
+            <td><%= product.model %></td>
+            <td>$<%= product.price %></td>
+            <td>
+              <% if (product.ram) { %>RAM: <%= product.ram %><% } %>
+              <% if (product.ssd) { %> | SSD: <%= product.ssd %><% } %>
+              <% if (product.gpu) { %> | GPU: <%= product.gpu %><% } %>
+            </td>
+            <td><span class="badge badge-<%= product.isActive ? 'success' : 'danger' %>"><%= product.isActive ? 'Yes' : 'No' %></span></td>
+            <td>
+              <a href="/admin/products/<%= product.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+              <button class="btn btn-sm btn-danger btn-delete" data-entity="products" data-id="<%= product.id %>">Delete</button>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="6">No products found.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+

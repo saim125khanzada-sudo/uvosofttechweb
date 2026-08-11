@@ -1,0 +1,60 @@
+
+<div class="content-header">
+  <h2><%= title %></h2>
+  <a href="/admin/blog" class="btn btn-outline">Back to Blog</a>
+</div>
+
+<div class="form-card">
+  <form id="blogForm" data-entity="blog" data-id="<%= post ? post.id : '' %>" class="admin-form">
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input type="text" id="title" name="title" required maxlength="200" value="<%= post ? post.title : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="slug">Slug (auto-generated if empty)</label>
+      <input type="text" id="slug" name="slug" maxlength="200" pattern="[a-z0-9-]+" value="<%= post ? post.slug : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="excerpt">Excerpt</label>
+      <textarea id="excerpt" name="excerpt" rows="3" maxlength="500"><%= post ? (post.excerpt || '') : '' %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="content">Content *</label>
+      <textarea id="content" name="content" rows="15" required><%= post ? post.content : '' %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="featuredImageUrl">Featured Image URL</label>
+      <input type="url" id="featuredImageUrl" name="featuredImageUrl" value="<%= post ? (post.featuredImageUrl || '') : '' %>">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="draft" <%= post && post.status === 'draft' ? 'selected' : '' %>>Draft</option>
+          <option value="published" <%= post && post.status === 'published' ? 'selected' : '' %>>Published</option>
+          <option value="archived" <%= post && post.status === 'archived' ? 'selected' : '' %>>Archived</option>
+        </select>
+      </div>
+    </div>
+    <fieldset class="form-fieldset">
+      <legend>SEO</legend>
+      <div class="form-group">
+        <label for="metaTitle">Meta Title</label>
+        <input type="text" id="metaTitle" name="metaTitle" maxlength="70" value="<%= post ? (post.metaTitle || '') : '' %>">
+      </div>
+      <div class="form-group">
+        <label for="metaDescription">Meta Description</label>
+        <textarea id="metaDescription" name="metaDescription" rows="2" maxlength="160"><%= post ? (post.metaDescription || '') : '' %></textarea>
+      </div>
+      <div class="form-group">
+        <label for="metaKeywords">Meta Keywords</label>
+        <input type="text" id="metaKeywords" name="metaKeywords" value="<%= post ? (post.metaKeywords || '') : '' %>">
+      </div>
+    </fieldset>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="/admin/blog" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+

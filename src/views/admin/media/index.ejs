@@ -1,0 +1,39 @@
+
+<div class="content-header">
+  <h2>Media Library</h2>
+  <div class="header-actions">
+    <form id="mediaUploadForm" enctype="multipart/form-data" class="inline-form">
+      <input type="file" id="mediaFile" name="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" required style="display:inline-block;">
+      <input type="text" id="mediaAltText" name="altText" placeholder="Alt text" style="display:inline-block;width:200px;">
+      <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+    </form>
+  </div>
+</div>
+
+<div class="media-grid">
+  <% if (typeof media !== 'undefined' && media.length > 0) { %>
+    <% media.forEach(function(item) { %>
+      <div class="media-item">
+        <% if (item.mimeType.startsWith('image/')) { %>
+          <img src="<%= item.path %>" alt="<%= item.altText || item.originalName %>">
+        <% } else { %>
+          <div class="media-file-icon">
+            <span><%= item.originalName.split('.').pop().toUpperCase() %></span>
+          </div>
+        <% } %>
+        <div class="media-info">
+          <p class="media-name"><%= item.originalName %></p>
+          <p class="media-meta"><%= (item.size / 1024).toFixed(1) %> KB | <%= item.mimeType %></p>
+          <% if (item.uploader) { %>
+            <p class="media-meta">By <%= item.uploader.firstName %> <%= item.uploader.lastName %></p>
+          <% } %>
+          <button class="btn btn-sm btn-outline btn-copy-url" data-url="<%= item.path %>">Copy URL</button>
+          <button class="btn btn-sm btn-danger btn-delete" data-entity="media" data-id="<%= item.id %>">Delete</button>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <p>No media files uploaded yet.</p>
+  <% } %>
+</div>
+

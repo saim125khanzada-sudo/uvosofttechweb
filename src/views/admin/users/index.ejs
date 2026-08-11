@@ -1,0 +1,43 @@
+
+<div class="content-header">
+  <h2>Users</h2>
+  <a href="/admin/users/create" class="btn btn-primary">Add User</a>
+</div>
+
+<div class="table-responsive">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof users !== 'undefined' && users.length > 0) { %>
+        <% users.forEach(function(u) { %>
+          <tr>
+            <td><%= u.firstName %> <%= u.lastName %></td>
+            <td><%= u.email %></td>
+            <td>
+              <% u.roles.forEach(function(r) { %>
+                <span class="badge badge-info"><%= r.role.name %></span>
+              <% }); %>
+            </td>
+            <td><span class="badge badge-<%= u.isActive ? 'success' : 'danger' %>"><%= u.isActive ? 'Active' : 'Inactive' %></span></td>
+            <td><%= new Date(u.createdAt).toLocaleDateString() %></td>
+            <td>
+              <a href="/admin/users/<%= u.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="6">No users found.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+

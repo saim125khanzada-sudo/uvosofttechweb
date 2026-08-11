@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="<%= typeof activeRegion !== 'undefined' ? activeRegion.code : 'en' %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' | UVO SoftTech - Global IT Services & Cloud ERP' : 'UVO SoftTech - Cloud, SaaS, ERP & Cybersecurity' %></title>
+  <meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'UVO SoftTech provides enterprise IT services, Odoo/Dynamics 365 ERP, SaaS cloud migration, cybersecurity, MDM, hardware store, and startup open source solutions across USA, Canada, Saudi Arabia, and Pakistan.' %>">
+  <meta name="keywords" content="IT Services, ERP Consultation, Odoo, Dynamics 365, Cloud Deployment, Cybersecurity, MDM, Computer Store, Startup Open Source Solutions, USA, Canada, Saudi Arabia, Pakistan">
+  <meta name="author" content="UVO SoftTech">
+
+  <!-- Regional & Multi-Lingual SEO Hreflang Tags -->
+  <link rel="alternate" hreflang="en-US" href="https://uvosofttech.com/?region=us" />
+  <link rel="alternate" hreflang="en-CA" href="https://uvosofttech.com/?region=ca" />
+  <link rel="alternate" hreflang="ar-SA" href="https://uvosofttech.com/?region=sa" />
+  <link rel="alternate" hreflang="en-PK" href="https://uvosofttech.com/?region=pk" />
+  <link rel="alternate" hreflang="x-default" href="https://uvosofttech.com/" />
+  <link rel="canonical" href="https://uvosofttech.com<%= typeof currentPath !== 'undefined' ? currentPath : '' %>" />
+
+  <!-- Open Graph & Social Cards -->
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'UVO SoftTech' %>">
+  <meta property="og:description" content="Next-Gen IT Services, ERP, Cloud & Cyber Security Solutions globally.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://uvosofttech.com">
+  <meta property="og:site_name" content="UVO SoftTech">
+
+  <!-- Fonts & Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/public.css">
+
+  <!-- JSON-LD Structured Data Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ITStore",
+    "name": "UVO SoftTech",
+    "url": "https://uvosofttech.com",
+    "logo": "https://uvosofttech.com/images/logo.png",
+    "description": "Enterprise IT services, SaaS software, Odoo/Dynamics 365 ERP customization, Cloud infrastructure, MDM, hardware store and cyber security.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "<%= typeof activeRegion !== 'undefined' ? activeRegion.code.toUpperCase() : 'US' %>"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/uvosoft"
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="brand-logo">
+        <div class="brand-icon">⚡</div>
+        <span>UVO<span class="gradient-text">SOFT</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link <%= currentPath === '/' ? 'active' : '' %>">Home</a></li>
+        <li><a href="/services" class="nav-link <%= currentPath === '/services' ? 'active' : '' %>">Services</a></li>
+        <li><a href="/store" class="nav-link <%= currentPath === '/store' || currentPath === '/products' ? 'active' : '' %>">Hardware Store</a></li>
+        <li><a href="/blog" class="nav-link <%= currentPath === '/blog' ? 'active' : '' %>">Blog</a></li>
+        <li><a href="/about" class="nav-link <%= currentPath === '/about' ? 'active' : '' %>">About Us</a></li>
+        <li><a href="/contact" class="nav-link <%= currentPath === '/contact' ? 'active' : '' %>">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Multi-Region Geo Selector -->
+        <div class="region-selector">
+          <button class="region-btn" id="regionBtn">
+            <span><%= activeRegion ? activeRegion.flag : '🇺🇸' %></span>
+            <span><%= activeRegion ? activeRegion.code.toUpperCase() : 'US' %></span>
+            <small>▾</small>
+          </button>
+          <div class="region-dropdown" id="regionDropdown">
+            <% if (typeof allRegions !== 'undefined') { %>
+              <% allRegions.forEach(r => { %>
+                <a href="?region=<%= r.code %>" class="region-item <%= activeRegion && activeRegion.code === r.code ? 'active' : '' %>">
+                  <span><%= r.flag %> <%= r.name %></span>
+                  <small><%= r.currency %></small>
+                </a>
+              <% }); %>
+            <% } %>
+          </div>
+        </div>
+
+        <a href="#quote" class="btn btn-primary trigger-quote-modal">Get Quote</a>
+
+        <% if (user) { %>
+          <a href="/admin" class="btn btn-glass">Portal</a>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-glass">Client Login</a>
+        <% } %>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Body Content -->
+  <main>
+    <%- body %>
+  </main>
+
+  <!-- Floating AI Assistant Chatbot Trigger & Window -->
+  <div class="chatbot-trigger" id="chatbotTrigger" title="AI IT Assistant">
+    💬
+  </div>
+
+  <div class="chatbot-box" id="chatbotBox">
+    <div class="chatbot-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:1.4rem;">🤖</span>
+        <div>
+          <h4 style="font-size:0.95rem; margin:0;">UVO AI Assistant</h4>
+          <small style="color:var(--accent-neon); font-size:0.75rem;">● Online | Global IT Support</small>
+        </div>
+      </div>
+      <button id="chatbotClose" style="background:none; border:none; color:#FFF; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <div class="msg-bot">
+        Welcome to UVO SoftTech! How can I assist you with Cloud, Odoo/Dynamics ERP, Cybersecurity, or Hardware Store inquiries in <strong><%= activeRegion ? activeRegion.name : 'your region' %></strong>?
+      </div>
+    </div>
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message..." />
+      <button id="chatbotSend" class="btn btn-primary" style="padding:8px 16px; font-size:0.85rem;">Send</button>
+    </div>
+  </div>
+
+  <!-- Quick Consultation Quote Modal -->
+  <div class="modal-overlay" id="quoteModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 class="gradient-text" style="font-size:1.5rem;">Request Instant Consultation</h3>
+        <button class="close-modal" style="background:none; border:none; color:#FFF; font-size:1.4rem; cursor:pointer;">✕</button>
+      </div>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">
+        Fill out your requirements for Cloud, ERP, Cybersecurity, MDM, or Startup Open-Source package in <strong><%= activeRegion ? activeRegion.name : 'USA' %></strong>.
+      </p>
+
+      <form action="/api/v1/contact" method="POST">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="name" class="form-control" placeholder="John Doe" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Email</label>
+          <input type="email" name="email" class="form-control" placeholder="john@company.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Category</label>
+          <select name="service" class="form-control" style="background:#0F172A; color:#FFF;">
+            <option value="ERP">Odoo / Dynamics 365 ERP Consultation</option>
+            <option value="Cloud">SaaS & Cloud Deployment (AWS / Azure)</option>
+            <option value="Cybersecurity">Cybersecurity & MDM Implementation</option>
+            <option value="Startup">Startup Smart-Save Open Source Solutions</option>
+            <option value="Store">Enterprise Hardware Purchase</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Project Details / Requirements</label>
+          <textarea name="message" class="form-control" rows="3" placeholder="Describe your team size, timeline, and goals..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Submit Inquiry</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-logo" style="margin-bottom:16px;">
+          <div class="brand-icon">⚡</div>
+          <span>UVO<span class="gradient-text">SOFT</span></span>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:24px; max-width:320px;">
+          Global leader in IT services, Cloud SaaS, ERP implementations, cybersecurity hardening, and open-source cost saving stacks for startups.
+        </p>
+        <div style="display:flex; gap:12px;">
+          <span style="font-size:1.2rem; cursor:pointer;">🌐 <%= activeRegion ? activeRegion.flag : '🇺🇸' %> <%= activeRegion ? activeRegion.name : 'USA' %> Hub</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:20px; font-size:1.1rem;">Solutions</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+          <li><a href="/services" style="color:var(--text-muted);">Odoo & Dynamics 365 ERP</a></li>
+          <li><a href="/services" style="color:var(--text-muted);">Cloud & SaaS Migration</a></li>
+          <li><a href="/services" style="color:var(--text-muted);">MDM & Infrastructure</a></li>
+          <li><a href="/services" style="color:var(--text-muted);">Cybersecurity Hardening</a></li>
+          <li><a href="/services" style="color:var(--text-muted);">Startup Smart-Save</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:20px; font-size:1.1rem;">Company</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+          <li><a href="/about" style="color:var(--text-muted);">About UVO SoftTech</a></li>
+          <li><a href="/store" style="color:var(--text-muted);">Hardware Store</a></li>
+          <li><a href="/blog" style="color:var(--text-muted);">Tech Insights Blog</a></li>
+          <li><a href="/contact" style="color:var(--text-muted);">Global Contact</a></li>
+          <li><a href="/sitemap.xml" style="color:var(--text-muted);">XML Sitemap</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:20px; font-size:1.1rem;">Global Offices</h4>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">🇺🇸 <strong>USA HQ:</strong> Dallas, TX</p>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">🇨🇦 <strong>Canada:</strong> Toronto, ON</p>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">🇸🇦 <strong>Saudi Arabia:</strong> Riyadh, KSA</p>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px;">🇵🇰 <strong>Pakistan:</strong> Islamabad, PK</p>
+        <p style="color:var(--primary-cyan); font-size:0.85rem;"><%= activeRegion ? activeRegion.phone : '+1 (800) 555-UVO1' %></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© <%= new Date().getFullYear() %> UVO SoftTech. All rights reserved. Built with Enterprise Cybersecurity Standards.</div>
+      <div>
+        <a href="#" style="color:var(--text-dim); margin-right:16px;">Privacy Policy</a>
+        <a href="#" style="color:var(--text-dim);">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/3d-canvas.js"></script>
+  <script src="/js/client-suite.js"></script>
+</body>
+</html>

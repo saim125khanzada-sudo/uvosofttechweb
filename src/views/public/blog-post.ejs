@@ -1,0 +1,27 @@
+<section class="page-header">
+  <div class="container">
+    <h1><%= post.title %></h1>
+  </div>
+</section>
+
+<article class="blog-article">
+  <div class="container">
+    <div class="article-meta">
+      <span class="article-author">By <%= post.author.firstName %> <%= post.author.lastName %></span>
+      <% if (post.publishedAt) { %>
+        <span class="article-date"><%= new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+      <% } %>
+    </div>
+    <% if (post.featuredImageUrl) { %>
+      <div class="article-featured-image">
+        <img src="<%= post.featuredImageUrl %>" alt="<%= post.title %>">
+      </div>
+    <% } %>
+    <div class="article-content">
+      <%- post.content %>
+    </div>
+    <div class="article-footer">
+      <a href="/blog" class="btn btn-outline">Back to Blog</a>
+    </div>
+  </div>
+</article>

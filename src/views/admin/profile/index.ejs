@@ -1,0 +1,46 @@
+
+<div class="content-header">
+  <h2>My Profile</h2>
+</div>
+
+<div class="form-card">
+  <form id="profileForm" class="admin-form" style="max-width:600px;">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">First Name *</label>
+        <input type="text" id="firstName" name="firstName" required maxlength="100" value="<%= profile.firstName %>">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name *</label>
+        <input type="text" id="lastName" name="lastName" required maxlength="100" value="<%= profile.lastName %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" value="<%= profile.email %>" disabled>
+      <small>Email cannot be changed</small>
+    </div>
+    <div class="form-group">
+      <label for="avatarUrl">Avatar URL</label>
+      <input type="url" id="avatarUrl" name="avatarUrl" value="<%= profile.avatarUrl || '' %>">
+    </div>
+
+    <fieldset class="form-fieldset">
+      <legend>Change Password</legend>
+      <div class="form-group">
+        <label for="currentPassword">Current Password</label>
+        <input type="password" id="currentPassword" name="currentPassword">
+      </div>
+      <div class="form-group">
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" minlength="8">
+        <small>Leave blank to keep current password</small>
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Update Profile</button>
+    </div>
+  </form>
+</div>
+

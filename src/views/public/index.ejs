@@ -1,0 +1,284 @@
+<!-- UVO SoftTech - Home Page (3D Cyber & Modern Glassmorphism Redesign) -->
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-badge">
+        <span>⚡ NEXT-GEN IT & CLOUD ERP SOLUTIONS</span>
+        <span>|</span>
+        <span><%= activeRegion ? activeRegion.flag + ' ' + activeRegion.name : '🇺🇸 Global Hub' %></span>
+      </div>
+
+      <h1 class="hero-title">
+        Empowering Enterprise IT & <span class="gradient-text">Cloud Transformation</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Specializing in SaaS software services, Odoo & Dynamics 365 ERP, cybersecurity hardening, MDM deployment, hardware store, and startup open-source smart-save solutions tailored for 
+        <strong>USA, Canada, Saudi Arabia, and Pakistan</strong>.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#quote" class="btn btn-primary trigger-quote-modal">
+          <span>Book Free Consultation</span>
+          <span>→</span>
+        </a>
+        <a href="/services" class="btn btn-glass">
+          <span>Explore Services</span>
+        </a>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div style="display:flex; gap:32px; margin-top:40px; border-top:1px solid var(--border-glass); padding-top:24px;">
+        <div>
+          <h3 class="gradient-text-alt" style="font-size:1.8rem; margin:0;">99.99%</h3>
+          <small style="color:var(--text-muted);">Uptime SLA</small>
+        </div>
+        <div>
+          <h3 class="gradient-text-alt" style="font-size:1.8rem; margin:0;">500+</h3>
+          <small style="color:var(--text-muted);">ERP Deployments</small>
+        </div>
+        <div>
+          <h3 class="gradient-text-alt" style="font-size:1.8rem; margin:0;">70%</h3>
+          <small style="color:var(--text-muted);">Startup Cost Saved</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D Cyber Card Interactive Banner -->
+    <div class="hero-visual">
+      <div class="glass-panel card-3d cyber-card-hero" style="max-width:480px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+          <span style="font-family:var(--font-heading); font-weight:700; color:var(--primary-cyan); font-size:0.9rem;">
+            🛡️ SECURITY & COMPLIANCE VERIFIED
+          </span>
+          <span class="btn-neon" style="padding:4px 12px; font-size:0.75rem; border-radius:var(--radius-full);">LIVE MATRIX</span>
+        </div>
+
+        <h3 style="font-size:1.4rem; margin-bottom:16px;">Enterprise Tech Stack</h3>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+          <div style="background:rgba(255,255,255,0.04); padding:12px 16px; border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-glass);">
+            <span>🚀 Odoo & Dynamics 365 ERP</span>
+            <small style="color:var(--accent-neon);">Active</small>
+          </div>
+          <div style="background:rgba(255,255,255,0.04); padding:12px 16px; border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-glass);">
+            <span>☁️ SaaS & Multi-Cloud Architecture</span>
+            <small style="color:var(--primary-cyan);">Managed</small>
+          </div>
+          <div style="background:rgba(255,255,255,0.04); padding:12px 16px; border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-glass);">
+            <span>🔒 Cybersecurity & 2FA Hardening</span>
+            <small style="color:var(--accent-purple);">Enforced</small>
+          </div>
+          <div style="background:rgba(255,255,255,0.04); padding:12px 16px; border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center; border:1px solid var(--border-glass);">
+            <span>💻 Enterprise Laptops & MDM</span>
+            <small style="color:var(--accent-neon);">In Stock</small>
+          </div>
+        </div>
+
+        <button class="btn btn-primary trigger-quote-modal" style="width:100%;">
+          Get Regional Quote (<%= activeRegion ? activeRegion.currency : 'USD' %>)
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Core Services Matrix -->
+<section class="section" id="services">
+  <div class="section-header">
+    <span class="section-tag">SERVICES & CONSULTATION</span>
+    <h2 class="section-title">Comprehensive Tech Ecosystem</h2>
+    <p class="section-desc">From startup open-source smart-save packages to enterprise ERP and cybersecurity infrastructure.</p>
+  </div>
+
+  <div class="grid-3">
+    <!-- Odoo / Dynamics 365 ERP -->
+    <div class="glass-panel card-3d service-card">
+      <div class="service-icon">🔄</div>
+      <h3 class="service-title">ERP Consultation & Deployments</h3>
+      <p class="service-desc">
+        End-to-end customization, module development, and deployment for <strong>Odoo</strong>, <strong>Microsoft Dynamics 365</strong>, and open-source ERP systems tailored for your industry.
+      </p>
+      <a href="/services#erp" class="btn btn-glass" style="width:100%;">Learn More →</a>
+    </div>
+
+    <!-- SaaS & Cloud Support -->
+    <div class="glass-panel card-3d service-card">
+      <div class="service-icon">☁️</div>
+      <h3 class="service-title">Cloud Migration & SaaS Support</h3>
+      <p class="service-desc">
+        Cloud infrastructure design, automated DevOps pipelines, AWS/Azure serverless deployment, license consultation, and continuous multi-region cloud optimization.
+      </p>
+      <a href="/services#cloud" class="btn btn-glass" style="width:100%;">Learn More →</a>
+    </div>
+
+    <!-- Cybersecurity & MDM -->
+    <div class="glass-panel card-3d service-card">
+      <div class="service-icon">🔒</div>
+      <h3 class="service-title">Cybersecurity & MDM Deployment</h3>
+      <p class="service-desc">
+        Mobile Device Management (MDM) for remote teams, 2FA enforcement, endpoint protection, zero-trust network security, and security audit reports.
+      </p>
+      <a href="/services#security" class="btn btn-glass" style="width:100%;">Learn More →</a>
+    </div>
+
+    <!-- Startup Smart Save -->
+    <div class="glass-panel card-3d service-card">
+      <div class="service-icon">💡</div>
+      <h3 class="service-title">Startup Open-Source Smart-Save</h3>
+      <p class="service-desc">
+        Budget-friendly, highly secure open-source software stacks designed to save startups up to 70% in monthly SaaS overhead without compromising reliability.
+      </p>
+      <a href="/services#startups" class="btn btn-glass" style="width:100%;">Learn More →</a>
+    </div>
+
+    <!-- Hardware Store -->
+    <div class="glass-panel card-3d service-card">
+      <div class="service-icon">💻</div>
+      <h3 class="service-title">Hardware Store & Laptops</h3>
+      <p class="service-desc">
+        Direct sales of high-performance business laptops and workstations equipped with high-tier RAM, NVMe SSDs, and dedicated GPUs for corporate teams.
+      </p>
+      <a href="/store" class="btn btn-glass" style="width:100%;">View Hardware Store →</a>
+    </div>
+
+    <!-- Backoffice IT Support -->
+    <div class="glass-panel card-3d service-card">
+      <div class="service-icon">⚙️</div>
+      <h3 class="service-title">Backoffice IT Support</h3>
+      <p class="service-desc">
+        Dedicated 24/7 backoffice IT support, network administration, active directory management, server maintenance, and remote helpdesk troubleshooting.
+      </p>
+      <a href="/services#support" class="btn btn-glass" style="width:100%;">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Hardware Store Preview -->
+<section class="section" style="background:rgba(15, 23, 42, 0.4); border-radius:var(--radius-lg); border:1px solid var(--border-glass);">
+  <div class="section-header">
+    <span class="section-tag">HARDWARE STORE</span>
+    <h2 class="section-title">Enterprise Laptops & Workstations</h2>
+    <p class="section-desc">Configured for software development, ERP operations, and high-performance computing.</p>
+  </div>
+
+  <div class="grid-3">
+    <% if (typeof products !== 'undefined' && products.length > 0) { %>
+      <% products.slice(0, 3).forEach(p => { %>
+        <div class="glass-panel card-3d">
+          <div style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px;">
+            <span style="font-size:3.5rem;">💻</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="color:var(--primary-cyan); font-weight:700; font-size:0.85rem;"><%= p.brand %></span>
+            <span style="color:var(--accent-neon); font-weight:700; font-size:1.1rem;"><%= activeRegion ? activeRegion.symbol : '$' %><%= p.price %></span>
+          </div>
+          <h4 style="font-size:1.15rem; margin-bottom:12px;"><%= p.model %></h4>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+            <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;"><%= p.ram || '16GB RAM' %></span>
+            <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;"><%= p.ssd || '512GB NVMe' %></span>
+            <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;"><%= p.gpu || 'Dedicated GPU' %></span>
+          </div>
+          <button class="btn btn-primary trigger-quote-modal" style="width:100%; font-size:0.9rem;">Inquire Stock</button>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <!-- Demo Laptop Cards -->
+      <div class="glass-panel card-3d">
+        <div style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px;">
+          <span style="font-size:3.5rem;">💻</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="color:var(--primary-cyan); font-weight:700; font-size:0.85rem;">DELL LATITUDE</span>
+          <span style="color:var(--accent-neon); font-weight:700; font-size:1.1rem;"><%= activeRegion ? activeRegion.symbol : '$' %>1,250</span>
+        </div>
+        <h4 style="font-size:1.15rem; margin-bottom:12px;">Dell Latitude 5540 Pro Workstation</h4>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">32GB DDR5</span>
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">1TB NVMe SSD</span>
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">Intel i7 13th Gen</span>
+        </div>
+        <button class="btn btn-primary trigger-quote-modal" style="width:100%; font-size:0.9rem;">Inquire Stock</button>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px;">
+          <span style="font-size:3.5rem;">💻</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="color:var(--primary-cyan); font-weight:700; font-size:0.85rem;">LENOVO THINKPAD</span>
+          <span style="color:var(--accent-neon); font-weight:700; font-size:1.1rem;"><%= activeRegion ? activeRegion.symbol : '$' %>1,450</span>
+        </div>
+        <h4 style="font-size:1.15rem; margin-bottom:12px;">Lenovo ThinkPad X1 Carbon Gen 11</h4>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">32GB RAM</span>
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">1TB SSD</span>
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">Iris Xe Graphics</span>
+        </div>
+        <button class="btn btn-primary trigger-quote-modal" style="width:100%; font-size:0.9rem;">Inquire Stock</button>
+      </div>
+
+      <div class="glass-panel card-3d">
+        <div style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:20px; text-align:center; margin-bottom:16px;">
+          <span style="font-size:3.5rem;">💻</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="color:var(--primary-cyan); font-weight:700; font-size:0.85rem;">HP ZBOOK</span>
+          <span style="color:var(--accent-neon); font-weight:700; font-size:1.1rem;"><%= activeRegion ? activeRegion.symbol : '$' %>1,890</span>
+        </div>
+        <h4 style="font-size:1.15rem; margin-bottom:12px;">HP ZBook Studio G10 Mobile Studio</h4>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">64GB DDR5</span>
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">2TB NVMe</span>
+          <span class="btn-glass" style="padding:4px 10px; font-size:0.75rem;">RTX 4060 GPU</span>
+        </div>
+        <button class="btn btn-primary trigger-quote-modal" style="width:100%; font-size:0.9rem;">Inquire Stock</button>
+      </div>
+    <% } %>
+  </div>
+
+  <div style="text-align:center; margin-top:40px;">
+    <a href="/store" class="btn btn-glass">Browse All Store Inventory →</a>
+  </div>
+</section>
+
+<!-- Global Office Locations -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-tag">GLOBAL REGIONAL PRESENCE</span>
+    <h2 class="section-title">Local Consultation Worldwide</h2>
+    <p class="section-desc">Serving clients locally across North America, the Middle East, and South Asia.</p>
+  </div>
+
+  <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+    <div class="glass-panel card-3d">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🇺🇸</div>
+      <h3 style="font-size:1.25rem; margin-bottom:8px;">United States</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:12px;">Dallas, Texas HQ</p>
+      <small style="color:var(--primary-cyan);">+1 (800) 555-UVO1</small>
+    </div>
+
+    <div class="glass-panel card-3d">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🇨🇦</div>
+      <h3 style="font-size:1.25rem; margin-bottom:8px;">Canada</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:12px;">Toronto, Ontario</p>
+      <small style="color:var(--primary-cyan);">+1 (800) 555-UVO2</small>
+    </div>
+
+    <div class="glass-panel card-3d">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🇸🇦</div>
+      <h3 style="font-size:1.25rem; margin-bottom:8px;">Saudi Arabia</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:12px;">Riyadh, KSA</p>
+      <small style="color:var(--primary-cyan);">+966 11 555 UVO3</small>
+    </div>
+
+    <div class="glass-panel card-3d">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🇵🇰</div>
+      <h3 style="font-size:1.25rem; margin-bottom:8px;">Pakistan</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:12px;">Islamabad Tech Center</p>
+      <small style="color:var(--primary-cyan);">+92 42 3555 UVO4</small>
+    </div>
+  </div>
+</section>

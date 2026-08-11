@@ -1,0 +1,51 @@
+
+<div class="content-header">
+  <h2><%= title %></h2>
+  <a href="/admin/users" class="btn btn-outline">Back to Users</a>
+</div>
+
+<div class="form-card">
+  <form id="userForm" data-entity="users" data-id="<%= user ? user.id : '' %>" class="admin-form">
+    <div class="form-group">
+      <label for="firstName">First Name *</label>
+      <input type="text" id="firstName" name="firstName" required maxlength="100" value="<%= user ? user.firstName : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name *</label>
+      <input type="text" id="lastName" name="lastName" required maxlength="100" value="<%= user ? user.lastName : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required value="<%= user ? user.email : '' %>">
+    </div>
+    <div class="form-group">
+      <label for="password"><%= user ? 'New Password (leave blank to keep current)' : 'Password *' %></label>
+      <input type="password" id="password" name="password" <%= user ? '' : 'required' %> minlength="8">
+    </div>
+    <div class="form-group">
+      <label>Roles</label>
+      <div class="checkbox-group">
+        <% if (typeof roles !== 'undefined' && roles.length > 0) { %>
+          <% roles.forEach(function(role) { %>
+            <label class="checkbox-label">
+              <input type="checkbox" name="roleIds" value="<%= role.id %>"
+                <%= user && user.roleIds && user.roleIds.includes(role.id) ? 'checked' : '' %>>
+              <%= role.name %>
+            </label>
+          <% }); %>
+        <% } %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="checkbox-label">
+        <input type="checkbox" name="isActive" value="true" <%= user ? (user.isActive ? 'checked' : '') : 'checked' %>>
+        Active
+      </label>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a href="/admin/users" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+

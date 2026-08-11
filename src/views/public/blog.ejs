@@ -1,0 +1,41 @@
+<section class="page-header">
+  <div class="container">
+    <h1><%= title %></h1>
+    <p>Latest news and insights from Uvosoft Tech</p>
+  </div>
+</section>
+
+<section class="page-content">
+  <div class="container">
+    <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
+      <div class="blog-grid-full">
+        <% posts.forEach(function(post) { %>
+          <article class="blog-card-full">
+            <% if (post.featuredImageUrl) { %>
+              <div class="blog-image">
+                <a href="/blog/<%= post.slug %>">
+                  <img src="<%= post.featuredImageUrl %>" alt="<%= post.title %>">
+                </a>
+              </div>
+            <% } %>
+            <div class="blog-content">
+              <h2><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
+              <div class="blog-meta">
+                <span class="blog-author">By <%= post.author.firstName %> <%= post.author.lastName %></span>
+                <% if (post.publishedAt) { %>
+                  <span class="blog-date"><%= new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                <% } %>
+              </div>
+              <% if (post.excerpt) { %>
+                <p class="blog-excerpt"><%= post.excerpt %></p>
+              <% } %>
+              <a href="/blog/<%= post.slug %>" class="btn btn-outline">Read More</a>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p style="color:var(--text-gray);text-align:center">No blog posts available yet. Check back soon for our latest articles.</p>
+    <% } %>
+  </div>
+</section>

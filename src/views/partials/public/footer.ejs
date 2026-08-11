@@ -1,0 +1,30 @@
+<footer>
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4><%= (typeof settings !== 'undefined' && settings.site_name) ? settings.site_name : 'Uvosoft Tech' %></h4>
+        <p><%= (typeof settings !== 'undefined' && settings.footer_about) ? settings.footer_about : 'Leading technology solutions provider delivering innovative software, hardware, and IT services.' %></p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/services">Services</a></li>
+          <li><a href="/store">Store</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Info</h4>
+        <p>Email: <%= (typeof settings !== 'undefined' && settings.contact_email) ? settings.contact_email : 'info@uvosofttech.com' %></p>
+        <p>Phone: <%= (typeof settings !== 'undefined' && settings.contact_phone) ? settings.contact_phone : '+1 (555) 123-4567' %></p>
+        <p>Address: <%= (typeof settings !== 'undefined' && settings.contact_address) ? settings.contact_address : '123 Tech Street, Silicon Valley, CA' %></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <%= new Date().getFullYear() %> <%= (typeof settings !== 'undefined' && settings.site_name) ? settings.site_name : 'Uvosoft Tech' %>. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

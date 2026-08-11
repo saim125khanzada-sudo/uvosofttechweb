@@ -1,0 +1,42 @@
+
+<div class="content-header">
+  <h2>Chatbot Responses</h2>
+  <a href="/admin/chatbot/create" class="btn btn-primary">Add Response</a>
+</div>
+
+<div class="table-responsive">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Keywords</th>
+        <th>Response</th>
+        <th>Priority</th>
+        <th>Active</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof responses !== 'undefined' && responses.length > 0) { %>
+        <% responses.forEach(function(resp) { %>
+          <tr>
+            <td>
+              <% resp.triggerKeywords.forEach(function(kw) { %>
+                <span class="badge badge-info"><%= kw %></span>
+              <% }); %>
+            </td>
+            <td class="text-truncate" style="max-width:300px;"><%= resp.responseText %></td>
+            <td><%= resp.priority %></td>
+            <td><span class="badge badge-<%= resp.isActive ? 'success' : 'danger' %>"><%= resp.isActive ? 'Yes' : 'No' %></span></td>
+            <td>
+              <a href="/admin/chatbot/<%= resp.id %>/edit" class="btn btn-sm btn-outline">Edit</a>
+              <button class="btn btn-sm btn-danger btn-delete" data-entity="chatbot" data-id="<%= resp.id %>">Delete</button>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="5">No chatbot responses found.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
