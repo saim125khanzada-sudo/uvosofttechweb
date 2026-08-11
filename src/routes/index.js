@@ -99,12 +99,6 @@ router.get('/', loadUser, async (req, res, next) => {
 
 router.get('/about', loadUser, async (req, res, next) => {
   try {
-    const page = await safeDbQuery(() =>
-      prisma.page.findUnique({
-        where: { slug: 'about' },
-        include: { sections: { where: { isVisible: true }, orderBy: { sortOrder: 'asc' } } },
-      }), null
-    );
     const navigationItems = await safeDbQuery(() =>
       prisma.navigationItem.findMany({
         where: { isVisible: true },
@@ -117,9 +111,8 @@ router.get('/about', loadUser, async (req, res, next) => {
       settingsList.forEach(s => { settingsMap[s.key] = s.value; });
     }
 
-    res.render('public/page', {
-      title: page ? page.title : 'About Us - UVO SoftTech',
-      page,
+    res.render('public/about', {
+      title: 'About Us',
       navigationItems,
       settings: settingsMap,
       user: req.user || null,

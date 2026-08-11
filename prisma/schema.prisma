@@ -217,6 +217,8 @@ model BlogPost {
   excerpt         String?
   content         String
   featuredImageUrl String?    @map("featured_image_url")
+  docUrl          String?     @map("doc_url")
+  pdfUrl          String?     @map("pdf_url")
   authorId        String      @map("author_id") @db.Uuid
   status          String      @default("draft")
   publishedAt     DateTime?   @map("published_at")

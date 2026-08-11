@@ -327,7 +327,7 @@ router.get('/blog', checkPermission('blog.view'), async (req, res, next) => {
 
 router.post('/blog', checkPermission('blog.create'), async (req, res, next) => {
   try {
-    const { title, slug, content, excerpt, featuredImageUrl, status, metaTitle, metaDescription, metaKeywords } = req.body;
+    const { title, slug, content, excerpt, featuredImageUrl, docUrl, pdfUrl, status, metaTitle, metaDescription, metaKeywords } = req.body;
     const postSlug = slug || slugify(title);
     const publishedAt = status === 'published' ? new Date() : null;
 
@@ -338,6 +338,8 @@ router.post('/blog', checkPermission('blog.create'), async (req, res, next) => {
         content,
         excerpt,
         featuredImageUrl,
+        docUrl,
+        pdfUrl,
         authorId: req.user.id,
         status: status || 'draft',
         publishedAt,
@@ -356,7 +358,7 @@ router.post('/blog', checkPermission('blog.create'), async (req, res, next) => {
 
 router.put('/blog/:id', checkPermission('blog.update'), async (req, res, next) => {
   try {
-    const { title, slug, content, excerpt, featuredImageUrl, status, metaTitle, metaDescription, metaKeywords } = req.body;
+    const { title, slug, content, excerpt, featuredImageUrl, docUrl, pdfUrl, status, metaTitle, metaDescription, metaKeywords } = req.body;
     const existing = await prisma.blogPost.findUnique({ where: { id: req.params.id } });
 
     const updateData = {};
@@ -365,6 +367,8 @@ router.put('/blog/:id', checkPermission('blog.update'), async (req, res, next) =
     if (content !== undefined) updateData.content = content;
     if (excerpt !== undefined) updateData.excerpt = excerpt;
     if (featuredImageUrl !== undefined) updateData.featuredImageUrl = featuredImageUrl;
+    if (docUrl !== undefined) updateData.docUrl = docUrl;
+    if (pdfUrl !== undefined) updateData.pdfUrl = pdfUrl;
     if (status) {
       updateData.status = status;
       if (status === 'published' && existing && existing.status !== 'published') {

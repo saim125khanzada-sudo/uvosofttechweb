@@ -1,41 +1,112 @@
-<section class="page-header">
-  <div class="container">
-    <h1><%= title %></h1>
-    <p>Latest news and insights from Uvosoft Tech</p>
+<!-- Dynamic Tech Blog & Case Studies Page -->
+<section style="padding: 140px 0 60px; text-align: center;">
+  <div class="section-header">
+    <span class="section-tag">TECH INSIGHTS & WHITEPAPERS</span>
+    <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 16px;">
+      UVO SoftTech <span class="gradient-text">Knowledge Hub</span>
+    </h1>
+    <p class="section-desc" style="max-width: 700px; margin: 0 auto;">
+      Dynamic technical articles, Odoo/Dynamics 365 ERP deployment guides, cloud security architecture, and downloadable whitepapers.
+    </p>
   </div>
 </section>
 
-<section class="page-content">
-  <div class="container">
-    <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
-      <div class="blog-grid-full">
-        <% posts.forEach(function(post) { %>
-          <article class="blog-card-full">
-            <% if (post.featuredImageUrl) { %>
-              <div class="blog-image">
-                <a href="/blog/<%= post.slug %>">
-                  <img src="<%= post.featuredImageUrl %>" alt="<%= post.title %>">
-                </a>
-              </div>
-            <% } %>
-            <div class="blog-content">
-              <h2><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
-              <div class="blog-meta">
-                <span class="blog-author">By <%= post.author.firstName %> <%= post.author.lastName %></span>
-                <% if (post.publishedAt) { %>
-                  <span class="blog-date"><%= new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
-                <% } %>
-              </div>
-              <% if (post.excerpt) { %>
-                <p class="blog-excerpt"><%= post.excerpt %></p>
-              <% } %>
-              <a href="/blog/<%= post.slug %>" class="btn btn-outline">Read More</a>
+<section class="section" style="padding-top: 0;">
+  <% if (typeof posts !== 'undefined' && posts.length > 0) { %>
+    <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+      <% posts.forEach(function(post) { %>
+        <article class="glass-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <% if (post.featuredImageUrl) { %>
+            <div style="height: 200px; overflow: hidden; position: relative;">
+              <a href="/blog/<%= post.slug %>">
+                <img src="<%= post.featuredImageUrl %>" alt="<%= post.title %>" style="width:100%; height:100%; object-fit:cover; transition: transform 0.4s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1.0)'">
+              </a>
             </div>
-          </article>
-        <% }); %>
-      </div>
-    <% } else { %>
-      <p style="color:var(--text-gray);text-align:center">No blog posts available yet. Check back soon for our latest articles.</p>
-    <% } %>
-  </div>
+          <% } else { %>
+            <div style="height: 180px; background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(255,0,85,0.1)); display: flex; justify-content: center; align-items: center; border-bottom: 1px solid rgba(0,240,255,0.2);">
+              <span style="font-size: 3rem;">⚡</span>
+            </div>
+          <% } %>
+
+          <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--neon-blue); margin-bottom: 8px;">
+                <span>By <%= post.author ? (post.author.firstName + ' ' + post.author.lastName) : 'UVO Tech Team' %></span>
+                <span><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently Published' %></span>
+              </div>
+
+              <h2 style="font-size: 1.25rem; color: #FFF; margin-bottom: 12px; line-height: 1.4;">
+                <a href="/blog/<%= post.slug %>" style="color: #FFF; text-decoration: none;"><%= post.title %></a>
+              </h2>
+
+              <% if (post.excerpt) { %>
+                <p style="color: var(--text-gray); font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                  <%= post.excerpt %>
+                </p>
+              <% } %>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+              <a href="/blog/<%= post.slug %>" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem; text-decoration: none;">
+                📖 Read Article
+              </a>
+
+              <% if (post.docUrl) { %>
+                <a href="<%= post.docUrl %>" target="_blank" rel="noopener" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem; text-decoration: none; border-color: var(--neon-blue); color: var(--neon-blue);">
+                  📄 Google Doc Link
+                </a>
+              <% } %>
+
+              <% if (post.pdfUrl) { %>
+                <a href="<%= post.pdfUrl %>" target="_blank" rel="noopener" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem; text-decoration: none; border-color: var(--neon-pink); color: var(--neon-pink);">
+                  📥 Download PDF
+                </a>
+              <% } %>
+            </div>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <!-- Initial Default Dynamic Technical Guides -->
+    <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+      <article class="glass-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop" style="width:100%; height:200px; object-fit:cover;">
+        <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--neon-blue); margin-bottom: 8px;">
+              <span>By UVO SoftTech Engineering</span>
+              <span>Aug 2026</span>
+            </div>
+            <h2 style="font-size: 1.25rem; color: #FFF; margin-bottom: 12px;">Odoo ERP 17 Multi-Currency Deployment Strategy</h2>
+            <p style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px;">
+              Comprehensive guide detailing multi-currency accounting, inventory sync, and custom module architecture in Odoo ERP 17 for international trade across North America and GCC.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="/contact" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">📖 Read Guide</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="glass-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop" style="width:100%; height:200px; object-fit:cover;">
+        <div style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--neon-blue); margin-bottom: 8px;">
+              <span>By UVO Cybersecurity Team</span>
+              <span>Aug 2026</span>
+            </div>
+            <h2 style="font-size: 1.25rem; color: #FFF; margin-bottom: 12px;">Active Directory Security & 2FA Hardening Report</h2>
+            <p style="color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px;">
+              Mitigating Kerberoasting and NTLM relay attacks in corporate Active Directory environments using enforced TOTP 2FA authentication and zero-trust policies.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="/contact" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">📖 Read Whitepaper</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  <% } %>
 </section>

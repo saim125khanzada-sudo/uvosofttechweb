@@ -1,27 +1,54 @@
-<section class="page-header">
-  <div class="container">
-    <h1><%= post.title %></h1>
+<!-- Individual Blog Article View with Embedded Google Doc & PDF Support -->
+<section style="padding: 140px 0 40px; text-align: center;">
+  <div class="section-header">
+    <div style="font-size: 0.85rem; color: var(--neon-blue); margin-bottom: 12px;">
+      <span>By <%= post.author ? (post.author.firstName + ' ' + post.author.lastName) : 'UVO Tech Team' %></span>
+      <% if (post.publishedAt) { %>
+        <span> • <%= new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+      <% } %>
+    </div>
+
+    <h1 class="hero-title" style="font-size: 2.8rem; max-width: 900px; margin: 0 auto 20px;">
+      <%= post.title %>
+    </h1>
   </div>
 </section>
 
-<article class="blog-article">
-  <div class="container">
-    <div class="article-meta">
-      <span class="article-author">By <%= post.author.firstName %> <%= post.author.lastName %></span>
-      <% if (post.publishedAt) { %>
-        <span class="article-date"><%= new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
-      <% } %>
+<article class="section" style="padding-top: 0; max-width: 900px; margin: 0 auto;">
+  <% if (post.featuredImageUrl) { %>
+    <div class="glass-card" style="padding: 0; overflow: hidden; margin-bottom: 30px;">
+      <img src="<%= post.featuredImageUrl %>" alt="<%= post.title %>" style="width: 100%; max-height: 450px; object-fit: cover;">
     </div>
-    <% if (post.featuredImageUrl) { %>
-      <div class="article-featured-image">
-        <img src="<%= post.featuredImageUrl %>" alt="<%= post.title %>">
+  <% } %>
+
+  <!-- External Document & PDF Action Banners -->
+  <% if (post.docUrl || post.pdfUrl) { %>
+    <div class="glass-card" style="border: 1px solid var(--neon-blue); padding: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; background: rgba(0, 240, 255, 0.05);">
+      <div>
+        <h4 style="color: #FFF; margin-bottom: 4px; font-size: 1.1rem;">📄 Attached Technical Documents & Whitepapers</h4>
+        <p style="color: var(--text-gray); font-size: 0.85rem; margin: 0;">Access the raw Google Doc or download the PDF version of this post.</p>
       </div>
-    <% } %>
-    <div class="article-content">
-      <%- post.content %>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <% if (post.docUrl) { %>
+          <a href="<%= post.docUrl %>" target="_blank" rel="noopener" class="btn-primary" style="font-size: 0.85rem; padding: 0.6rem 1.2rem; text-decoration: none;">
+            🌐 Open Google Doc
+          </a>
+        <% } %>
+        <% if (post.pdfUrl) { %>
+          <a href="<%= post.pdfUrl %>" target="_blank" rel="noopener" class="btn-secondary" style="font-size: 0.85rem; padding: 0.6rem 1.2rem; text-decoration: none; border-color: var(--neon-pink); color: var(--neon-pink);">
+            📥 Download PDF File
+          </a>
+        <% } %>
+      </div>
     </div>
-    <div class="article-footer">
-      <a href="/blog" class="btn btn-outline">Back to Blog</a>
-    </div>
+  <% } %>
+
+  <!-- Article Body Content -->
+  <div class="glass-card" style="line-height: 1.8; font-size: 1.05rem; color: #ddd; padding: 2.5rem;">
+    <%- post.content %>
+  </div>
+
+  <div style="margin-top: 40px; text-align: center;">
+    <a href="/blog" class="btn-secondary" style="text-decoration: none; padding: 0.8rem 2rem;">← Back to All Articles</a>
   </div>
 </article>
