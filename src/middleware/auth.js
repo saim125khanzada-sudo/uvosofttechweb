@@ -1,15 +1,18 @@
-const { PrismaClient } = require('@prisma/client');
 const config = require('../config');
 
-let prisma;
-
-if (config.env === 'production') {
-  prisma = new PrismaClient();
-} else {
-  if (!global.__prisma) {
-    global.__prisma = new PrismaClient();
+let prisma = null;
+try {
+  const { PrismaClient } = require('@prisma/client');
+  if (config.env === 'production') {
+    prisma = new PrismaClient();
+  } else {
+    if (!global.__prisma) {
+      global.__prisma = new PrismaClient();
+    }
+    prisma = global.__prisma;
   }
-  prisma = global.__prisma;
+} catch (e) {
+  console.log('PrismaClient unavailable in auth middleware');
 }
 
 function requireAuth(req, res, next) {
@@ -33,7 +36,7 @@ function requireAuth(req, res, next) {
 }
 
 async function loadUser(req, res, next) {
-  if (!req.session || (!req.session.userId && !req.session.pending2FAUserId)) {
+  if (!prisma || !req.session || (!req.session.userId && !req.session.pending2FAUserId)) {
     return next();
   }
   const targetId = req.session.userId || req.session.pending2FAUserId;
@@ -83,7 +86,7 @@ async function loadUser(req, res, next) {
       delete req.session.pending2FAUserId;
     }
   } catch (error) {
-    console.error('Error loading user:', error);
+    console.error('Error loading user:', error.message);
     delete req.session.userId;
   }
   next();

@@ -1,50 +1,76 @@
 const express = require('express');
 const router = express.Router();
-const { PrismaClient } = require('@prisma/client');
 const { loadUser } = require('../middleware/auth');
 
-let prisma;
-if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient();
-} else {
-  if (!global.__prisma) global.__prisma = new PrismaClient();
-  prisma = global.__prisma;
+let prisma = null;
+try {
+  const { PrismaClient } = require('@prisma/client');
+  if (process.env.NODE_ENV === 'production') {
+    prisma = new PrismaClient();
+  } else {
+    if (!global.__prisma) global.__prisma = new PrismaClient();
+    prisma = global.__prisma;
+  }
+} catch (e) {
+  console.log('Prisma client initialization deferred / offline');
+}
+
+async function safeDbQuery(queryFn, fallback = []) {
+  if (!prisma) return fallback;
+  try {
+    return await queryFn();
+  } catch (error) {
+    console.warn('Database query fallback (DB offline or initializing):', error.message);
+    return fallback;
+  }
 }
 
 router.get('/', loadUser, async (req, res, next) => {
   try {
-    const services = await prisma.serviceCategory.findMany({
-      where: { isActive: true },
-      include: { services: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } } },
-      orderBy: { sortOrder: 'asc' },
-    });
+    const services = await safeDbQuery(() =>
+      prisma.serviceCategory.findMany({
+        where: { isActive: true },
+        include: { services: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } } },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
 
-    const products = await prisma.product.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      take: 8,
-    });
+    const products = await safeDbQuery(() =>
+      prisma.product.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: 'asc' },
+        take: 8,
+      })
+    );
 
-    const blogPosts = await prisma.blogPost.findMany({
-      where: { status: 'published' },
-      include: { author: { select: { firstName: true, lastName: true } } },
-      orderBy: { publishedAt: 'desc' },
-      take: 3,
-    });
+    const blogPosts = await safeDbQuery(() =>
+      prisma.blogPost.findMany({
+        where: { status: 'published' },
+        include: { author: { select: { firstName: true, lastName: true } } },
+        orderBy: { publishedAt: 'desc' },
+        take: 3,
+      })
+    );
 
-    const settings = await prisma.siteSetting.findMany();
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
 
-    const socialLinks = await prisma.socialLink.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-    });
+    const socialLinks = await safeDbQuery(() =>
+      prisma.socialLink.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
 
     res.render('public/index', {
       title: 'Home',
@@ -57,26 +83,42 @@ router.get('/', loadUser, async (req, res, next) => {
       user: req.user || null,
     });
   } catch (error) {
-    next(error);
+    console.error('Home route error:', error);
+    res.render('public/index', {
+      title: 'Home',
+      services: [],
+      products: [],
+      blogPosts: [],
+      settings: {},
+      navigationItems: [],
+      socialLinks: [],
+      user: req.user || null,
+    });
   }
 });
 
 router.get('/about', loadUser, async (req, res, next) => {
   try {
-    const page = await prisma.page.findUnique({
-      where: { slug: 'about' },
-      include: { sections: { where: { isVisible: true }, orderBy: { sortOrder: 'asc' } } },
-    });
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
+    const page = await safeDbQuery(() =>
+      prisma.page.findUnique({
+        where: { slug: 'about' },
+        include: { sections: { where: { isVisible: true }, orderBy: { sortOrder: 'asc' } } },
+      }), null
+    );
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
     res.render('public/page', {
-      title: page ? page.title : 'About Us',
+      title: page ? page.title : 'About Us - UVO SoftTech',
       page,
       navigationItems,
       settings: settingsMap,
@@ -89,18 +131,24 @@ router.get('/about', loadUser, async (req, res, next) => {
 
 router.get('/services', loadUser, async (req, res, next) => {
   try {
-    const categories = await prisma.serviceCategory.findMany({
-      where: { isActive: true },
-      include: { services: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } } },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
+    const categories = await safeDbQuery(() =>
+      prisma.serviceCategory.findMany({
+        where: { isActive: true },
+        include: { services: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } } },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
     res.render('public/services', {
       title: 'Our Services',
@@ -116,20 +164,26 @@ router.get('/services', loadUser, async (req, res, next) => {
 
 router.get('/store', loadUser, async (req, res, next) => {
   try {
-    const products = await prisma.product.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
+    const products = await safeDbQuery(() =>
+      prisma.product.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
     res.render('public/products', {
-      title: 'Our Store',
+      title: 'Our Hardware Store',
       products,
       navigationItems,
       settings: settingsMap,
@@ -142,17 +196,23 @@ router.get('/store', loadUser, async (req, res, next) => {
 
 router.get('/products', loadUser, async (req, res, next) => {
   try {
-    const products = await prisma.product.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
+    const products = await safeDbQuery(() =>
+      prisma.product.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
     res.render('public/products', {
       title: 'Our Products',
@@ -168,18 +228,24 @@ router.get('/products', loadUser, async (req, res, next) => {
 
 router.get('/blog', loadUser, async (req, res, next) => {
   try {
-    const posts = await prisma.blogPost.findMany({
-      where: { status: 'published' },
-      include: { author: { select: { firstName: true, lastName: true } } },
-      orderBy: { publishedAt: 'desc' },
-    });
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
+    const posts = await safeDbQuery(() =>
+      prisma.blogPost.findMany({
+        where: { status: 'published' },
+        include: { author: { select: { firstName: true, lastName: true } } },
+        orderBy: { publishedAt: 'desc' },
+      })
+    );
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
     res.render('public/blog', {
       title: 'Blog',
@@ -193,44 +259,19 @@ router.get('/blog', loadUser, async (req, res, next) => {
   }
 });
 
-router.get('/blog/:slug', loadUser, async (req, res, next) => {
-  try {
-    const post = await prisma.blogPost.findUnique({
-      where: { slug: req.params.slug, status: 'published' },
-      include: { author: { select: { firstName: true, lastName: true, avatarUrl: true } } },
-    });
-    if (!post) {
-      return res.status(404).render('public/404', { title: 'Post Not Found', user: req.user || null });
-    }
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
-    const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
-
-    res.render('public/blog-post', {
-      title: post.metaTitle || post.title,
-      post,
-      navigationItems,
-      settings: settingsMap,
-      user: req.user || null,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.get('/contact', loadUser, async (req, res, next) => {
   try {
-    const navigationItems = await prisma.navigationItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: 'asc' },
-    });
-    const settings = await prisma.siteSetting.findMany();
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
     const settingsMap = {};
-    settings.forEach(s => { settingsMap[s.key] = s.value; });
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
 
     res.render('public/contact', {
       title: 'Contact Us',

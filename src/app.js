@@ -5,7 +5,6 @@ const compression = require('compression');
 const hpp = require('hpp');
 const expressLayouts = require('express-ejs-layouts');
 const session = require('express-session');
-const { Pool } = require('pg');
 const csrf = require('csurf');
 const { loadUser } = require('./middleware/auth');
 const { getCsrfToken } = require('./middleware/csrf');
@@ -14,23 +13,33 @@ const config = require('./config');
 
 const app = express();
 
-// Session store setup with fallback for serverless / dev environments
+// Session store setup with fallback for serverless / Vercel
 let sessionStore;
-try {
-  const PgSession = require('connect-pg-simple')(session);
-  const pgPool = new Pool({
-    connectionString: config.databaseUrl,
-  });
-  pgPool.on('error', (err) => {
-    console.error('PostgreSQL pool error (falling back to MemoryStore if disconnected):', err.message);
-  });
-  sessionStore = new PgSession({
-    pool: pgPool,
-    tableName: 'session',
-    createTableIfMissing: true,
-  });
-} catch (e) {
-  console.log('Using express-session MemoryStore for serverless/local session handling');
+
+const isVercel = process.env.VERCEL || process.env.NOW_REGION;
+const hasValidRemotePg = config.databaseUrl && !config.databaseUrl.includes('localhost') && !config.databaseUrl.includes('127.0.0.1');
+
+if (!isVercel && hasValidRemotePg) {
+  try {
+    const { Pool } = require('pg');
+    const PgSession = require('connect-pg-simple')(session);
+    const pgPool = new Pool({
+      connectionString: config.databaseUrl,
+    });
+    pgPool.on('error', (err) => {
+      console.error('PostgreSQL pool error:', err.message);
+    });
+    sessionStore = new PgSession({
+      pool: pgPool,
+      tableName: 'session',
+      createTableIfMissing: true,
+    });
+  } catch (e) {
+    console.log('Using express-session MemoryStore fallback');
+    sessionStore = new session.MemoryStore();
+  }
+} else {
+  // Use MemoryStore for Vercel preview environments
   sessionStore = new session.MemoryStore();
 }
 
