@@ -1,101 +1,66 @@
-<!-- Services Page - 3D Glassmorphism & Multi-Region IT Offerings -->
-<section style="padding: 140px 0 60px; text-align: center;">
-  <div class="section-header">
-    <span class="section-tag">ENTERPRISE IT & CONSULTATION SERVICES</span>
-    <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 16px;">
-      Empowering Digital Resilience & <span class="gradient-text">Efficiency</span>
-    </h1>
-    <p class="section-desc" style="max-width: 720px; margin: 0 auto;">
-      Tailored IT services, cloud architecture, Odoo & Microsoft Dynamics 365 ERP implementations, cybersecurity hardening, and cost-efficient open source stacks for businesses in 
-      <strong>USA 🇺🇸, Canada 🇨🇦, Saudi Arabia 🇸🇦, and Pakistan 🇵🇰</strong>.
-    </p>
+<!-- Dedicated Services Page with Category Filter Tabs -->
+<section class="content-section" style="padding-top: 140px;">
+  <h1 class="section-title">Our <span>Technology Services</span></h1>
+  <p class="section-subtitle">Comprehensive IT solutions, custom development, cloud engineering, and cybersecurity services.</p>
+
+  <div class="tabs-container">
+    <button class="tab-btn active" onclick="filterServices('it')">IT Backoffice Support</button>
+    <button class="tab-btn" onclick="filterServices('dev')">Software & Mobile Dev</button>
+    <button class="tab-btn" onclick="filterServices('erp')">Odoo & Dynamics 365 ERP</button>
+    <button class="tab-btn" onclick="filterServices('cloud')">Cloud & DevOps</button>
+    <button class="tab-btn" onclick="filterServices('cyber')">Cybersecurity & Pentesting</button>
+    <button class="tab-btn" onclick="filterServices('ai')">AI Engineering & LLMs</button>
+  </div>
+
+  <div class="grid-container" id="servicesGrid">
+    <!-- Filtered by JavaScript filterServices() -->
   </div>
 </section>
 
-<section class="section" style="padding-top: 0;">
-  <!-- Service 1: Odoo & Dynamics 365 ERP -->
-  <div class="glass-panel card-3d" id="erp" style="margin-bottom: 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center;">
-    <div>
-      <div class="service-icon" style="width: 72px; height: 72px; font-size: 2.2rem;">🔄</div>
-      <h2 style="font-size: 1.8rem; margin-bottom: 12px;">ERP Consultation & Deployments</h2>
-      <span class="btn-neon" style="padding: 4px 12px; font-size: 0.8rem; border-radius: var(--radius-full);">ODOO & DYNAMICS 365</span>
-    </div>
-    <div>
-      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 16px;">
-        We provide complete lifecycle consultation, custom module development, workflow automation, and multi-currency deployment for 
-        <strong>Odoo (Community & Enterprise)</strong> and <strong>Microsoft Dynamics 365</strong>. 
-        Whether you are migrating from legacy accounting software or building a multi-branch retail ERP, our team handles database schema design, third-party API integration, and user training.
-      </p>
-      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Odoo Customization</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Dynamics 365 Finance & Ops</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Inventory & POS Sync</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Multi-Region Tax Localization</span>
-      </div>
-      <button class="btn btn-primary trigger-quote-modal">Request ERP Consultation →</button>
-    </div>
-  </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const services = {
+    it: [
+      { title: "Local & Remote IT Backoffice Support", desc: "Reliable local and remote IT backoffice support to ensure your daily operations run smoothly without interruptions. Troubleshooting, system maintenance, and user support." },
+      { title: "Windows / Linux Server Management", desc: "Server setup, virtualization, backup solutions, Active Directory management, file server configuration, and DHCP services for maximum uptime." },
+      { title: "Network Support (LAN, WAN, VLANs)", desc: "End-to-end network support, bandwidth management, structured cabling, and advanced configurations for switches, routers, and VLANs." },
+      { title: "Firewall Installation & Configuration", desc: "Implementation and management of security firewall solutions to protect your business network from unauthorized access and cyber threats." }
+    ],
+    dev: [
+      { title: "Custom Business Applications (HRM, CRM, ERP)", desc: "Tailored business apps including HRM, HCM, payroll, CRM, asset management, inventory, and gatekeeper security applications." },
+      { title: "Mobile Application Development", desc: "High-performance iOS and Android mobile applications built for security, scalability, and seamless user experience." },
+      { title: "Responsive Webapp & Portal Development", desc: "Modern, responsive, and fast web applications designed with enterprise security standards and API integrations." }
+    ],
+    erp: [
+      { title: "Odoo ERP Implementation & Customization", desc: "Full lifecycle Odoo Community and Enterprise setup, module customization, POS sync, inventory management, and multi-currency accounting." },
+      { title: "Microsoft Dynamics 365 Deployments", desc: "Implementation, customization, and migration for Dynamics 365 Finance & Operations and Business Central." }
+    ],
+    cloud: [
+      { title: "Cloud Migration & Architecture (AWS / Azure)", desc: "End-to-end cloud deployment, serverless microservices, Kubernetes container orchestration, and multi-cloud setup." },
+      { title: "Cloud Cost Optimization", desc: "Analyze cloud resource utilization, eliminate waste, and right-size infrastructure to save up to 50% on cloud bills." },
+      { title: "MDM & Mobile Application Management", desc: "Mobile Device Management (MDM) enrollment, remote device wipe, access control policies, and corporate security enforcement." }
+    ],
+    cyber: [
+      { title: "Application Security & Penetration Testing", desc: "Identify and remediate security vulnerabilities across SDLC. Web application, mobile, and API penetration testing." },
+      { title: "Active Directory & Infrastructure Pentesting", desc: "Simulate real-world attacks against enterprise Active Directory, domain controllers, and internal network infrastructure." },
+      { title: "24x7 Security Operations Center (SOC)", desc: "Continuous 24/7 security monitoring, log analysis, SIEM management, threat detection, and incident response." }
+    ],
+    ai: [
+      { title: "AI Engineering & LLM Integration", desc: "Generative AI, Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and intelligent AI agent workflows." }
+    ]
+  };
 
-  <!-- Service 2: Cloud Support & SaaS -->
-  <div class="glass-panel card-3d" id="cloud" style="margin-bottom: 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center;">
-    <div>
-      <div class="service-icon" style="width: 72px; height: 72px; font-size: 2.2rem;">☁️</div>
-      <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Cloud Migration & SaaS Support</h2>
-      <span class="btn-neon" style="padding: 4px 12px; font-size: 0.8rem; border-radius: var(--radius-full);">AWS, AZURE & DEVOPS</span>
-    </div>
-    <div>
-      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 16px;">
-        Accelerate your cloud journey with zero-downtime database migrations, containerized Kubernetes deployments, serverless microservices, and automated CI/CD pipelines. We consult on software licensing, cloud architecture optimization, and cost-containment across AWS, Azure, and Google Cloud.
-      </p>
-      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ AWS & Azure Migration</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ License Cost Auditing</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Kubernetes & Docker</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ 24/7 Cloud Monitoring</span>
-      </div>
-      <button class="btn btn-primary trigger-quote-modal">Request Cloud Architecture Audit →</button>
-    </div>
-  </div>
+  window.filterServices = function(category) {
+    const grid = document.getElementById('servicesGrid');
+    if (!grid || !services[category]) return;
+    grid.innerHTML = '';
+    services[category].forEach(s => {
+      grid.innerHTML += `<div class="glass-card"><h3>${s.title}</h3><p>${s.desc}</p></div>`;
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (event && event.target) event.target.classList.add('active');
+  };
 
-  <!-- Service 3: Cybersecurity & MDM -->
-  <div class="glass-panel card-3d" id="security" style="margin-bottom: 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center;">
-    <div>
-      <div class="service-icon" style="width: 72px; height: 72px; font-size: 2.2rem;">🛡️</div>
-      <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Cybersecurity & MDM Implementation</h2>
-      <span class="btn-neon" style="padding: 4px 12px; font-size: 0.8rem; border-radius: var(--radius-full);">ZERO-TRUST & MDM</span>
-    </div>
-    <div>
-      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 16px;">
-        Protect corporate assets with enterprise Mobile Device Management (MDM) for Windows, macOS, Android, and iOS devices. Our security engineers enforce 2FA TOTP policies, endpoint encryption, vulnerability assessments, penetration testing audit reports, and active security threat monitoring.
-      </p>
-      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ MDM Enrollment & Wipe</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ 2FA / SSO Integration</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Penetration Testing Audit</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Network Hardening</span>
-      </div>
-      <button class="btn btn-primary trigger-quote-modal">Schedule Security Assessment →</button>
-    </div>
-  </div>
-
-  <!-- Service 4: Startup Open Source Smart-Save -->
-  <div class="glass-panel card-3d" id="startups" style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: center;">
-    <div>
-      <div class="service-icon" style="width: 72px; height: 72px; font-size: 2.2rem;">💡</div>
-      <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Startup Open Source Smart-Save</h2>
-      <span class="btn-neon" style="padding: 4px 12px; font-size: 0.8rem; border-radius: var(--radius-full);">UP TO 70% COST SAVINGS</span>
-    </div>
-    <div>
-      <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 16px;">
-        Bootstrapped and growing startups often waste thousands of dollars monthly on proprietary SaaS subscriptions. Our Smart-Save initiative replaces expensive tools with hardened, self-hosted open-source alternatives (CRM, Helpdesk, Cloud Storage, Project Management) backed by enterprise security.
-      </p>
-      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Self-Hosted CRM & Support</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Zero Monthly Per-Seat Fees</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Data Ownership</span>
-        <span class="btn-glass" style="font-size: 0.85rem;">✓ Scale As You Grow</span>
-      </div>
-      <button class="btn btn-primary trigger-quote-modal">Explore Startup Package →</button>
-    </div>
-  </div>
-</section>
+  filterServices('it');
+});
+</script>

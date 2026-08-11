@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title + ' | UVO SoftTech - Global IT Services & Cloud ERP' : 'UVO SoftTech - Cloud, SaaS, ERP & Cybersecurity' %></title>
+  <title><%= typeof title !== 'undefined' ? title + ' | UVO SoftTech' : 'UVO SoftTech - Cloud, SaaS, ERP & Cybersecurity' %></title>
   <meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'UVO SoftTech provides enterprise IT services, Odoo/Dynamics 365 ERP, SaaS cloud migration, cybersecurity, MDM, hardware store, and startup open source solutions across USA, Canada, Saudi Arabia, and Pakistan.' %>">
   <meta name="keywords" content="IT Services, ERP Consultation, Odoo, Dynamics 365, Cloud Deployment, Cybersecurity, MDM, Computer Store, Startup Open Source Solutions, USA, Canada, Saudi Arabia, Pakistan">
   <meta name="author" content="UVO SoftTech">
 
-  <!-- Regional & Multi-Lingual SEO Hreflang Tags -->
+  <!-- Regional SEO Hreflang Tags -->
   <link rel="alternate" hreflang="en-US" href="https://uvosofttech.com/?region=us" />
   <link rel="alternate" hreflang="en-CA" href="https://uvosofttech.com/?region=ca" />
   <link rel="alternate" hreflang="ar-SA" href="https://uvosofttech.com/?region=sa" />
@@ -16,128 +16,116 @@
   <link rel="alternate" hreflang="x-default" href="https://uvosofttech.com/" />
   <link rel="canonical" href="https://uvosofttech.com<%= typeof currentPath !== 'undefined' ? currentPath : '' %>" />
 
-  <!-- Open Graph & Social Cards -->
+  <!-- Open Graph -->
   <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'UVO SoftTech' %>">
   <meta property="og:description" content="Next-Gen IT Services, ERP, Cloud & Cyber Security Solutions globally.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://uvosofttech.com">
-  <meta property="og:site_name" content="UVO SoftTech">
 
   <!-- Fonts & Style -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/css/public.css">
-
-  <!-- JSON-LD Structured Data Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ITStore",
-    "name": "UVO SoftTech",
-    "url": "https://uvosofttech.com",
-    "logo": "https://uvosofttech.com/images/logo.png",
-    "description": "Enterprise IT services, SaaS software, Odoo/Dynamics 365 ERP customization, Cloud infrastructure, MDM, hardware store and cyber security.",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "<%= typeof activeRegion !== 'undefined' ? activeRegion.code.toUpperCase() : 'US' %>"
-    },
-    "sameAs": [
-      "https://www.linkedin.com/company/uvosoft"
-    ]
-  }
-  </script>
 </head>
 <body>
+  <!-- 3D Graphics Canvases & FX -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="scanline"></div>
+  <div class="sweep-line"></div>
+  <canvas id="matrix-canvas"></canvas>
+  <canvas id="ai-canvas"></canvas>
 
   <!-- Navigation Bar -->
   <header class="navbar">
-    <div class="navbar-container">
-      <a href="/" class="brand-logo">
-        <div class="brand-icon">⚡</div>
-        <span>UVO<span class="gradient-text">SOFT</span></span>
-      </a>
+    <a href="/" class="nav-logo">
+      <div class="logo-dot"></div> UVOSOFT TECH
+    </a>
 
+    <nav>
       <ul class="nav-links">
         <li><a href="/" class="nav-link <%= currentPath === '/' ? 'active' : '' %>">Home</a></li>
         <li><a href="/services" class="nav-link <%= currentPath === '/services' ? 'active' : '' %>">Services</a></li>
         <li><a href="/store" class="nav-link <%= currentPath === '/store' || currentPath === '/products' ? 'active' : '' %>">Hardware Store</a></li>
-        <li><a href="/blog" class="nav-link <%= currentPath === '/blog' ? 'active' : '' %>">Blog</a></li>
+        <li><a href="/blog" class="nav-link <%= currentPath === '/blog' ? 'active' : '' %>">Blogs</a></li>
         <li><a href="/about" class="nav-link <%= currentPath === '/about' ? 'active' : '' %>">About Us</a></li>
         <li><a href="/contact" class="nav-link <%= currentPath === '/contact' ? 'active' : '' %>">Contact</a></li>
       </ul>
+    </nav>
 
-      <div class="nav-actions">
-        <!-- Multi-Region Geo Selector -->
-        <div class="region-selector">
-          <button class="region-btn" id="regionBtn">
-            <span><%= activeRegion ? activeRegion.flag : '🇺🇸' %></span>
-            <span><%= activeRegion ? activeRegion.code.toUpperCase() : 'US' %></span>
-            <small>▾</small>
-          </button>
-          <div class="region-dropdown" id="regionDropdown">
-            <% if (typeof allRegions !== 'undefined') { %>
-              <% allRegions.forEach(r => { %>
-                <a href="?region=<%= r.code %>" class="region-item <%= activeRegion && activeRegion.code === r.code ? 'active' : '' %>">
-                  <span><%= r.flag %> <%= r.name %></span>
-                  <small><%= r.currency %></small>
-                </a>
-              <% }); %>
-            <% } %>
-          </div>
+    <div class="nav-actions" style="display:flex; align-items:center; gap:12px;">
+      <!-- Multi-Region Geo Selector -->
+      <div class="region-selector" style="position:relative;">
+        <button class="region-btn" id="regionBtn" style="background:rgba(255,255,255,0.06); border:1px solid rgba(0,240,255,0.3); color:#fff; padding:6px 14px; border-radius:20px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
+          <span><%= activeRegion ? activeRegion.flag : '🇺🇸' %></span>
+          <span><%= activeRegion ? activeRegion.code.toUpperCase() : 'US' %></span>
+          <small>▾</small>
+        </button>
+        <div class="region-dropdown" id="regionDropdown" style="position:absolute; top:calc(100% + 8px); right:0; background:#070913; border:1px solid rgba(0,240,255,0.3); border-radius:8px; padding:6px; min-width:180px; display:none; box-shadow:0 10px 30px rgba(0,0,0,0.8); z-index:1000;">
+          <% if (typeof allRegions !== 'undefined') { %>
+            <% allRegions.forEach(r => { %>
+              <a href="?region=<%= r.code %>" style="display:flex; justify-content:space-between; padding:8px 12px; color:#aaa; text-decoration:none; font-size:0.85rem; border-radius:4px;" onmouseover="this.style.background='rgba(0,240,255,0.1)';this.style.color='#00F0FF';" onmouseout="this.style.background='none';this.style.color='#aaa';">
+                <span><%= r.flag %> <%= r.name %></span>
+                <small style="color:#00F0FF;"><%= r.currency %></small>
+              </a>
+            <% }); %>
+          <% } %>
         </div>
-
-        <a href="#quote" class="btn btn-primary trigger-quote-modal">Get Quote</a>
-
-        <% if (user) { %>
-          <a href="/admin" class="btn btn-glass">Portal</a>
-        <% } else { %>
-          <a href="/auth/login" class="btn btn-glass">Client Login</a>
-        <% } %>
       </div>
+
+      <a href="#quote" class="btn-primary trigger-quote-modal" style="padding:0.6rem 1.4rem; font-size:0.85rem;">Get Quote</a>
+
+      <% if (user) { %>
+        <a href="/admin" class="btn-login">Portal</a>
+      <% } else { %>
+        <a href="/auth/login" class="btn-login">Client Login</a>
+      <% } %>
     </div>
   </header>
 
   <!-- Main Body Content -->
-  <main>
+  <main class="main-content">
     <%- body %>
   </main>
 
-  <!-- Floating AI Assistant Chatbot Trigger & Window -->
-  <div class="chatbot-trigger" id="chatbotTrigger" title="AI IT Assistant">
-    💬
+  <!-- Floating Social & Chatbot Action Buttons -->
+  <div class="fab-container">
+    <div class="fab fab-chatbot" id="chatbotToggle" title="AI IT Assistant">
+      <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 2.99.97 4.29L2 22l5.71-.97C9.01 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 10.9 13 11.5 13 13h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+    </div>
+    <a href="https://www.linkedin.com/company/uvosoft" target="_blank" rel="noopener noreferrer" class="fab fab-linkedin">
+      <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.25c-.97 0-1.75-.78-1.75-1.75s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.75-1.75 1.75zm13.5 12.25h-3v-5.6c0-1.36-.5-2.28-1.65-2.28-.9 0-1.42.61-1.65 1.2-.09.21-.1.5-.1.79v5.89h-3v-11h3v1.56c.43-.67 1.15-1.56 3.1-1.56 2.24 0 3.92 1.47 3.92 4.62v6.38z"/></svg>
+    </a>
+    <a href="https://wa.me/923718055990" target="_blank" rel="noopener noreferrer" class="fab fab-whatsapp">
+      <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
   </div>
 
-  <div class="chatbot-box" id="chatbotBox">
-    <div class="chatbot-header">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span style="font-size:1.4rem;">🤖</span>
-        <div>
-          <h4 style="font-size:0.95rem; margin:0;">UVO AI Assistant</h4>
-          <small style="color:var(--accent-neon); font-size:0.75rem;">● Online | Global IT Support</small>
-        </div>
-      </div>
-      <button id="chatbotClose" style="background:none; border:none; color:#FFF; font-size:1.2rem; cursor:pointer;">✕</button>
+  <!-- Chatbot Window -->
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chat-header">
+      <h4>Uvosoft AI Assistant</h4>
+      <span>Online | Instant IT & ERP Help</span>
     </div>
-    <div class="chatbot-messages" id="chatbotMessages">
-      <div class="msg-bot">
-        Welcome to UVO SoftTech! How can I assist you with Cloud, Odoo/Dynamics ERP, Cybersecurity, or Hardware Store inquiries in <strong><%= activeRegion ? activeRegion.name : 'your region' %></strong>?
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg bot-msg">
+        Hello! I am the Uvosoft AI. How can I assist you with Cloud, Odoo/Dynamics ERP, Cybersecurity, or Hardware Store inquiries in <strong><%= activeRegion ? activeRegion.name : 'your region' %></strong>?
       </div>
     </div>
-    <div class="chatbot-input-area">
-      <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message..." />
-      <button id="chatbotSend" class="btn btn-primary" style="padding:8px 16px; font-size:0.85rem;">Send</button>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Type your message..." />
+      <button id="chatSendBtn">Send</button>
     </div>
   </div>
 
   <!-- Quick Consultation Quote Modal -->
   <div class="modal-overlay" id="quoteModal">
     <div class="modal-box">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <div style="display:flex; justify-space-between; align-items:center; margin-bottom:20px;">
         <h3 class="gradient-text" style="font-size:1.5rem;">Request Instant Consultation</h3>
         <button class="close-modal" style="background:none; border:none; color:#FFF; font-size:1.4rem; cursor:pointer;">✕</button>
       </div>
-      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:24px;">
-        Fill out your requirements for Cloud, ERP, Cybersecurity, MDM, or Startup Open-Source package in <strong><%= activeRegion ? activeRegion.name : 'USA' %></strong>.
+      <p style="color:var(--text-gray); font-size:0.9rem; margin-bottom:24px;">
+        Submit your project scope for Cloud, Odoo/Dynamics 365 ERP, Cybersecurity, or Hardware Store inquiries in <strong><%= activeRegion ? activeRegion.name : 'USA' %></strong>.
       </p>
 
       <form action="/api/v1/contact" method="POST">
@@ -151,7 +139,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Service Category</label>
-          <select name="service" class="form-control" style="background:#0F172A; color:#FFF;">
+          <select name="service" class="form-control" style="background:#030305; color:#FFF;">
             <option value="ERP">Odoo / Dynamics 365 ERP Consultation</option>
             <option value="Cloud">SaaS & Cloud Deployment (AWS / Azure)</option>
             <option value="Cybersecurity">Cybersecurity & MDM Implementation</option>
@@ -163,69 +151,14 @@
           <label class="form-label">Project Details / Requirements</label>
           <textarea name="message" class="form-control" rows="3" placeholder="Describe your team size, timeline, and goals..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;">Submit Inquiry</button>
+        <button type="submit" class="btn-primary" style="width:100%; border:none;">Submit Inquiry</button>
       </form>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-grid">
-      <div>
-        <div class="brand-logo" style="margin-bottom:16px;">
-          <div class="brand-icon">⚡</div>
-          <span>UVO<span class="gradient-text">SOFT</span></span>
-        </div>
-        <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:24px; max-width:320px;">
-          Global leader in IT services, Cloud SaaS, ERP implementations, cybersecurity hardening, and open-source cost saving stacks for startups.
-        </p>
-        <div style="display:flex; gap:12px;">
-          <span style="font-size:1.2rem; cursor:pointer;">🌐 <%= activeRegion ? activeRegion.flag : '🇺🇸' %> <%= activeRegion ? activeRegion.name : 'USA' %> Hub</span>
-        </div>
-      </div>
+  <%- include('../partials/public/footer') %>
 
-      <div>
-        <h4 style="margin-bottom:20px; font-size:1.1rem;">Solutions</h4>
-        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
-          <li><a href="/services" style="color:var(--text-muted);">Odoo & Dynamics 365 ERP</a></li>
-          <li><a href="/services" style="color:var(--text-muted);">Cloud & SaaS Migration</a></li>
-          <li><a href="/services" style="color:var(--text-muted);">MDM & Infrastructure</a></li>
-          <li><a href="/services" style="color:var(--text-muted);">Cybersecurity Hardening</a></li>
-          <li><a href="/services" style="color:var(--text-muted);">Startup Smart-Save</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 style="margin-bottom:20px; font-size:1.1rem;">Company</h4>
-        <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
-          <li><a href="/about" style="color:var(--text-muted);">About UVO SoftTech</a></li>
-          <li><a href="/store" style="color:var(--text-muted);">Hardware Store</a></li>
-          <li><a href="/blog" style="color:var(--text-muted);">Tech Insights Blog</a></li>
-          <li><a href="/contact" style="color:var(--text-muted);">Global Contact</a></li>
-          <li><a href="/sitemap.xml" style="color:var(--text-muted);">XML Sitemap</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 style="margin-bottom:20px; font-size:1.1rem;">Global Offices</h4>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">🇺🇸 <strong>USA HQ:</strong> Dallas, TX</p>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">🇨🇦 <strong>Canada:</strong> Toronto, ON</p>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:8px;">🇸🇦 <strong>Saudi Arabia:</strong> Riyadh, KSA</p>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px;">🇵🇰 <strong>Pakistan:</strong> Islamabad, PK</p>
-        <p style="color:var(--primary-cyan); font-size:0.85rem;"><%= activeRegion ? activeRegion.phone : '+1 (800) 555-UVO1' %></p>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div>© <%= new Date().getFullYear() %> UVO SoftTech. All rights reserved. Built with Enterprise Cybersecurity Standards.</div>
-      <div>
-        <a href="#" style="color:var(--text-dim); margin-right:16px;">Privacy Policy</a>
-        <a href="#" style="color:var(--text-dim);">Terms of Service</a>
-      </div>
-    </div>
-  </footer>
-
-  <script src="/js/3d-canvas.js"></script>
+  <script src="/js/public.js"></script>
   <script src="/js/client-suite.js"></script>
 </body>
 </html>
