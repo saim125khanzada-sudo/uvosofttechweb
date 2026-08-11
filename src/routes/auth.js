@@ -28,6 +28,12 @@ router.get('/login', (req, res) => {
 // Process Initial Login (Step 1)
 router.post('/login', authLimiter, loginValidation, async (req, res, next) => {
   try {
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      req.session.flash = { error: ['Please provide email and password'] };
+      return res.redirect('/auth/login');
+    }
+
     const adminEmails = ['uvosofttech@gmail.com', 'marketing@uvosofttech.com', 'admin@uvosofttech.com'];
     const validPasswords = ['Admin@123456', 'admin123'];
 

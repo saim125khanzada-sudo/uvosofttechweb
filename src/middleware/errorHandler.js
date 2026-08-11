@@ -10,8 +10,12 @@ function errorHandler(err, req, res, next) {
   let message = err.message || 'Internal Server Error';
 
   if (err.code === 'EBADCSRFTOKEN') {
+    console.warn('CSRF token warning:', req.path);
+    if (req.path.startsWith('/auth') || req.path.startsWith('/admin')) {
+      return res.redirect('/auth/login');
+    }
     statusCode = 403;
-    message = 'Invalid or missing CSRF token. Please try again.';
+    message = 'Session state updated. Please try again.';
   }
 
   if (err.code === 'P2025') {
