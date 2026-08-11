@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= typeof title !== 'undefined' ? title + ' | UVO SoftTech' : 'UVO SoftTech - Cloud, SaaS, ERP & Cybersecurity' %></title>
   <meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'UVO SoftTech provides enterprise IT services, Odoo/Dynamics 365 ERP, SaaS cloud migration, cybersecurity, MDM, hardware store, and startup open source solutions across USA, Canada, Saudi Arabia, and Pakistan.' %>">
-  <meta name="keywords" content="IT Services, ERP Consultation, Odoo, Dynamics 365, Cloud Deployment, Cybersecurity, MDM, Computer Store, Startup Open Source Solutions, USA, Canada, Saudi Arabia, Pakistan">
+  <meta name="keywords" content="IT Services, ERP Consultation, Odoo, Dynamics 365, Cloud Deployment, Cybersecurity, MDM, Computer Store, Startup Open Source Solutions, USA, Canada, Saudi Arabia, Pakistan, Physiobridge, ATCC">
   <meta name="author" content="UVO SoftTech">
 
   <!-- Regional SEO Hreflang Tags -->
@@ -120,12 +120,12 @@
   <!-- Quick Consultation Quote Modal -->
   <div class="modal-overlay" id="quoteModal">
     <div class="modal-box">
-      <div style="display:flex; justify-space-between; align-items:center; margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h3 class="gradient-text" style="font-size:1.5rem;">Request Instant Consultation</h3>
         <button class="close-modal" style="background:none; border:none; color:#FFF; font-size:1.4rem; cursor:pointer;">✕</button>
       </div>
       <p style="color:var(--text-gray); font-size:0.9rem; margin-bottom:24px;">
-        Submit your project scope for Cloud, Odoo/Dynamics 365 ERP, Cybersecurity, or Hardware Store inquiries in <strong><%= activeRegion ? activeRegion.name : 'USA' %></strong>.
+        Submit your project scope for Cloud, Odoo/Dynamics 365 ERP, Cybersecurity, or Hardware Store inquiries for <strong><%= activeRegion ? activeRegion.name : 'USA' %> Market</strong>.
       </p>
 
       <form action="/api/v1/contact" method="POST">
@@ -156,7 +156,57 @@
     </div>
   </div>
 
-  <%- include('../partials/public/footer') %>
+  <!-- Footer -->
+  <footer style="background:#030305; border-top:1px solid rgba(0,240,255,0.15); padding:60px 4rem 30px; margin-top:80px; position:relative; z-index:2;">
+    <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; margin-bottom:40px;">
+      <div>
+        <a href="/" class="nav-logo" style="margin-bottom:16px;">
+          <div class="logo-dot"></div> UVOSOFT TECH
+        </a>
+        <p style="color:var(--text-gray); font-size:0.9rem; max-width:320px; line-height:1.6;">
+          Global leader in enterprise IT services, SaaS cloud engineering, Odoo/Dynamics 365 ERP, cybersecurity, and open-source cost saving stacks for startups.
+        </p>
+      </div>
+
+      <div>
+        <h4 style="color:#FFF; margin-bottom:16px; font-family:'Space Grotesk',sans-serif;">Solutions</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:0.9rem;">
+          <li><a href="/services#erp" style="color:var(--text-gray); text-decoration:none;">Odoo & Dynamics 365 ERP</a></li>
+          <li><a href="/services#cloud" style="color:var(--text-gray); text-decoration:none;">Cloud Migration & SaaS</a></li>
+          <li><a href="/services#cyber" style="color:var(--text-gray); text-decoration:none;">Cybersecurity & Pentesting</a></li>
+          <li><a href="/store" style="color:var(--text-gray); text-decoration:none;">Hardware Store</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="color:#FFF; margin-bottom:16px; font-family:'Space Grotesk',sans-serif;">Featured Clients</h4>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:0.9rem; color:var(--text-gray);">
+          <li>Physiobridge Clinic</li>
+          <li>Australian Transport Compliance Centres (ATCC)</li>
+          <li>Enterprise Local Partners</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="color:#FFF; margin-bottom:16px; font-family:'Space Grotesk',sans-serif;">Global Presence</h4>
+        <p style="color:var(--text-gray); font-size:0.85rem; margin-bottom:6px;">🇵🇰 <strong>Pakistan HQ:</strong> Operations & Engineering Center</p>
+        <p style="color:var(--text-gray); font-size:0.85rem; margin-bottom:6px;">🇺🇸 <strong>USA Market:</strong> Remote IT Consultation Desk</p>
+        <p style="color:var(--text-gray); font-size:0.85rem; margin-bottom:6px;">🇨🇦 <strong>Canada Market:</strong> Remote SaaS Desk</p>
+        <p style="color:var(--text-gray); font-size:0.85rem; margin-bottom:12px;">🇸🇦 <strong>Saudi Arabia Market:</strong> Remote ERP Desk</p>
+        <a href="https://wa.me/923718055990" target="_blank" style="color:var(--neon-blue); font-size:0.85rem; font-weight:600; text-decoration:none;">
+          Direct / WhatsApp: +92 371 8055990
+        </a>
+      </div>
+    </div>
+
+    <div style="max-width:1280px; margin:0 auto; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; color:var(--text-gray); font-size:0.85rem;">
+      <div>© <%= new Date().getFullYear() %> UVO SoftTech. All rights reserved. Registered Operations in Pakistan.</div>
+      <div>
+        <a href="/sitemap.xml" style="color:var(--text-gray); margin-right:12px;">XML Sitemap</a>
+        <a href="/robots.txt" style="color:var(--text-gray);">Robots.txt</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="/js/public.js"></script>
   <script src="/js/client-suite.js"></script>
