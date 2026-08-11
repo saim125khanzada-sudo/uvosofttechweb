@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/css/public.css">
 
-  <!-- Rich JSON-LD Structured Data Schema for #1 Search Engine Ranking -->
+  <!-- Rich JSON-LD Structured Data Schemas for #1 Search Ranking & Rich FAQ Snippets -->
   <script type="application/ld+json">
   [
     {
@@ -42,7 +42,7 @@
       "alternateName": ["Uvosoft", "Uvosoft Tech", "UvosoftTech", "uvosofttech.com"],
       "url": "https://uvosofttech.com",
       "logo": "https://uvosofttech.com/images/logo.png",
-      "description": "Uvosoft Tech is an enterprise technology firm providing Odoo/Dynamics 365 ERP consultation, cloud migration, MDM implementation, hardware sales, and cybersecurity.",
+      "description": "Uvosoft Tech provides enterprise Odoo & Dynamics 365 ERP consultation, cloud migration, MDM implementation, computer hardware sales, and cybersecurity.",
       "telephone": "+923718055990",
       "email": "marketing@uvosofttech.com",
       "address": {
@@ -58,10 +58,60 @@
     },
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Uvosoft Tech",
-      "alternateName": ["Uvosoft", "UvosoftTech"],
-      "url": "https://uvosofttech.com"
+      "@type": "ProfessionalService",
+      "name": "Uvosoft Tech - Enterprise IT & ERP Solutions",
+      "image": "https://uvosofttech.com/images/logo.png",
+      "@id": "https://uvosofttech.com",
+      "url": "https://uvosofttech.com",
+      "telephone": "+923718055990",
+      "priceRange": "$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Plot R-103, Sector 4B, Surjani town",
+        "addressLocality": "Karachi",
+        "addressCountry": "PK"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 24.974,
+        "longitude": 67.037
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Uvosoft Tech?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uvosoft Tech (UVO SoftTech) is an enterprise technology engineering company headquartered in Karachi, Pakistan, specializing in Odoo & Microsoft Dynamics 365 ERP consultation, SaaS cloud migration, MDM implementation, hardware sales, and cybersecurity for global clients in USA, Canada, Saudi Arabia, and Pakistan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What services does Uvosoft Tech provide?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uvosoft Tech provides custom software development, Odoo & Dynamics 365 ERP setup, AWS/Azure cloud migration, cybersecurity pentesting, Mobile Device Management (MDM), laptop sales, and startup open-source smart-save solutions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Uvosoft Tech?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can contact Uvosoft Tech via WhatsApp/Phone at +923718055990 or via email at marketing@uvosofttech.com and uvosofttech@gmail.com."
+          }
+        }
+      ]
     }
   ]
   </script>
@@ -78,7 +128,7 @@
   <!-- Navigation Bar -->
   <header class="navbar">
     <a href="/" class="nav-logo" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
-      <img src="/images/logo.png" alt="UVO SoftTech" style="height: 42px; width: auto; object-fit: contain;">
+      <img src="/images/logo.png" alt="Uvosoft Tech Logo" class="nav-logo-img" style="height: 42px; width: auto; object-fit: contain;">
     </a>
 
     <nav>
