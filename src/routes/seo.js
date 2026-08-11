@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const REGIONS = [
-  { code: 'us', name: 'United States', domain: 'uvosofttech.com/us', currency: 'USD', phone: '+1 (800) 555-UVO1', flag: '🇺🇸' },
-  { code: 'ca', name: 'Canada', domain: 'uvosofttech.com/ca', currency: 'CAD', phone: '+1 (800) 555-UVO2', flag: '🇨🇦' },
-  { code: 'sa', name: 'Saudi Arabia', domain: 'uvosofttech.com/sa', currency: 'SAR', phone: '+966 11 555 UVO3', flag: '🇸🇦' },
-  { code: 'pk', name: 'Pakistan', domain: 'uvosofttech.com/pk', currency: 'PKR', phone: '+92 42 3555 UVO4', flag: '🇵🇰' }
+  { code: 'us', name: 'United States', domain: 'uvosofttech.com/us', currency: 'USD', phone: '+923718055990', flag: '🇺🇸' },
+  { code: 'ca', name: 'Canada', domain: 'uvosofttech.com/ca', currency: 'CAD', phone: '+923718055990', flag: '🇨🇦' },
+  { code: 'sa', name: 'Saudi Arabia', domain: 'uvosofttech.com/sa', currency: 'SAR', phone: '+923718055990', flag: '🇸🇦' },
+  { code: 'pk', name: 'Pakistan', domain: 'uvosofttech.com/pk', currency: 'PKR', phone: '+923718055990', flag: '🇵🇰' }
 ];
 
-// Dynamic XML Sitemap
+// Dynamic XML Sitemap for Google & Bing (#1 Search Ranking Optimization)
 router.get('/sitemap.xml', (req, res) => {
   const baseUrl = process.env.BASE_URL || 'https://uvosofttech.com';
   const pages = ['', '/services', '/store', '/blog', '/about', '/contact'];
@@ -22,9 +22,9 @@ router.get('/sitemap.xml', (req, res) => {
     xml += `    <loc>${baseUrl}${page}</loc>\n`;
     xml += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
     xml += `    <changefreq>daily</changefreq>\n`;
-    xml += `    <priority>${page === '' ? '1.0' : '0.8'}</priority>\n`;
+    xml += `    <priority>${page === '' ? '1.0' : '0.9'}</priority>\n`;
 
-    // Multi-region hreflang annotations
+    // Multi-region hreflang annotations for SEO targeting Uvosoft, Uvosoft Tech & regional clients
     languages.forEach((lang) => {
       xml += `    <xhtml:link rel="alternate" hreflang="${lang}" href="${baseUrl}${page}?region=${lang.slice(-2).toLowerCase()}" />\n`;
     });
