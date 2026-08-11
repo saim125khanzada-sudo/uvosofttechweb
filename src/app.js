@@ -97,10 +97,10 @@ app.use((req, res, next) => {
   let regionCode = req.query.region || req.session.region || 'us';
   regionCode = regionCode.toLowerCase();
   const validRegions = {
-    us: { code: 'us', name: 'United States', flag: '🇺🇸', currency: 'USD', symbol: '$', phone: '+92 371 8055990', email: 'info@uvosofttech.com', label: 'US Client Services' },
-    ca: { code: 'ca', name: 'Canada', flag: '🇨🇦', currency: 'CAD', symbol: 'CA$', phone: '+92 371 8055990', email: 'info@uvosofttech.com', label: 'Canada Client Services' },
-    sa: { code: 'sa', name: 'Saudi Arabia', flag: '🇸🇦', currency: 'SAR', symbol: 'SAR ', phone: '+92 371 8055990', email: 'info@uvosofttech.com', label: 'KSA Client Services' },
-    pk: { code: 'pk', name: 'Pakistan', flag: '🇵🇰', currency: 'PKR', symbol: 'Rs. ', phone: '+92 371 8055990', email: 'info@uvosofttech.com', label: 'Pakistan HQ' }
+    us: { code: 'us', name: 'United States', flag: '🇺🇸', currency: 'USD', symbol: '$', phone: '+923718055990', email: 'marketing@uvosofttech.com', label: 'US Client Services' },
+    ca: { code: 'ca', name: 'Canada', flag: '🇨🇦', currency: 'CAD', symbol: 'CA$', phone: '+923718055990', email: 'marketing@uvosofttech.com', label: 'Canada Client Services' },
+    sa: { code: 'sa', name: 'Saudi Arabia', flag: '🇸🇦', currency: 'SAR', symbol: 'SAR ', phone: '+923718055990', email: 'marketing@uvosofttech.com', label: 'KSA Client Services' },
+    pk: { code: 'pk', name: 'Pakistan', flag: '🇵🇰', currency: 'PKR', symbol: 'Rs. ', phone: '+923718055990', email: 'marketing@uvosofttech.com', label: 'Pakistan HQ' }
   };
   const activeRegion = validRegions[regionCode] || validRegions['us'];
   req.session.region = activeRegion.code;
