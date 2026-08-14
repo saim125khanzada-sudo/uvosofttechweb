@@ -192,6 +192,25 @@ router.get('/change-password', (req, res) => {
 </html>`);
 });
 
+function sendAdminNavRedirect(res, targetUrl) {
+  res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
+  res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigating...</title>
+  <script>window.location.href = "${targetUrl}";</script>
+</head>
+<body style="background:#020307; color:#fff; font-family:sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh;">
+  <div style="text-align:center;">
+    <h2 style="background: linear-gradient(135deg, #FF0075, #FF6B00); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Navigating...</h2>
+    <p><a href="${targetUrl}" style="color:#FF0075;">Click here to proceed to ${targetUrl}</a></p>
+  </div>
+</body>
+</html>`);
+}
+
 router.post('/change-password', async (req, res) => {
   const { newPassword, confirmPassword } = req.body || {};
   if (!newPassword || newPassword !== confirmPassword || newPassword.length < 6) {
@@ -202,7 +221,7 @@ router.post('/change-password', async (req, res) => {
   global.__adminState.passwordHash = await bcrypt.hash(newPassword, 10);
   global.__adminState.mustChangePassword = false;
 
-  return res.redirect('/admin/2fa-setup');
+  return sendAdminNavRedirect(res, '/admin/2fa-setup');
 });
 
 // 2. Google Authenticator 2FA Setup Page (/admin/2fa-setup)
@@ -262,10 +281,7 @@ router.post('/2fa-setup', (req, res) => {
   }
 
   global.__adminState.isTwoFactorEnabled = true;
-  req.session.userId = '00000000-0000-0000-0000-000000000001';
-  res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
-
-  return res.redirect('/admin');
+  return sendAdminNavRedirect(res, '/admin');
 });
 
 // 3. Admin Main Dashboard (/admin)

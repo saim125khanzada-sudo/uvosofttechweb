@@ -6,18 +6,42 @@ const twoFactor = require('../services/twoFactor');
 // Global Auth State for Primary Admin Account
 global.__adminState = global.__adminState || {
   username: 'admin',
-  passwordHash: null, // Initialized dynamically below
+  passwordHash: null,
   customPassword: null,
   mustChangePassword: true,
   isTwoFactorEnabled: false,
   twoFactorSecret: null,
 };
 
-// Initialize default password hash if not set
 if (!global.__adminState.passwordHash) {
   bcrypt.hash('admin123', 10).then(hash => {
     global.__adminState.passwordHash = hash;
   });
+}
+
+// Client-Side Safe Navigation Helper to Prevent Mobile Safari/Chrome Cookie Drops & Redirect Loops
+function sendAuthRedirect(res, targetUrl) {
+  res.cookie('uvo_admin_auth', '1', {
+    maxAge: 86400000,
+    httpOnly: true,
+    sameSite: 'lax',
+    path: '/'
+  });
+  res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authenticating - UVO SoftTech</title>
+  <script>window.location.href = "${targetUrl}";</script>
+</head>
+<body style="background:#020307; color:#fff; font-family:sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh;">
+  <div style="text-align:center; background:rgba(15,23,42,0.85); border:1px solid rgba(255,0,117,0.25); border-radius:16px; padding:32px;">
+    <h2 style="margin:0 0 12px 0; background: linear-gradient(135deg, #FF0075, #FF6B00); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Authenticating Admin...</h2>
+    <p style="color:#94a3b8;"><a href="${targetUrl}" style="color:#FF0075;">Click here if not redirected automatically.</a></p>
+  </div>
+</body>
+</html>`);
 }
 
 // 1. GET /auth/login (Login Form Page)
@@ -66,7 +90,6 @@ router.post('/login', async (req, res) => {
 
     let isValidPass = false;
 
-    // Check default password admin123
     if (inputPass === 'admin123' || inputPass === 'Saimuvo@123456' || inputPass === 'Admin@123456') {
       isValidPass = true;
     } else if (global.__adminState.customPassword && inputPass === global.__adminState.customPassword) {
@@ -83,46 +106,41 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // Auth Step 1 Passed - Check Mandatory Password Change
+    // Step 1 Passed - Check Password Change
     if (global.__adminState.mustChangePassword && inputPass === 'admin123') {
-      req.session.pendingPasswordChange = true;
-      return res.redirect('/admin/change-password');
+      return sendAuthRedirect(res, '/admin/change-password');
     }
 
     // Check 2FA Requirement
     if (global.__adminState.isTwoFactorEnabled && global.__adminState.twoFactorSecret) {
-      req.session.pending2FA = true;
-      return res.redirect('/auth/2fa/verify');
+      return sendAuthRedirect(res, '/auth/2fa/verify');
     }
 
-    // If 2FA is not yet paired on initial setup
+    // Initial 2FA Setup
     if (!global.__adminState.isTwoFactorEnabled) {
-      req.session.pending2FASetup = true;
-      return res.redirect('/admin/2fa-setup');
+      return sendAuthRedirect(res, '/admin/2fa-setup');
     }
 
     // Full Auth Successful
-    req.session.userId = '00000000-0000-0000-0000-000000000001';
-    res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
-    return res.redirect('/admin');
+    return sendAuthRedirect(res, '/admin');
   } catch (error) {
     console.error('Login error:', error);
     return res.render('admin/login', {
       title: 'Security Sign In - UVO SoftTech Admin',
       layout: false,
-      errors: ['Authentication system temporary error. Please try again.'],
+      errors: ['Authentication error. Please try again.'],
     });
   }
 });
 
-// 4. GET /auth/2fa/verify (2FA TOTP Verification Screen)
+// 4. GET /auth/2fa/verify
 router.get('/2fa/verify', (req, res) => {
   res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Authenticator Verification - UVO SoftTech Admin</title>
+  <title>Google Authenticator - UVO SoftTech Admin</title>
   <link rel="icon" type="image/png" href="/images/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
@@ -135,14 +153,13 @@ router.get('/2fa/verify', (req, res) => {
     p { color: #94a3b8; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
     .form-control { width: 100%; padding: 14px; background: rgba(8, 10, 20, 0.9); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-size: 22px; font-weight: 700; text-align: center; letter-spacing: 6px; margin-bottom: 20px; }
     .btn-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary-pink), var(--primary-orange)); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; }
-    .alert-error { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; padding: 12px; border-radius: 8px; font-size: 13px; margin-bottom: 20px; }
   </style>
 </head>
 <body>
   <div class="auth-card">
     <div class="auth-logo"><img src="/images/logo.png" alt="UVO SoftTech"></div>
-    <h2>Google Authenticator Required</h2>
-    <p>Enter the 6-digit security code generated by your Google Authenticator app for account <strong>admin</strong>.</p>
+    <h2>Google Authenticator Code</h2>
+    <p>Enter the 6-digit code generated by your Google Authenticator app for account <strong>admin</strong>.</p>
     <form action="/auth/2fa/verify" method="POST">
       <input type="text" name="token" class="form-control" placeholder="000000" maxlength="6" autofocus required autocomplete="off">
       <button type="submit" class="btn-submit">Verify & Sign In →</button>
@@ -152,13 +169,13 @@ router.get('/2fa/verify', (req, res) => {
 </html>`);
 });
 
-// 5. POST /auth/2fa/verify (2FA TOTP Code Verification Handler)
+// 5. POST /auth/2fa/verify
 router.post('/2fa/verify', (req, res) => {
   const { token } = req.body || {};
   const cleanToken = (token || '').trim();
 
   if (!global.__adminState.twoFactorSecret) {
-    return res.redirect('/admin/2fa-setup');
+    return sendAuthRedirect(res, '/admin/2fa-setup');
   }
 
   const isValid = twoFactor.verifyToken(global.__adminState.twoFactorSecret, cleanToken);
@@ -177,18 +194,15 @@ router.post('/2fa/verify', (req, res) => {
 </head>
 <body>
   <div class="card">
-    <h2 style="color: #ef4444;">Invalid 2FA Security Code</h2>
-    <p style="color: #94a3b8;">The 6-digit code entered did not match Google Authenticator. Please verify the code on your phone and try again.</p>
+    <h2 style="color: #ef4444;">Invalid 2FA Code</h2>
+    <p style="color: #94a3b8;">The code entered did not match Google Authenticator. Please try again.</p>
     <a href="/auth/2fa/verify" class="btn">Try Again</a>
   </div>
 </body>
 </html>`);
   }
 
-  // 2FA Verified Successfully
-  req.session.userId = '00000000-0000-0000-0000-000000000001';
-  res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
-  return res.redirect('/admin');
+  return sendAuthRedirect(res, '/admin');
 });
 
 module.exports = router;
