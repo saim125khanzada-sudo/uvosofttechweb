@@ -147,25 +147,6 @@
     </nav>
 
     <div class="nav-actions" style="display:flex; align-items:center; gap:12px;">
-      <!-- Multi-Region Geo Selector -->
-      <div class="region-selector" style="position:relative;">
-        <button class="region-btn" id="regionBtn" style="background:rgba(255,255,255,0.06); border:1px solid rgba(0,240,255,0.3); color:#fff; padding:6px 14px; border-radius:20px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
-          <span><%= activeRegion ? activeRegion.flag : '🇺🇸' %></span>
-          <span><%= activeRegion ? activeRegion.code.toUpperCase() : 'US' %></span>
-          <small>▾</small>
-        </button>
-        <div class="region-dropdown" id="regionDropdown" style="position:absolute; top:calc(100% + 8px); right:0; background:#070913; border:1px solid rgba(0,240,255,0.3); border-radius:8px; padding:6px; min-width:180px; display:none; box-shadow:0 10px 30px rgba(0,0,0,0.8); z-index:1000;">
-          <% if (typeof allRegions !== 'undefined') { %>
-            <% allRegions.forEach(r => { %>
-              <a href="?region=<%= r.code %>" style="display:flex; justify-content:space-between; padding:8px 12px; color:#aaa; text-decoration:none; font-size:0.85rem; border-radius:4px;" onmouseover="this.style.background='rgba(0,240,255,0.1)';this.style.color='#00F0FF';" onmouseout="this.style.background='none';this.style.color='#aaa';">
-                <span><%= r.flag %> <%= r.name %></span>
-                <small style="color:#00F0FF;"><%= r.currency %></small>
-              </a>
-            <% }); %>
-          <% } %>
-        </div>
-      </div>
-
       <a href="#quote" class="btn-primary trigger-quote-modal" style="padding:0.6rem 1.4rem; font-size:0.85rem;">Get Quote</a>
 
       <% if (user) { %>
