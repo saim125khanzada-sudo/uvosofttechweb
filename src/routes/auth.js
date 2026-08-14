@@ -19,10 +19,27 @@ if (process.env.NODE_ENV === 'production') {
 
 // Render Login Page
 router.get('/login', (req, res) => {
-  if (req.session && req.session.userId) {
+  if (req.query.clear === '1' || req.query.logout === '1') {
+    if (req.session) req.session.destroy(() => {});
+    res.clearCookie('uvo_sid');
+    return res.render('admin/login', { title: 'Security Login - UVO SoftTech' });
+  }
+  if (req.session && req.session.userId && !req.session.pending2FA) {
     return res.redirect('/admin');
   }
   res.render('admin/login', { title: 'Security Login - UVO SoftTech' });
+});
+
+// Clear Session Escape Hatch
+router.get('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy(() => {
+      res.clearCookie('uvo_sid');
+      res.redirect('/auth/login?logout=1');
+    });
+  } else {
+    res.redirect('/auth/login');
+  }
 });
 
 // Process Initial Login (Step 1)

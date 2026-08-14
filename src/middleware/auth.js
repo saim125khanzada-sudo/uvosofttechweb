@@ -20,16 +20,13 @@ function requireAuth(req, res, next) {
     if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') !== -1)) {
       return res.status(401).json({ error: 'Authentication required' });
     }
-    req.session.flash = { error: ['Please log in to continue'] };
     return res.redirect('/auth/login');
   }
 
-  // If user requires 2FA and hasn't verified TOTP yet
-  if (req.session.pending2FA) {
-    if (req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') !== -1)) {
-      return res.status(403).json({ error: '2FA verification required', redirect: '/auth/2fa/verify' });
-    }
-    return res.redirect('/auth/2fa/verify');
+  // Clear stale pending2FA flags to prevent redirect loops
+  if (req.session.userId) {
+    delete req.session.pending2FA;
+    delete req.session.pending2FAUserId;
   }
 
   next();

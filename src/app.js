@@ -43,6 +43,8 @@ if (!isVercel && hasValidRemotePg) {
   sessionStore = new session.MemoryStore();
 }
 
+app.set('trust proxy', 1);
+
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
@@ -68,12 +70,12 @@ app.use(session({
   store: sessionStore,
   secret: config.session.secret || 'uvosoft-secret-key-2024-secure-2fa',
   name: config.session.name || 'uvo_sid',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
     maxAge: config.session.maxAge || 86400000,
     httpOnly: true,
-    secure: config.env === 'production',
+    secure: false,
     sameSite: 'lax',
   },
 }));
