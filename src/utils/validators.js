@@ -8,7 +8,11 @@ function handleValidationErrors(req, res, next) {
       return res.status(422).json({ errors: extractedErrors });
     }
     req.session.flash = { error: extractedErrors };
-    return res.redirect('back');
+    const referer = req.header('Referer') || '';
+    if (!referer || referer.includes(req.path)) {
+      return res.render('admin/login', { title: 'Security Login - UVO SoftTech', errors: extractedErrors });
+    }
+    return res.redirect(referer);
   }
   next();
 }

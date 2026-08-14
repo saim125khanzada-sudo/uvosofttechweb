@@ -41,12 +41,11 @@ router.get('/logout', (req, res) => {
 });
 
 // Process Initial Login (Step 1)
-router.post('/login', authLimiter, loginValidation, async (req, res, next) => {
+router.post('/login', authLimiter, async (req, res, next) => {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) {
-      req.session.flash = { error: ['Please provide email and password'] };
-      return res.redirect('/auth/login');
+      return res.render('admin/login', { title: 'Security Login - UVO SoftTech', errors: ['Please provide both email and password'] });
     }
 
     const adminEmails = ['uvosofttech@gmail.com', 'marketing@uvosofttech.com', 'admin@uvosofttech.com'];
@@ -75,20 +74,17 @@ router.post('/login', authLimiter, loginValidation, async (req, res, next) => {
     }
 
     if (!user) {
-      req.session.flash = { error: ['Invalid email or password'] };
-      return res.redirect('/auth/login');
+      return res.render('admin/login', { title: 'Security Login - UVO SoftTech', errors: ['Invalid email or password'] });
     }
 
     if (!user.isActive) {
-      req.session.flash = { error: ['Your account has been deactivated. Contact Admin.'] };
-      return res.redirect('/auth/login');
+      return res.render('admin/login', { title: 'Security Login - UVO SoftTech', errors: ['Your account has been deactivated. Contact Admin.'] });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.passwordHash);
     if (!passwordMatch) {
       await logActivity('login_failed', 'User', user.id, { reason: 'Invalid password' }, req);
-      req.session.flash = { error: ['Invalid email or password'] };
-      return res.redirect('/auth/login');
+      return res.render('admin/login', { title: 'Security Login - UVO SoftTech', errors: ['Invalid email or password'] });
     }
 
     // Check if 2FA is enabled for this account
