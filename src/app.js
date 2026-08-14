@@ -45,6 +45,16 @@ if (!isVercel && hasValidRemotePg) {
 
 app.set('trust proxy', 1);
 
+// Force HTTPS SSL in Production on Vercel
+app.use((req, res, next) => {
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(301, 'https://' + req.headers.host + req.url);
+    }
+  }
+  next();
+});
+
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
