@@ -330,7 +330,7 @@ router.get('/products', (req, res) => {
     <tr>
       <td><img src="${p.imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop'}" class="product-img" alt="Laptop"></td>
       <td><strong style="color:#fff;">${p.brand}</strong> ${p.model}</td>
-      <td style="color: var(--primary-pink); font-weight: 700;">$${p.price}</td>
+      <td style="color: var(--primary-pink); font-weight: 700;">Rs. ${typeof p.price === 'number' ? p.price.toLocaleString() : p.price}</td>
       <td style="color: var(--text-gray); font-size: 13px;">RAM: ${p.ram || '16GB'} | SSD: ${p.ssd || '512GB'} ${p.gpu ? '| GPU: ' + p.gpu : ''}</td>
       <td><span class="badge badge-${p.isActive !== false ? 'success' : 'danger'}">${p.isActive !== false ? 'Active' : 'Inactive'}</span></td>
       <td>
@@ -355,7 +355,7 @@ router.get('/products', (req, res) => {
         <tr>
           <th>Image</th>
           <th>Brand & Model</th>
-          <th>Price</th>
+          <th>Price (Rs.)</th>
           <th>Specs</th>
           <th>Status</th>
           <th>Actions</th>
@@ -396,8 +396,8 @@ router.get('/products/create', (req, res) => {
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div class="form-group">
-            <label>Price (USD $) *</label>
-            <input type="number" name="price" class="form-control" required value="${existing ? existing.price : ''}" placeholder="1200">
+            <label>Price (Rupees Rs.) *</label>
+            <input type="number" name="price" class="form-control" required value="${existing ? existing.price : ''}" placeholder="185000">
           </div>
           <div class="form-group">
             <label>RAM Spec</label>

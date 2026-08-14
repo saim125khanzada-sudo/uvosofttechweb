@@ -17,9 +17,9 @@ const defaultState = {
     twoFactorSecret: null,
   },
   products: [
-    { id: 'p1', brand: 'HP', model: 'EliteBook 840 G8', price: 1200, ram: '16GB', ssd: '512GB', hdd: 'N/A', gpu: 'Integrated Intel Iris Xe', imageUrl: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop', description: 'Enterprise security laptop with 11th Gen i7 Processor.', sortOrder: 1, isActive: true },
-    { id: 'p2', brand: 'Dell', model: 'XPS 15 9510', price: 1900, ram: '32GB', ssd: '1TB', hdd: 'N/A', gpu: 'NVIDIA RTX 3050 Ti', imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop', description: 'Stunning 4K OLED display laptop for high performance engineering.', sortOrder: 2, isActive: true },
-    { id: 'p3', brand: 'Lenovo', model: 'ThinkPad X1 Carbon Gen 9', price: 1500, ram: '16GB', ssd: '512GB', hdd: 'N/A', gpu: 'Integrated Intel Iris Xe', imageUrl: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=800&auto=format&fit=crop', description: 'Ultra-durable carbon fiber business ultrabook.', sortOrder: 3, isActive: true }
+    { id: 'p1', brand: 'HP', model: 'EliteBook 840 G8', price: 185000, ram: '16GB', ssd: '512GB', hdd: 'N/A', gpu: 'Integrated Intel Iris Xe', imageUrl: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop', description: 'Enterprise security laptop with 11th Gen i7 Processor.', sortOrder: 1, isActive: true },
+    { id: 'p2', brand: 'Dell', model: 'XPS 15 9510', price: 295000, ram: '32GB', ssd: '1TB', hdd: 'N/A', gpu: 'NVIDIA RTX 3050 Ti', imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop', description: 'Stunning 4K OLED display laptop for high performance engineering.', sortOrder: 2, isActive: true },
+    { id: 'p3', brand: 'Lenovo', model: 'ThinkPad X1 Carbon Gen 9', price: 240000, ram: '16GB', ssd: '512GB', hdd: 'N/A', gpu: 'Integrated Intel Iris Xe', imageUrl: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=800&auto=format&fit=crop', description: 'Ultra-durable carbon fiber business ultrabook.', sortOrder: 3, isActive: true }
   ],
   users: [
     { id: '1', username: 'admin', email: 'admin@uvosofttech.com', firstName: 'Admin', lastName: 'User', role: 'superadmin', isActive: true, createdAt: new Date().toISOString() }
