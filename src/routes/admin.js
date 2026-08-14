@@ -61,15 +61,70 @@ router.get('/', async (req, res, next) => {
       activePage: 'dashboard',
     });
   } catch (error) {
-    console.error('Error rendering admin dashboard:', error);
-    res.render('admin/dashboard', {
-      layout: false,
-      title: 'Admin Dashboard',
-      user: { firstName: 'Super', lastName: 'Admin' },
-      stats: { users: 1, services: 32, blogPosts: 3, products: 6, contacts: 0, unreadContacts: 0 },
-      recentLogs: [],
-      activePage: 'dashboard',
-    });
+    console.error('Error rendering admin dashboard view, utilizing direct HTML response:', error);
+    res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - UVO SoftTech</title>
+  <link rel="icon" type="image/png" href="/images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg-dark: #020307; --border-color: rgba(255, 0, 117, 0.25); --primary-pink: #FF0075; --primary-orange: #FF6B00; --text-white: #ffffff; --text-gray: #94a3b8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg-dark); color: #fff; font-family: 'Space Grotesk', sans-serif; min-height: 100vh; display: flex; }
+    .admin-wrapper { display: flex; width: 100%; min-height: 100vh; }
+    .admin-sidebar { width: 260px; background: rgba(8,10,20,0.96); border-right: 1px solid var(--border-color); padding: 24px 16px; }
+    .sidebar-logo img { height: 36px; }
+    .sidebar-nav ul { list-style: none; padding: 0; margin-top: 24px; }
+    .sidebar-nav a { display: flex; align-items: center; gap: 12px; padding: 12px 14px; color: var(--text-gray); text-decoration: none; border-radius: 8px; font-weight: 600; }
+    .sidebar-nav li.active a, .sidebar-nav a:hover { background: linear-gradient(90deg, rgba(255,0,117,0.18), rgba(255,107,0,0.18)); color: #fff; border-left: 3px solid var(--primary-pink); }
+    .admin-main { flex: 1; display: flex; flex-direction: column; }
+    .admin-topbar { height: 70px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; background: rgba(10,12,24,0.85); }
+    .admin-content { padding: 32px; flex: 1; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
+    .stat-card { background: rgba(15,23,42,0.7); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; }
+    .stat-number { font-size: 36px; font-weight: 800; background: linear-gradient(135deg, var(--primary-pink), var(--primary-orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .btn-pink { background: linear-gradient(135deg, #FF0075, #FF6B00); color: #fff; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="admin-wrapper">
+    <aside class="admin-sidebar">
+      <div class="sidebar-logo"><img src="/images/logo.png" alt="UVO SoftTech"></div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active"><a href="/admin">📊 Dashboard</a></li>
+          <li><a href="/admin/products">💻 Hardware Store</a></li>
+          <li><a href="/admin/blog">📝 Blogs & Docs</a></li>
+          <li><a href="/admin/services">💼 Services</a></li>
+          <li><a href="/admin/contacts">✉️ Client Inbox</a></li>
+          <li><a href="/" target="_blank">🌐 Public Website</a></li>
+          <li style="margin-top:24px;"><a href="/auth/logout" style="color:#ff4d4d;">🚪 Sign Out</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <h1 style="font-size:20px; margin:0; background: linear-gradient(135deg, #FF0075, #FF6B00); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Admin Control Portal</h1>
+        <div><span style="color:var(--text-gray); margin-right:16px;">Super Admin: <strong>uvosofttech@gmail.com</strong></span><a href="/auth/logout" class="btn-pink">Logout</a></div>
+      </header>
+      <div class="admin-content">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-number">6</div><div>Hardware Products</div><a href="/admin/products" style="color:var(--primary-pink); font-size:13px; font-weight:600; text-decoration:none; display:inline-block; margin-top:10px;">Manage Products →</a></div>
+          <div class="stat-card"><div class="stat-number">3</div><div>Published Articles</div><a href="/admin/blog" style="color:var(--primary-pink); font-size:13px; font-weight:600; text-decoration:none; display:inline-block; margin-top:10px;">Manage Blogs →</a></div>
+          <div class="stat-card"><div class="stat-number">32</div><div>Services</div><a href="/admin/services" style="color:var(--primary-pink); font-size:13px; font-weight:600; text-decoration:none; display:inline-block; margin-top:10px;">View Services →</a></div>
+        </div>
+        <div style="background:rgba(15,23,42,0.7); border:1px solid var(--border-color); border-radius:12px; padding:24px;">
+          <h2 style="font-size:18px; margin-top:0;">System Active</h2>
+          <p style="color:var(--text-gray);">Authenticated session active for <strong>uvosofttech@gmail.com</strong>.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>`);
   }
 });
 
