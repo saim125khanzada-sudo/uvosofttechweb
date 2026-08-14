@@ -42,8 +42,8 @@ async function loadUser(req, res, next) {
 
   const syntheticAdmin = {
     id: targetId,
-    email: 'uvosofttech@gmail.com',
-    firstName: 'Super',
+    email: 'saimuvo@uvosofttech.com',
+    firstName: 'Saimuvo',
     lastName: 'Admin',
     avatarUrl: null,
     isActive: true,

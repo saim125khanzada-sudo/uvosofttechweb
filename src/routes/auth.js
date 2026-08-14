@@ -48,8 +48,8 @@ router.post('/login', authLimiter, async (req, res, next) => {
       return res.render('admin/login', { title: 'Security Login - UVO SoftTech', errors: ['Please provide both email and password'] });
     }
 
-    const adminEmails = ['uvosofttech@gmail.com', 'marketing@uvosofttech.com', 'admin@uvosofttech.com'];
-    const validPasswords = ['Admin@123456', 'admin123'];
+    const adminEmails = ['saimuvo@uvosofttech.com', 'saimuvo', 'admin@uvosofttech.com', 'marketing@uvosofttech.com'];
+    const validPasswords = ['Saimuvo@123456', 'Saimuvo123!', 'Admin@123456', 'admin123'];
 
     let user = null;
     try {
@@ -65,8 +65,9 @@ router.post('/login', authLimiter, async (req, res, next) => {
       console.warn('Database query during login failed, checking admin fallbacks:', dbErr.message);
     }
 
-    // Direct super-admin authentication fallback for official owner accounts
-    if (adminEmails.includes(email.toLowerCase()) && validPasswords.includes(password)) {
+    // Direct super-admin authentication fallback for Saimuvo owner account
+    const inputEmail = (email || '').toLowerCase().trim();
+    if (adminEmails.includes(inputEmail) && validPasswords.includes(password)) {
       if (req.session) {
         req.session.userId = user ? user.id : '00000000-0000-0000-0000-000000000001';
         delete req.session.pending2FAUserId;
