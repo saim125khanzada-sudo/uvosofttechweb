@@ -67,9 +67,12 @@ router.post('/login', authLimiter, async (req, res, next) => {
 
     // Direct super-admin authentication fallback for official owner accounts
     if (adminEmails.includes(email.toLowerCase()) && validPasswords.includes(password)) {
-      req.session.userId = user ? user.id : '00000000-0000-0000-0000-000000000001';
-      delete req.session.pending2FAUserId;
-      delete req.session.pending2FA;
+      if (req.session) {
+        req.session.userId = user ? user.id : '00000000-0000-0000-0000-000000000001';
+        delete req.session.pending2FAUserId;
+        delete req.session.pending2FA;
+      }
+      res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
       return res.redirect('/admin');
     }
 
