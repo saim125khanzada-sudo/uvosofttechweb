@@ -46,7 +46,7 @@ router.get('/', async (req, res, next) => {
     }
 
     res.render('admin/dashboard', {
-      layout: 'layouts/admin',
+      layout: false,
       title: 'Admin Dashboard',
       user: req.user || res.locals.user || { firstName: 'Super', lastName: 'Admin' },
       stats: {
@@ -63,7 +63,7 @@ router.get('/', async (req, res, next) => {
   } catch (error) {
     console.error('Error rendering admin dashboard:', error);
     res.render('admin/dashboard', {
-      layout: 'layouts/admin',
+      layout: false,
       title: 'Admin Dashboard',
       user: { firstName: 'Super', lastName: 'Admin' },
       stats: { users: 1, services: 32, blogPosts: 3, products: 6, contacts: 0, unreadContacts: 0 },
