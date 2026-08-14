@@ -2,9 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
   /* ===== Mobile Toggle ===== */
   var mobileToggle = document.getElementById('mobileToggle');
   if (mobileToggle) {
-    mobileToggle.addEventListener('click', function() {
-      var navUl = document.querySelector('nav ul');
-      if (navUl) navUl.classList.toggle('open');
+    mobileToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var nav = document.querySelector('nav');
+      if (nav) nav.classList.toggle('open');
     });
   }
 

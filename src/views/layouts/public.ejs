@@ -154,6 +154,10 @@
       <% } else { %>
         <a href="/auth/login" class="btn-login">Client Login</a>
       <% } %>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -232,11 +236,11 @@
   </div>
 
   <!-- Footer -->
-  <footer style="background:#030305; border-top:1px solid rgba(0,240,255,0.15); padding:60px 4rem 30px; margin-top:80px; position:relative; z-index:2;">
-    <div style="max-width:1280px; margin:0 auto; display:grid; grid-template-columns:2fr repeat(3, 1fr); gap:40px; margin-bottom:40px;">
+  <footer class="footer-container">
+    <div class="footer-grid">
       <div>
         <a href="/" style="display:inline-block; margin-bottom:16px; text-decoration:none;">
-          <img src="/images/logo.png" alt="UVO SoftTech" style="height: 48px; width: auto; object-fit: contain;">
+          <img src="/images/logo.png" alt="UVO SoftTech" style="height: 44px; width: auto; object-fit: contain;">
         </a>
         <p style="color:var(--text-gray); font-size:0.9rem; max-width:320px; line-height:1.6;">
           Global leader in enterprise IT services, SaaS cloud engineering, Odoo/Dynamics 365 ERP, cybersecurity, and open-source cost saving stacks for startups.
@@ -266,19 +270,16 @@
         <h4 style="color:#FFF; margin-bottom:16px; font-family:'Space Grotesk',sans-serif;">Official Contact & HQ</h4>
         <p style="color:var(--text-white); font-size:0.85rem; margin-bottom:6px;">🇵🇰 <strong>Pakistan HQ:</strong></p>
         <p style="color:var(--text-gray); font-size:0.8rem; margin-bottom:8px; line-height:1.4;">Plot R-103, Sector 4B, Surjani town, Karachi</p>
-        <a href="https://wa.me/923718055990" target="_blank" style="color:var(--neon-blue); font-size:0.85rem; font-weight:600; text-decoration:none; display:block; margin-bottom:4px;">
+        <a href="https://wa.me/923718055990" target="_blank" style="color:var(--primary-pink); font-size:0.85rem; font-weight:600; text-decoration:none; display:block; margin-bottom:4px;">
           📞 Phone / WhatsApp: +923718055990
         </a>
         <a href="mailto:marketing@uvosofttech.com" style="color:var(--text-gray); font-size:0.8rem; text-decoration:none; display:block; margin-bottom:2px;">
           ✉️ marketing@uvosofttech.com
         </a>
-        <a href="mailto:uvosofttech@gmail.com" style="color:var(--text-gray); font-size:0.8rem; text-decoration:none; display:block;">
-          ✉️ uvosofttech@gmail.com
-        </a>
       </div>
     </div>
 
-    <div style="max-width:1280px; margin:0 auto; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); display:flex; justify-content:space-between; align-items:center; color:var(--text-gray); font-size:0.85rem;">
+    <div class="footer-bottom">
       <div>© <%= new Date().getFullYear() %> UVO SoftTech. All rights reserved. Registered Operations in Karachi, Pakistan.</div>
       <div>
         <a href="/sitemap.xml" style="color:var(--text-gray); margin-right:12px;">XML Sitemap</a>
