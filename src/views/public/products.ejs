@@ -3,6 +3,11 @@
   <h1 class="section-title">Hardware <span>Store</span></h1>
   <p class="section-subtitle">Enterprise laptops, mobile workstations, and computing hardware configured for corporate teams.</p>
 
+  <div style="background: linear-gradient(90deg, rgba(255,0,117,0.15), rgba(255,107,0,0.15)); border: 1px solid rgba(255,0,117,0.4); border-radius: 12px; padding: 14px 20px; text-align: center; margin-bottom: 24px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <span style="font-size: 1.4rem;">🚚</span>
+    <span style="color: #FFF; font-weight: 700; font-size: 0.95rem;">FREE EXPRESS DELIVERY ACROSS ALL PAKISTAN CITIES (Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, Quetta & Nationwide)</span>
+  </div>
+
   <div class="store-filters">
     <button class="filter-btn active" onclick="filterProducts('all')">All Brands</button>
     <button class="filter-btn" onclick="filterProducts('HP')">HP</button>
@@ -44,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     filtered.forEach(p => {
       const priceStr = typeof p.price === 'number' ? p.price.toLocaleString() : p.price;
       const formattedPrice = currencySymbol + priceStr;
-      const msg = `Hello UVO SoftTech, I am interested in purchasing the ${p.brand} ${p.model} (${formattedPrice}). Is it in stock?`;
+      const msg = `Hello UVO SoftTech, I am interested in purchasing the ${p.brand} ${p.model} (${formattedPrice}) with Free Delivery Across Pakistan. Is it available?`;
       const waLink = `https://wa.me/923718055990?text=${encodeURIComponent(msg)}`;
 
       grid.innerHTML += `
@@ -56,7 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span style="color:var(--neon-blue); font-weight:700; font-size:0.85rem;">${p.brand}</span>
                 <span style="color:var(--neon-pink); font-weight:700; font-size:1.2rem;">${formattedPrice}</span>
               </div>
-              <h3 style="font-size:1.2rem; margin-bottom:12px; color:#FFF;">${p.model}</h3>
+              <h3 style="font-size:1.2rem; margin-bottom:8px; color:#FFF;">${p.model}</h3>
+              <div style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: #10b981; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                <span>🚚</span> Free Delivery in Pakistan
+              </div>
               <div style="background:rgba(255,255,255,0.03); padding:10px; border-radius:6px; border:1px solid rgba(255,255,255,0.08); font-size:0.85rem; color:var(--text-gray); margin-bottom:16px;">
                 <div>⚡ RAM: <strong style="color:#FFF;">${p.ram}</strong></div>
                 <div>💾 SSD: <strong style="color:#FFF;">${p.ssd}</strong></div>
