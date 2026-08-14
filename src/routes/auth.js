@@ -2,22 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const twoFactor = require('../services/twoFactor');
-
-// Global Auth State for Primary Admin Account
-global.__adminState = global.__adminState || {
-  username: 'admin',
-  passwordHash: null,
-  customPassword: null,
-  mustChangePassword: true,
-  isTwoFactorEnabled: false,
-  twoFactorSecret: null,
-};
-
-if (!global.__adminState.passwordHash) {
-  bcrypt.hash('admin123', 10).then(hash => {
-    global.__adminState.passwordHash = hash;
-  });
-}
+const persistentStore = require('../utils/persistentStore');
 
 // Client-Side Safe Navigation Helper to Prevent Mobile Safari/Chrome Cookie Drops & Redirect Loops
 function sendAuthRedirect(res, targetUrl) {
@@ -85,39 +70,41 @@ router.post('/login', async (req, res) => {
       });
     }
 
+    const adminState = persistentStore.getAdminState();
     const validUsernames = ['admin', 'saimuvo', 'admin@uvosofttech.com', 'saimuvo@uvosofttech.com'];
     const isValidUser = validUsernames.includes(inputUser);
 
     let isValidPass = false;
 
-    if (inputPass === 'admin123' || inputPass === 'Saimuvo@123456' || inputPass === 'Admin@123456') {
+    // If password has NEVER been changed, default admin123 is valid
+    if (adminState.mustChangePassword && (inputPass === 'admin123' || inputPass === 'Saimuvo@123456' || inputPass === 'Admin@123456')) {
       isValidPass = true;
-    } else if (global.__adminState.customPassword && inputPass === global.__adminState.customPassword) {
+    } else if (adminState.customPassword && inputPass === adminState.customPassword) {
       isValidPass = true;
-    } else if (global.__adminState.passwordHash) {
-      isValidPass = await bcrypt.compare(inputPass, global.__adminState.passwordHash).catch(() => false);
+    } else if (adminState.passwordHash) {
+      isValidPass = await bcrypt.compare(inputPass, adminState.passwordHash).catch(() => false);
     }
 
     if (!isValidUser || !isValidPass) {
       return res.render('admin/login', {
         title: 'Security Sign In - UVO SoftTech Admin',
         layout: false,
-        errors: ['Invalid username or password. Default username is "admin" with password "admin123".'],
+        errors: ['Invalid username or password.'],
       });
     }
 
-    // Step 1 Passed - Check Password Change
-    if (global.__adminState.mustChangePassword && inputPass === 'admin123') {
+    // Step 1: Check if Password Change is still required
+    if (adminState.mustChangePassword) {
       return sendAuthRedirect(res, '/admin/change-password');
     }
 
-    // Check 2FA Requirement
-    if (global.__adminState.isTwoFactorEnabled && global.__adminState.twoFactorSecret) {
+    // Step 2: Check 2FA Requirement
+    if (adminState.isTwoFactorEnabled && adminState.twoFactorSecret) {
       return sendAuthRedirect(res, '/auth/2fa/verify');
     }
 
-    // Initial 2FA Setup
-    if (!global.__adminState.isTwoFactorEnabled) {
+    // Initial 2FA Setup (only if not paired yet)
+    if (!adminState.isTwoFactorEnabled) {
       return sendAuthRedirect(res, '/admin/2fa-setup');
     }
 
@@ -174,11 +161,12 @@ router.post('/2fa/verify', (req, res) => {
   const { token } = req.body || {};
   const cleanToken = (token || '').trim();
 
-  if (!global.__adminState.twoFactorSecret) {
+  const adminState = persistentStore.getAdminState();
+  if (!adminState.twoFactorSecret) {
     return sendAuthRedirect(res, '/admin/2fa-setup');
   }
 
-  const isValid = twoFactor.verifyToken(global.__adminState.twoFactorSecret, cleanToken);
+  const isValid = twoFactor.verifyToken(adminState.twoFactorSecret, cleanToken);
   if (!isValid) {
     return res.send(`<!DOCTYPE html>
 <html lang="en">

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const twoFactor = require('../services/twoFactor');
+const persistentStore = require('../utils/persistentStore');
 
 let prisma = null;
 try {
@@ -16,17 +17,6 @@ try {
 } catch (e) {
   console.log('Prisma offline in admin router');
 }
-
-// In-Memory Global Fallback Store for Admin Users & Store Products
-global.__adminUsers = global.__adminUsers || [
-  { id: '1', username: 'admin', email: 'admin@uvosofttech.com', firstName: 'Admin', lastName: 'User', role: 'superadmin', isActive: true, createdAt: new Date() }
-];
-
-global.__adminProducts = global.__adminProducts || [
-  { id: 'p1', brand: 'HP', model: 'EliteBook 840 G8', price: 1200, ram: '16GB', ssd: '512GB', hdd: 'N/A', gpu: 'Integrated Intel Iris Xe', imageUrl: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop', description: 'Enterprise security laptop with 11th Gen i7 Processor.', sortOrder: 1, isActive: true },
-  { id: 'p2', brand: 'Dell', model: 'XPS 15 9510', price: 1900, ram: '32GB', ssd: '1TB', hdd: 'N/A', gpu: 'NVIDIA RTX 3050 Ti', imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop', description: 'Stunning 4K OLED display laptop for high performance engineering.', sortOrder: 2, isActive: true },
-  { id: 'p3', brand: 'Lenovo', model: 'ThinkPad X1 Carbon Gen 9', price: 1500, ram: '16GB', ssd: '512GB', hdd: 'N/A', gpu: 'Integrated Intel Iris Xe', imageUrl: 'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=800&auto=format&fit=crop', description: 'Ultra-durable carbon fiber business ultrabook.', sortOrder: 3, isActive: true }
-];
 
 // Helper: Check Authorization
 function isAuthorized(req) {
@@ -149,6 +139,25 @@ function renderAdminPage(res, { title, activePage, contentHtml }) {
   res.send(html);
 }
 
+function sendAdminNavRedirect(res, targetUrl) {
+  res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
+  res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigating...</title>
+  <script>window.location.href = "${targetUrl}";</script>
+</head>
+<body style="background:#020307; color:#fff; font-family:sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh;">
+  <div style="text-align:center;">
+    <h2 style="background: linear-gradient(135deg, #FF0075, #FF6B00); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Navigating...</h2>
+    <p><a href="${targetUrl}" style="color:#FF0075;">Click here to proceed to ${targetUrl}</a></p>
+  </div>
+</body>
+</html>`);
+}
+
 // 1. First-Time Password Change Page (/admin/change-password)
 router.get('/change-password', (req, res) => {
   res.send(`<!DOCTYPE html>
@@ -175,15 +184,15 @@ router.get('/change-password', (req, res) => {
   <div class="card">
     <div style="text-align:center; margin-bottom:16px;"><img src="/images/logo.png" style="height:44px;" alt="UVO"></div>
     <h2>First Login: Change Password Required</h2>
-    <p>You logged in with default credentials (<strong>admin123</strong>). For enterprise security, please set your new custom administrator password below.</p>
+    <p>You logged in with default credentials (<strong>admin123</strong>). Please set your permanent administrator password below.</p>
     <form action="/admin/change-password" method="POST">
       <div class="form-group">
         <label>New Password *</label>
-        <input type="password" name="newPassword" class="form-control" required minlength="8" placeholder="At least 8 characters with 1 number">
+        <input type="password" name="newPassword" class="form-control" required minlength="6" placeholder="At least 6 characters">
       </div>
       <div class="form-group">
         <label>Confirm New Password *</label>
-        <input type="password" name="confirmPassword" class="form-control" required minlength="8" placeholder="Repeat new password">
+        <input type="password" name="confirmPassword" class="form-control" required minlength="6" placeholder="Repeat new password">
       </div>
       <button type="submit" class="btn">Update Password & Setup 2FA →</button>
     </form>
@@ -192,45 +201,31 @@ router.get('/change-password', (req, res) => {
 </html>`);
 });
 
-function sendAdminNavRedirect(res, targetUrl) {
-  res.cookie('uvo_admin_auth', '1', { maxAge: 86400000, httpOnly: true, sameSite: 'lax', path: '/' });
-  res.send(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navigating...</title>
-  <script>window.location.href = "${targetUrl}";</script>
-</head>
-<body style="background:#020307; color:#fff; font-family:sans-serif; display:flex; align-items:center; justify-content:center; min-height:100vh;">
-  <div style="text-align:center;">
-    <h2 style="background: linear-gradient(135deg, #FF0075, #FF6B00); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Navigating...</h2>
-    <p><a href="${targetUrl}" style="color:#FF0075;">Click here to proceed to ${targetUrl}</a></p>
-  </div>
-</body>
-</html>`);
-}
-
 router.post('/change-password', async (req, res) => {
   const { newPassword, confirmPassword } = req.body || {};
   if (!newPassword || newPassword !== confirmPassword || newPassword.length < 6) {
     return res.redirect('/admin/change-password');
   }
 
-  global.__adminState.customPassword = newPassword;
-  global.__adminState.passwordHash = await bcrypt.hash(newPassword, 10);
-  global.__adminState.mustChangePassword = false;
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  persistentStore.updateAdminState({
+    customPassword: newPassword,
+    passwordHash: passwordHash,
+    mustChangePassword: false,
+  });
 
   return sendAdminNavRedirect(res, '/admin/2fa-setup');
 });
 
 // 2. Google Authenticator 2FA Setup Page (/admin/2fa-setup)
 router.get('/2fa-setup', (req, res) => {
-  if (!global.__adminState.twoFactorSecret) {
-    global.__adminState.twoFactorSecret = twoFactor.generateSecret();
+  const adminState = persistentStore.getAdminState();
+  let secret = adminState.twoFactorSecret;
+  if (!secret) {
+    secret = twoFactor.generateSecret();
+    persistentStore.updateAdminState({ twoFactorSecret: secret });
   }
 
-  const secret = global.__adminState.twoFactorSecret;
   const otpauthUrl = twoFactor.getOtpauthUrl('UVO SoftTech', 'admin@uvosofttech.com', secret);
   const qrCodeUrl = twoFactor.getQrCodeDataUrl(otpauthUrl);
 
@@ -275,26 +270,30 @@ router.post('/2fa-setup', (req, res) => {
   const { token } = req.body || {};
   const cleanToken = (token || '').trim();
 
-  const isValid = twoFactor.verifyToken(global.__adminState.twoFactorSecret, cleanToken);
+  const adminState = persistentStore.getAdminState();
+  const isValid = twoFactor.verifyToken(adminState.twoFactorSecret, cleanToken);
   if (!isValid) {
     return res.redirect('/admin/2fa-setup?error=invalid');
   }
 
-  global.__adminState.isTwoFactorEnabled = true;
+  persistentStore.updateAdminState({ isTwoFactorEnabled: true });
   return sendAdminNavRedirect(res, '/admin');
 });
 
 // 3. Admin Main Dashboard (/admin)
 router.get('/', (req, res) => {
+  const products = persistentStore.getProducts();
+  const users = persistentStore.getUsers();
+
   const contentHtml = `
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-number">${global.__adminProducts.length}</div>
+        <div class="stat-number">${products.length}</div>
         <div class="stat-label">Hardware Store Laptops</div>
         <a href="/admin/products" class="stat-link">Manage Products →</a>
       </div>
       <div class="stat-card">
-        <div class="stat-number">${global.__adminUsers.length}</div>
+        <div class="stat-number">${users.length}</div>
         <div class="stat-label">System Users & Roles</div>
         <a href="/admin/users" class="stat-link">Manage Team Users →</a>
       </div>
@@ -312,7 +311,7 @@ router.get('/', (req, res) => {
 
     <div style="background: rgba(15,23,42,0.7); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
       <h2 style="font-size: 18px; margin-top: 0; margin-bottom: 12px;">Primary Admin Control Center</h2>
-      <p style="color: var(--text-gray); margin: 0 0 16px 0;">Welcome, <strong>admin</strong>. Google Authenticator 2FA is active for your account. Use the options below to manage hardware store items, create new user accounts, and assign permissions.</p>
+      <p style="color: var(--text-gray); margin: 0 0 16px 0;">Welcome, <strong>admin</strong>. Google Authenticator 2FA is permanently configured. Use the options below to manage hardware store items, create new user accounts, and assign permissions.</p>
       <div style="display: flex; gap: 12px;">
         <a href="/admin/products" class="btn-action btn-pink">Hardware Store Manager</a>
         <a href="/admin/users" class="btn-action btn-outline">User & Role Manager</a>
@@ -325,7 +324,9 @@ router.get('/', (req, res) => {
 
 // 4. Hardware Store Product List (/admin/products)
 router.get('/products', (req, res) => {
-  let rowsHtml = global.__adminProducts.map(p => `
+  const products = persistentStore.getProducts();
+
+  let rowsHtml = products.map(p => `
     <tr>
       <td><img src="${p.imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop'}" class="product-img" alt="Laptop"></td>
       <td><strong style="color:#fff;">${p.brand}</strong> ${p.model}</td>
@@ -372,7 +373,8 @@ router.get('/products', (req, res) => {
 // 5. Add Product Form (/admin/products/create)
 router.get('/products/create', (req, res) => {
   const editId = req.query.edit;
-  const existing = editId ? global.__adminProducts.find(p => p.id === editId) : null;
+  const products = persistentStore.getProducts();
+  const existing = editId ? products.find(p => p.id === editId) : null;
 
   const contentHtml = `
     <div class="content-header">
@@ -424,50 +426,57 @@ router.get('/products/create', (req, res) => {
   renderAdminPage(res, { title: 'Add Hardware Product', activePage: 'products', contentHtml });
 });
 
-// Save Product Handler
-router.post('/products/save', (req, res) => {
+// Save Product Handler (100% Persistent)
+router.post('/products/save', async (req, res) => {
   const { id, brand, model, price, ram, ssd, gpu, imageUrl } = req.body || {};
-  if (id) {
-    const idx = global.__adminProducts.findIndex(p => p.id === id);
-    if (idx !== -1) {
-      global.__adminProducts[idx] = {
-        ...global.__adminProducts[idx],
-        brand: brand || 'Laptop',
-        model: model || 'Device',
-        price: parseFloat(price) || 999,
-        ram: ram || '16GB',
-        ssd: ssd || '512GB',
-        gpu: gpu || 'Integrated',
-        imageUrl: imageUrl || global.__adminProducts[idx].imageUrl,
-      };
+
+  persistentStore.saveProduct({
+    id: id || undefined,
+    brand: brand || 'Laptop',
+    model: model || 'Device',
+    price: parseFloat(price) || 999,
+    ram: ram || '16GB',
+    ssd: ssd || '512GB',
+    gpu: gpu || 'Integrated',
+    imageUrl: imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop',
+    sortOrder: 1,
+    isActive: true,
+  });
+
+  if (prisma) {
+    try {
+      if (id) {
+        await prisma.product.update({
+          where: { id },
+          data: { brand, model, price: parseFloat(price), ram, ssd, gpu, imageUrl },
+        });
+      } else {
+        await prisma.product.create({
+          data: { brand, model, price: parseFloat(price), ram, ssd, gpu, imageUrl, sortOrder: 1, isActive: true },
+        });
+      }
+    } catch (e) {
+      console.warn('Prisma DB sync fallback:', e.message);
     }
-  } else {
-    global.__adminProducts.unshift({
-      id: 'p' + Date.now(),
-      brand: brand || 'Laptop',
-      model: model || 'Device',
-      price: parseFloat(price) || 999,
-      ram: ram || '16GB',
-      ssd: ssd || '512GB',
-      gpu: gpu || 'Integrated',
-      imageUrl: imageUrl || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop',
-      sortOrder: 1,
-      isActive: true,
-    });
   }
 
   return res.redirect('/admin/products');
 });
 
 // Delete Product Handler
-router.post('/products/:id/delete', (req, res) => {
-  global.__adminProducts = global.__adminProducts.filter(p => p.id !== req.params.id);
+router.post('/products/:id/delete', async (req, res) => {
+  persistentStore.deleteProduct(req.params.id);
+  if (prisma) {
+    try { await prisma.product.delete({ where: { id: req.params.id } }); } catch (e) {}
+  }
   return res.redirect('/admin/products');
 });
 
 // 6. User Management & Roles (/admin/users)
 router.get('/users', (req, res) => {
-  let rowsHtml = global.__adminUsers.map(u => `
+  const users = persistentStore.getUsers();
+
+  let rowsHtml = users.map(u => `
     <tr>
       <td><strong style="color:#fff;">${u.username}</strong><br><span style="color:var(--text-gray); font-size:12px;">${u.email}</span></td>
       <td>${u.firstName} ${u.lastName}</td>
@@ -559,15 +568,14 @@ router.get('/users/create', (req, res) => {
 router.post('/users/create', (req, res) => {
   const { username, email, firstName, lastName, role } = req.body || {};
   if (username && email) {
-    global.__adminUsers.push({
-      id: 'u' + Date.now(),
+    persistentStore.saveUser({
       username: username.toLowerCase().trim(),
       email: email.toLowerCase().trim(),
       firstName: firstName || 'Team',
       lastName: lastName || 'Member',
       role: role || 'manager',
       isActive: true,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     });
   }
   return res.redirect('/admin/users');
