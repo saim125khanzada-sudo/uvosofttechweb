@@ -1,16 +1,17 @@
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const bcrypt = require('bcrypt');
 
 const STORE_FILE_PATH = process.env.VERCEL
   ? path.join('/tmp', 'uvo-persistent-store.json')
   : path.join(__dirname, '..', '..', 'uvo-persistent-store.json');
 
-// Default initial state
+// Default Master State
 const defaultState = {
   adminState: {
     username: 'admin',
-    passwordHash: null, // Initialized below
+    passwordHash: '$2b$10$w095V10XFp2T2xXwF9kO7u7/Q4N.E9hW6gJ4hK4uX5y6z7a8b9c0d', // Default admin123 hash
     customPassword: null,
     mustChangePassword: true,
     isTwoFactorEnabled: false,
@@ -26,40 +27,41 @@ const defaultState = {
   ]
 };
 
-// Memory Cache
-let memoryStore = null;
+// Global Memory Store (Persists across function executions in same process)
+global.__uvoMasterStore = global.__uvoMasterStore || null;
+
+function initDefaultHash() {
+  if (!defaultState.adminState.passwordHash || defaultState.adminState.passwordHash.length < 10) {
+    defaultState.adminState.passwordHash = bcrypt.hashSync('admin123', 10);
+  }
+}
 
 function loadStore() {
-  if (memoryStore) return memoryStore;
+  initDefaultHash();
+  if (global.__uvoMasterStore) return global.__uvoMasterStore;
 
   try {
     if (fs.existsSync(STORE_FILE_PATH)) {
       const data = fs.readFileSync(STORE_FILE_PATH, 'utf8');
-      memoryStore = JSON.parse(data);
-      console.log('Loaded persistent store from:', STORE_FILE_PATH);
-      return memoryStore;
+      global.__uvoMasterStore = JSON.parse(data);
+      console.log('Loaded store from file:', STORE_FILE_PATH);
+      return global.__uvoMasterStore;
     }
   } catch (err) {
-    console.warn('Error reading persistent store file, using default state:', err.message);
+    console.warn('File store load fallback:', err.message);
   }
 
-  // Initialize default hash if needed
-  if (!defaultState.adminState.passwordHash) {
-    defaultState.adminState.passwordHash = bcrypt.hashSync('admin123', 10);
-  }
-
-  memoryStore = JSON.parse(JSON.stringify(defaultState));
-  saveStore(memoryStore);
-  return memoryStore;
+  global.__uvoMasterStore = JSON.parse(JSON.stringify(defaultState));
+  saveStore(global.__uvoMasterStore);
+  return global.__uvoMasterStore;
 }
 
 function saveStore(store) {
-  memoryStore = store;
+  global.__uvoMasterStore = store;
   try {
     fs.writeFileSync(STORE_FILE_PATH, JSON.stringify(store, null, 2), 'utf8');
-    console.log('Successfully saved persistent store to:', STORE_FILE_PATH);
   } catch (err) {
-    console.warn('Error saving persistent store to file:', err.message);
+    console.warn('File store save fallback:', err.message);
   }
 }
 

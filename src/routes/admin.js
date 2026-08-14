@@ -214,6 +214,29 @@ router.post('/change-password', async (req, res) => {
     mustChangePassword: false,
   });
 
+  if (prisma) {
+    try {
+      await prisma.user.upsert({
+        where: { email: 'admin@uvosofttech.com' },
+        update: { passwordHash: passwordHash },
+        create: {
+          email: 'admin@uvosofttech.com',
+          passwordHash: passwordHash,
+          firstName: 'Admin',
+          lastName: 'User',
+          isActive: true
+        }
+      });
+      await prisma.siteSetting.upsert({
+        where: { key: 'admin_custom_password' },
+        update: { value: newPassword },
+        create: { key: 'admin_custom_password', value: newPassword, group: 'security', type: 'string', label: 'Admin Custom Password' }
+      });
+    } catch (e) {
+      console.warn('Prisma DB sync error during password change:', e.message);
+    }
+  }
+
   return sendAdminNavRedirect(res, '/admin/2fa-setup');
 });
 
@@ -266,7 +289,7 @@ router.get('/2fa-setup', (req, res) => {
 </html>`);
 });
 
-router.post('/2fa-setup', (req, res) => {
+router.post('/2fa-setup', async (req, res) => {
   const { token } = req.body || {};
   const cleanToken = (token || '').trim();
 
@@ -277,6 +300,26 @@ router.post('/2fa-setup', (req, res) => {
   }
 
   persistentStore.updateAdminState({ isTwoFactorEnabled: true });
+
+  if (prisma) {
+    try {
+      await prisma.user.update({
+        where: { email: 'admin@uvosofttech.com' },
+        data: {
+          isTwoFactorEnabled: true,
+          twoFactorSecret: adminState.twoFactorSecret
+        }
+      });
+      await prisma.siteSetting.upsert({
+        where: { key: 'admin_2fa_secret' },
+        update: { value: adminState.twoFactorSecret },
+        create: { key: 'admin_2fa_secret', value: adminState.twoFactorSecret, group: 'security', type: 'string', label: 'Admin 2FA Secret' }
+      });
+    } catch (e) {
+      console.warn('Prisma DB sync error during 2FA setup:', e.message);
+    }
+  }
+
   return sendAdminNavRedirect(res, '/admin');
 });
 
