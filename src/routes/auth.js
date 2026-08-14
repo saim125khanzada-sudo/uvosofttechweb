@@ -17,15 +17,13 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.__prisma;
 }
 
-// Render Login Page
+// Render Login Page - Always renders login form directly to prevent Vercel serverless redirect loops
 router.get('/login', (req, res) => {
   if (req.query.clear === '1' || req.query.logout === '1') {
-    if (req.session) req.session.destroy(() => {});
+    if (req.session) {
+      try { req.session.destroy(() => {}); } catch (e) {}
+    }
     res.clearCookie('uvo_sid');
-    return res.render('admin/login', { title: 'Security Login - UVO SoftTech' });
-  }
-  if (req.session && req.session.userId && !req.session.pending2FA) {
-    return res.redirect('/admin');
   }
   res.render('admin/login', { title: 'Security Login - UVO SoftTech' });
 });
