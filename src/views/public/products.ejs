@@ -25,14 +25,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   const currencySymbol = "Rs. ";
 
-  const products = [
-    { id: 1, brand: "HP", model: "EliteBook 840 G10", price: "185,000", ram: "16GB DDR5", ssd: "512GB NVMe", gpu: "Intel Iris Xe", img: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop" },
-    { id: 2, brand: "Dell", model: "Latitude 5540 Pro Workstation", price: "215,000", ram: "32GB DDR5", ssd: "1TB NVMe M.2", gpu: "Intel Iris Xe", img: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop" },
-    { id: 3, brand: "Lenovo", model: "ThinkPad X1 Carbon Gen 11", price: "240,000", ram: "32GB LPDDR5", ssd: "1TB NVMe SSD", gpu: "Integrated Graphics", img: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=800&auto=format&fit=crop" },
-    { id: 4, brand: "Apple", model: "MacBook Pro 16\" M3 Pro", price: "450,000", ram: "36GB Unified", ssd: "512GB Fast SSD", gpu: "18-Core GPU", img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop" },
-    { id: 5, brand: "Dell", model: "XPS 15 9530 Workstation", price: "320,000", ram: "32GB DDR5", ssd: "1TB SSD", gpu: "NVIDIA RTX 4050 6GB", img: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=800&auto=format&fit=crop" },
-    { id: 6, brand: "HP", model: "ZBook Studio G10 Mobile Studio", price: "385,000", ram: "64GB DDR5", ssd: "2TB NVMe SSD", gpu: "NVIDIA RTX 4070 8GB", img: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=800&auto=format&fit=crop" }
-  ];
+  const products = <%- JSON.stringify(products && products.length > 0 ? products : [
+    { id: "1", brand: "HP", model: "EliteBook 840 G10", price: 185000, ram: "16GB DDR5", ssd: "512GB NVMe", gpu: "Intel Iris Xe", imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop" },
+    { id: "2", brand: "Dell", model: "Latitude 5540 Pro Workstation", price: 215000, ram: "32GB DDR5", ssd: "1TB NVMe M.2", gpu: "Intel Iris Xe", imageUrl: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=800&auto=format&fit=crop" },
+    { id: "3", brand: "Lenovo", model: "ThinkPad X1 Carbon Gen 11", price: 240000, ram: "32GB LPDDR5", ssd: "1TB NVMe SSD", gpu: "Integrated Graphics", imageUrl: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?q=80&w=800&auto=format&fit=crop" },
+    { id: "4", brand: "Apple", model: "MacBook Pro 16\" M3 Pro", price: 450000, ram: "36GB Unified", ssd: "512GB Fast SSD", gpu: "18-Core GPU", imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop" },
+    { id: "5", brand: "Dell", model: "XPS 15 9530 Workstation", price: 320000, ram: "32GB DDR5", ssd: "1TB SSD", gpu: "NVIDIA RTX 4050 6GB", imageUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=800&auto=format&fit=crop" },
+    { id: "6", brand: "HP", model: "ZBook Studio G10 Mobile Studio", price: 385000, ram: "64GB DDR5", ssd: "2TB NVMe SSD", gpu: "NVIDIA RTX 4070 8GB", imageUrl: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=800&auto=format&fit=crop" }
+  ]) %>;
 
   window.filterProducts = function(brand) {
     const grid = document.getElementById('storeGrid');
@@ -47,14 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     filtered.forEach(p => {
-      const priceStr = typeof p.price === 'number' ? p.price.toLocaleString() : p.price;
-      const formattedPrice = currencySymbol + priceStr;
+      const pPrice = typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0;
+      const priceStr = pPrice > 0 ? pPrice.toLocaleString() : (p.price || 'Contact for Price');
+      const formattedPrice = typeof pPrice === 'number' && pPrice > 0 ? currencySymbol + priceStr : priceStr;
+      const imgUrl = p.imageUrl || p.img || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop';
       const msg = `Hello UVO SoftTech, I am interested in purchasing the ${p.brand} ${p.model} (${formattedPrice}) with Free Delivery Across Pakistan. Is it available?`;
       const waLink = `https://wa.me/923718055990?text=${encodeURIComponent(msg)}`;
 
       grid.innerHTML += `
         <div class="glass-card" style="padding: 0; overflow: hidden; display:flex; flex-direction:column;">
-          <img src="${p.img}" alt="${p.model}" class="product-img">
+          <img src="${imgUrl}" alt="${p.model}" class="product-img">
           <div style="padding: 1.5rem; flex-grow:1; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">

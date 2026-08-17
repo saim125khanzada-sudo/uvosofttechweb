@@ -157,16 +157,10 @@ router.get('/services', loadUser, async (req, res, next) => {
 
 router.get('/store', loadUser, async (req, res, next) => {
   try {
-    let products = await safeDbQuery(() =>
-      prisma.product.findMany({
-        where: { isActive: true },
-        orderBy: { sortOrder: 'asc' },
-      })
-    );
-    if (!products || products.length === 0) {
-      const persistentStore = require('../utils/persistentStore');
-      products = persistentStore.getProducts().filter(p => p.isActive !== false);
-    }
+    const persistentStore = require('../utils/persistentStore');
+    let products = await persistentStore.getProductsAsync();
+    products = (products || []).filter(p => p.isActive !== false);
+
     const navigationItems = await safeDbQuery(() =>
       prisma.navigationItem.findMany({
         where: { isVisible: true },
@@ -193,16 +187,10 @@ router.get('/store', loadUser, async (req, res, next) => {
 
 router.get('/products', loadUser, async (req, res, next) => {
   try {
-    let products = await safeDbQuery(() =>
-      prisma.product.findMany({
-        where: { isActive: true },
-        orderBy: { sortOrder: 'asc' },
-      })
-    );
-    if (!products || products.length === 0) {
-      const persistentStore = require('../utils/persistentStore');
-      products = persistentStore.getProducts().filter(p => p.isActive !== false);
-    }
+    const persistentStore = require('../utils/persistentStore');
+    let products = await persistentStore.getProductsAsync();
+    products = (products || []).filter(p => p.isActive !== false);
+
     const navigationItems = await safeDbQuery(() =>
       prisma.navigationItem.findMany({
         where: { isVisible: true },

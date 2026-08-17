@@ -241,12 +241,12 @@ router.post('/change-password', async (req, res) => {
 });
 
 // 2. Google Authenticator 2FA Setup Page (/admin/2fa-setup)
-router.get('/2fa-setup', (req, res) => {
-  const adminState = persistentStore.getAdminState();
+router.get('/2fa-setup', async (req, res) => {
+  const adminState = await persistentStore.getAdminStateAsync();
   let secret = adminState.twoFactorSecret;
   if (!secret) {
     secret = twoFactor.generateSecret();
-    persistentStore.updateAdminState({ twoFactorSecret: secret });
+    await persistentStore.updateAdminStateAsync({ twoFactorSecret: secret });
   }
 
   const otpauthUrl = twoFactor.getOtpauthUrl('UVO SoftTech', 'admin@uvosofttech.com', secret);
@@ -293,39 +293,19 @@ router.post('/2fa-setup', async (req, res) => {
   const { token } = req.body || {};
   const cleanToken = (token || '').trim();
 
-  const adminState = persistentStore.getAdminState();
+  const adminState = await persistentStore.getAdminStateAsync();
   const isValid = twoFactor.verifyToken(adminState.twoFactorSecret, cleanToken);
   if (!isValid) {
     return res.redirect('/admin/2fa-setup?error=invalid');
   }
 
-  persistentStore.updateAdminState({ isTwoFactorEnabled: true });
-
-  if (prisma) {
-    try {
-      await prisma.user.update({
-        where: { email: 'admin@uvosofttech.com' },
-        data: {
-          isTwoFactorEnabled: true,
-          twoFactorSecret: adminState.twoFactorSecret
-        }
-      });
-      await prisma.siteSetting.upsert({
-        where: { key: 'admin_2fa_secret' },
-        update: { value: adminState.twoFactorSecret },
-        create: { key: 'admin_2fa_secret', value: adminState.twoFactorSecret, group: 'security', type: 'string', label: 'Admin 2FA Secret' }
-      });
-    } catch (e) {
-      console.warn('Prisma DB sync error during 2FA setup:', e.message);
-    }
-  }
-
+  await persistentStore.updateAdminStateAsync({ isTwoFactorEnabled: true });
   return sendAdminNavRedirect(res, '/admin');
 });
 
 // 3. Admin Main Dashboard (/admin)
-router.get('/', (req, res) => {
-  const products = persistentStore.getProducts();
+router.get('/', async (req, res) => {
+  const products = await persistentStore.getProductsAsync();
   const users = persistentStore.getUsers();
 
   const contentHtml = `
@@ -366,8 +346,8 @@ router.get('/', (req, res) => {
 });
 
 // 4. Hardware Store Product List (/admin/products)
-router.get('/products', (req, res) => {
-  const products = persistentStore.getProducts();
+router.get('/products', async (req, res) => {
+  const products = await persistentStore.getProductsAsync();
 
   let rowsHtml = products.map(p => `
     <tr>
@@ -414,9 +394,9 @@ router.get('/products', (req, res) => {
 });
 
 // 5. Add Product Form (/admin/products/create)
-router.get('/products/create', (req, res) => {
+router.get('/products/create', async (req, res) => {
   const editId = req.query.edit;
-  const products = persistentStore.getProducts();
+  const products = await persistentStore.getProductsAsync();
   const existing = editId ? products.find(p => p.id === editId) : null;
 
   const contentHtml = `
@@ -473,7 +453,7 @@ router.get('/products/create', (req, res) => {
 router.post('/products/save', async (req, res) => {
   const { id, brand, model, price, ram, ssd, gpu, imageUrl } = req.body || {};
 
-  persistentStore.saveProduct({
+  await persistentStore.saveProductAsync({
     id: id || undefined,
     brand: brand || 'Laptop',
     model: model || 'Device',
@@ -486,32 +466,12 @@ router.post('/products/save', async (req, res) => {
     isActive: true,
   });
 
-  if (prisma) {
-    try {
-      if (id) {
-        await prisma.product.update({
-          where: { id },
-          data: { brand, model, price: parseFloat(price), ram, ssd, gpu, imageUrl },
-        });
-      } else {
-        await prisma.product.create({
-          data: { brand, model, price: parseFloat(price), ram, ssd, gpu, imageUrl, sortOrder: 1, isActive: true },
-        });
-      }
-    } catch (e) {
-      console.warn('Prisma DB sync fallback:', e.message);
-    }
-  }
-
   return res.redirect('/admin/products');
 });
 
 // Delete Product Handler
 router.post('/products/:id/delete', async (req, res) => {
-  persistentStore.deleteProduct(req.params.id);
-  if (prisma) {
-    try { await prisma.product.delete({ where: { id: req.params.id } }); } catch (e) {}
-  }
+  await persistentStore.deleteProductAsync(req.params.id);
   return res.redirect('/admin/products');
 });
 

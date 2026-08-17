@@ -70,7 +70,7 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    const adminState = persistentStore.getAdminState();
+    const adminState = await persistentStore.getAdminStateAsync();
     const validUsernames = ['admin', 'saimuvo', 'admin@uvosofttech.com', 'saimuvo@uvosofttech.com'];
     const isValidUser = validUsernames.includes(inputUser);
 
@@ -157,11 +157,11 @@ router.get('/2fa/verify', (req, res) => {
 });
 
 // 5. POST /auth/2fa/verify
-router.post('/2fa/verify', (req, res) => {
+router.post('/2fa/verify', async (req, res) => {
   const { token } = req.body || {};
   const cleanToken = (token || '').trim();
 
-  const adminState = persistentStore.getAdminState();
+  const adminState = await persistentStore.getAdminStateAsync();
   if (!adminState.twoFactorSecret) {
     return sendAuthRedirect(res, '/admin/2fa-setup');
   }
