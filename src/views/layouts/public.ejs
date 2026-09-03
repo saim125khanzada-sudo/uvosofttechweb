@@ -138,20 +138,6 @@
     <nav>
       <ul class="nav-links">
         <li><a href="/" class="nav-link <%= currentPath === '/' ? 'active' : '' %>">Home</a></li>
-        <li class="nav-item-dropdown">
-          <a href="/services" class="nav-link <%= currentPath.startsWith('/services') ? 'active' : '' %>">Services ▾</a>
-          <div class="nav-dropdown">
-            <a href="/services/development">💻 Custom Software & Web Dev</a>
-            <a href="/services/development/ERP-Development">📊 ERP Development (Odoo / Dynamics 365)</a>
-            <a href="/services/development/website-development">🌐 Website Development</a>
-            <a href="/services/cloud-devops">☁️ Cloud Engineering & DevOps</a>
-            <a href="/services/cybersecurity">🛡️ Enterprise Cybersecurity</a>
-            <a href="/services/ai-automation">🤖 AI Engineering & Automation</a>
-            <a href="/services" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 4px; padding-top: 10px; color: var(--primary-pink) !important; font-weight: 700;">
-              ⚡ All 24+ Services Directory →
-            </a>
-          </div>
-        </li>
         <li><a href="/store" class="nav-link <%= currentPath === '/store' || currentPath === '/products' ? 'active' : '' %>">Hardware Store</a></li>
         <li><a href="/blog" class="nav-link <%= currentPath === '/blog' ? 'active' : '' %>">Blogs</a></li>
         <li><a href="/about" class="nav-link <%= currentPath === '/about' ? 'active' : '' %>">About Us</a></li>
@@ -261,15 +247,13 @@
       </div>
 
       <div>
-        <h4 style="color:#FFF; margin-bottom:16px; font-family:'Space Grotesk',sans-serif;">Services & Solutions</h4>
+        <h4 style="color:#FFF; margin-bottom:16px; font-family:'Space Grotesk',sans-serif;">Navigation</h4>
         <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:0.9rem;">
-          <li><a href="/services/it-backoffice-support" style="color:var(--text-gray); text-decoration:none;">IT Backoffice Support</a></li>
-          <li><a href="/services/software-mobile-dev" style="color:var(--text-gray); text-decoration:none;">Software & Mobile Dev</a></li>
-          <li><a href="/services/odoo-dynamics-365-erp" style="color:var(--text-gray); text-decoration:none;">Odoo & Dynamics 365 ERP</a></li>
-          <li><a href="/services/cloud-devops" style="color:var(--text-gray); text-decoration:none;">Cloud Engineering & DevOps</a></li>
-          <li><a href="/services/cybersecurity-pentesting" style="color:var(--text-gray); text-decoration:none;">Cybersecurity & Pentesting</a></li>
-          <li><a href="/services/ai-engineering-llms" style="color:var(--text-gray); text-decoration:none;">AI Engineering & LLMs</a></li>
+          <li><a href="/" style="color:var(--text-gray); text-decoration:none;">Home</a></li>
           <li><a href="/store" style="color:var(--text-gray); text-decoration:none;">Hardware Store</a></li>
+          <li><a href="/blog" style="color:var(--text-gray); text-decoration:none;">Blogs</a></li>
+          <li><a href="/about" style="color:var(--text-gray); text-decoration:none;">About Us</a></li>
+          <li><a href="/contact" style="color:var(--text-gray); text-decoration:none;">Contact</a></li>
         </ul>
       </div>
 
