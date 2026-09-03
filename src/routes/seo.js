@@ -15,7 +15,6 @@ router.get('/api/v1/seo/ping-indexnow', async (req, res) => {
   const baseUrl = process.env.BASE_URL || 'https://uvosofttech.com';
   const urls = [
     `${baseUrl}/`,
-    `${baseUrl}/services`,
     `${baseUrl}/store`,
     `${baseUrl}/blog`,
     `${baseUrl}/about`,
@@ -58,7 +57,7 @@ router.get('/api/v1/seo/ping-indexnow', async (req, res) => {
 // 3. Dynamic XML Sitemap for Google & Bing (#1 Search Ranking Optimization)
 router.get('/sitemap.xml', (req, res) => {
   const baseUrl = process.env.BASE_URL || 'https://uvosofttech.com';
-  const pages = ['', '/services', '/store', '/blog', '/about', '/contact'];
+  const pages = ['', '/store', '/blog', '/about', '/contact'];
   const languages = ['en-US', 'en-CA', 'ar-SA', 'en-PK'];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;

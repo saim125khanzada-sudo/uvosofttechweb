@@ -15,19 +15,6 @@ if (process.env.NODE_ENV === 'production') {
 
 router.use(apiLimiter);
 
-router.get('/services', async (req, res, next) => {
-  try {
-    const categories = await prisma.serviceCategory.findMany({
-      where: { isActive: true },
-      include: { services: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } } },
-      orderBy: { sortOrder: 'asc' },
-    });
-    res.json({ success: true, data: categories });
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.get('/products', async (req, res, next) => {
   try {
     const products = await prisma.product.findMany({
