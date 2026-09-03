@@ -17,6 +17,18 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/services",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/services/(.*)",
+      "destination": "/404",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

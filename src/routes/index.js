@@ -2,7 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { loadUser } = require('../middleware/auth');
 
-// Explicit 404 handler for any leftover /services requests
+// Explicit 404 handler for any leftover /services requests or /404 redirect
+router.all('/404', loadUser, (req, res) => {
+  res.status(404).render('public/error', {
+    title: '404 - Page Not Found',
+    message: 'The requested page does not exist or has been removed.',
+    user: req.user || null,
+  });
+});
+
 router.all('/services*', loadUser, (req, res) => {
   res.status(404).render('public/error', {
     title: '404 - Page Not Found',
