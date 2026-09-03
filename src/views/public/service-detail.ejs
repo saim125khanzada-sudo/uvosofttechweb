@@ -1,89 +1,80 @@
 <!-- Dedicated Service Detail Page -->
-<section class="content-section" style="padding-top: 140px; padding-bottom: 40px;">
+<section class="content-section" style="padding-top: 140px; padding-bottom: 60px;">
+  <!-- Breadcrumb Navigation for SEO -->
+  <div style="max-width: 1100px; margin: 0 auto 20px; font-size: 0.88rem; color: var(--text-gray);">
+    <a href="/" style="color: var(--text-gray); text-decoration: none;">Home</a>
+    <span style="margin: 0 8px;">/</span>
+    <a href="/services" style="color: var(--text-gray); text-decoration: none;">Services</a>
+    <span style="margin: 0 8px;">/</span>
+    <a href="/services/<%= service.categorySlug %>" style="color: var(--text-gray); text-decoration: none;"><%= service.categoryName %></a>
+    <span style="margin: 0 8px;">/</span>
+    <span style="color: var(--primary-pink); font-weight: 600;"><%= service.h1 || service.title %></span>
+  </div>
+
   <!-- Hero Banner -->
-  <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+  <div style="max-width: 1100px; margin: 0 auto 40px; text-align: center;">
     <div style="background: rgba(255,0,117,0.12); border: 1px solid rgba(255,0,117,0.35); color: var(--primary-pink); font-size: 0.85rem; font-weight: 700; padding: 6px 16px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;">
-      <span><%= service.icon %></span> <%= service.heroBadge %>
+      <span><%= service.icon || '⚡' %></span> <%= service.categoryName %>
     </div>
     
-    <h1 class="section-title" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin-bottom: 16px; line-height: 1.2;">
-      <%= service.title %>
+    <h1 class="section-title" style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 16px; line-height: 1.2;">
+      <%= service.h1 || service.title %>
     </h1>
     
-    <p class="section-subtitle" style="max-width: 840px; margin: 0 auto 32px; font-size: 1.1rem; line-height: 1.6; color: var(--text-gray);">
-      <%= service.subtitle %>
+    <p class="section-subtitle" style="max-width: 840px; margin: 0 auto 28px; font-size: 1.1rem; line-height: 1.6; color: var(--text-gray);">
+      <%= service.heroSubtitle || service.subtitle %>
     </p>
 
-    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px;">
-      <a href="#quote" class="btn-primary trigger-quote-modal" data-service="<%= service.title %>" style="padding: 0.85rem 2rem; font-size: 1rem;">
-        Get Quote for <%= service.categoryName %> →
+    <!-- SEO Target Keywords Badge -->
+    <% if (service.keywords) { %>
+      <div style="background: rgba(8,10,20,0.7); border: 1px solid rgba(0,240,255,0.25); padding: 10px 18px; border-radius: 12px; max-width: 850px; margin: 0 auto 32px; font-size: 0.82rem; color: #94a3b8; line-height: 1.5;">
+        <strong style="color: var(--neon-blue);">🔑 Targeted SEO Focus:</strong> <%= service.keywords %>
+      </div>
+    <% } %>
+
+    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+      <a href="#quote" class="btn-primary trigger-quote-modal" data-service="<%= service.h1 || service.title %>" style="padding: 0.85rem 2rem; font-size: 1rem;">
+        Get Quote for <%= service.h1 || service.title %> →
       </a>
-      <a href="https://wa.me/923718055990?text=Hello%20UVO%20SoftTech%2C%20I%20am%20interested%20in%20<%= encodeURIComponent(service.title) %>" target="_blank" class="btn-primary" style="background: #25D366; color: #FFF; padding: 0.85rem 2rem; font-size: 1rem; border: none;">
+      <a href="https://wa.me/923718055990?text=Hello%20UVO%20SoftTech%2C%20I%20am%20interested%20in%20<%= encodeURIComponent(service.h1 || service.title) %>" target="_blank" class="btn-primary" style="background: #25D366; color: #FFF; padding: 0.85rem 2rem; font-size: 1rem; border: none;">
         💬 WhatsApp Consultation
       </a>
     </div>
   </div>
 
-  <!-- Overview Section -->
-  <div class="glass-card" style="max-width: 1100px; margin: 0 auto 60px; padding: 36px; border-color: rgba(0, 240, 255, 0.2);">
-    <h2 style="font-size: 1.6rem; color: #FFF; margin-top: 0; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">
-      Service Overview & Scope
+  <!-- Primary Page Content -->
+  <div class="glass-card" style="max-width: 1100px; margin: 0 auto 60px; padding: 40px; border-color: rgba(255, 0, 117, 0.3); background: rgba(15, 23, 42, 0.85);">
+    <h2 style="font-size: 1.8rem; color: #FFF; margin-top: 0; margin-bottom: 20px; font-family: 'Space Grotesk', sans-serif;">
+      Service Overview & Technical Scope
     </h2>
-    <p style="color: var(--text-gray); font-size: 1.05rem; line-height: 1.7; margin-bottom: 0;">
-      <%= service.overview %>
-    </p>
-  </div>
-
-  <!-- Strategic Benefits (4 Grid) -->
-  <div style="max-width: 1100px; margin: 0 auto 60px;">
-    <h2 class="section-title" style="text-align: center; font-size: 2rem; margin-bottom: 32px;">
-      Why Choose <span>UVO SoftTech</span> for <%= service.categoryName %>?
-    </h2>
-
-    <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
-      <% service.benefits.forEach(b => { %>
-        <div class="glass-card" style="padding: 24px;">
-          <div style="color: var(--primary-pink); font-size: 1.5rem; margin-bottom: 12px;">✓</div>
-          <h3 style="color: #FFF; font-size: 1.2rem; margin-bottom: 10px; font-family: 'Space Grotesk', sans-serif;"><%= b.title %></h3>
-          <p style="color: var(--text-gray); font-size: 0.92rem; line-height: 1.5; margin: 0;"><%= b.desc %></p>
-        </div>
-      <% }); %>
+    <div style="color: #e2e8f0; font-size: 1.08rem; line-height: 1.8; margin-bottom: 0;">
+      <%= service.content %>
     </div>
   </div>
 
-  <!-- Detailed Sub-Services / Capabilities -->
-  <div style="max-width: 1100px; margin: 0 auto 60px;">
-    <h2 class="section-title" style="text-align: center; font-size: 2rem; margin-bottom: 32px;">
-      Capabilities & <span>Offerings</span>
-    </h2>
+  <!-- Key Capabilities & Features -->
+  <% if (service.features && service.features.length > 0) { %>
+    <div style="max-width: 1100px; margin: 0 auto 60px;">
+      <h2 class="section-title" style="text-align: center; font-size: 2rem; margin-bottom: 32px;">
+        Key Capabilities & <span>Deliverables</span>
+      </h2>
 
-    <div style="display: flex; flex-direction: column; gap: 24px;">
-      <% service.subServices.forEach((sub, idx) => { %>
-        <div class="glass-card" style="padding: 28px; display: flex; flex-direction: column; gap: 16px;">
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <span style="background: var(--logo-gradient); color: #FFF; font-weight: 800; border-radius: 8px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;">
+      <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+        <% service.features.forEach((feat, idx) => { %>
+          <div class="glass-card" style="padding: 24px; display: flex; align-items: flex-start; gap: 14px;">
+            <span style="background: var(--logo-gradient); color: #FFF; font-weight: 800; border-radius: 8px; width: 32px; height: 32px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem;">
               0<%= idx + 1 %>
             </span>
-            <h3 style="color: #FFF; font-size: 1.3rem; margin: 0; font-family: 'Space Grotesk', sans-serif;"><%= sub.title %></h3>
-          </div>
-          
-          <p style="color: var(--text-gray); font-size: 0.98rem; line-height: 1.6; margin: 0;"><%= sub.desc %></p>
-
-          <% if (sub.features && sub.features.length > 0) { %>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 8px; background: rgba(255,255,255,0.02); padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
-              <% sub.features.forEach(feat => { %>
-                <div style="color: #FFF; font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
-                  <span style="color: var(--primary-pink); font-weight: bold;">▸</span> <%= feat %>
-                </div>
-              <% }); %>
+            <div style="color: #FFF; font-size: 1rem; font-weight: 600; line-height: 1.4; margin-top: 4px;">
+              <%= feat %>
             </div>
-          <% } %>
-        </div>
-      <% }); %>
+          </div>
+        <% }); %>
+      </div>
     </div>
-  </div>
+  <% } %>
 
-  <!-- Tech Stack -->
+  <!-- Tech Stack Badges -->
   <% if (service.techStack && service.techStack.length > 0) { %>
     <div style="max-width: 1100px; margin: 0 auto 60px; text-align: center;">
       <h3 style="color: var(--text-gray); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;">
@@ -99,53 +90,52 @@
     </div>
   <% } %>
 
-  <!-- FAQs Accordion -->
-  <% if (service.faqs && service.faqs.length > 0) { %>
-    <div style="max-width: 900px; margin: 0 auto 60px;">
-      <h2 class="section-title" style="text-align: center; font-size: 1.8rem; margin-bottom: 28px;">
-        Frequently Asked <span>Questions</span>
-      </h2>
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <% service.faqs.forEach(faq => { %>
-          <div class="glass-card" style="padding: 20px 24px;">
-            <h4 style="color: #FFF; font-size: 1.05rem; margin: 0 0 8px 0; font-family: 'Space Grotesk', sans-serif;">
-              ❓ <%= faq.q %>
-            </h4>
-            <p style="color: var(--text-gray); font-size: 0.92rem; line-height: 1.6; margin: 0;">
-              <%= faq.a %>
-            </p>
-          </div>
+  <!-- Call to Action Footer Card -->
+  <div style="max-width: 1100px; margin: 0 auto 60px; background: linear-gradient(135deg, rgba(255,0,117,0.2), rgba(255,107,0,0.2)); border: 1px solid var(--primary-pink); border-radius: 16px; padding: 40px 28px; text-align: center;">
+    <h2 style="color: #FFF; font-size: 2rem; margin-top: 0; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif;">
+      Ready to Start Your <%= service.h1 || service.title %> Project?
+    </h2>
+    <p style="color: var(--text-gray); max-width: 650px; margin: 0 auto 24px; font-size: 1rem;">
+      Speak with our solution architects today for a free discovery call, project estimation, and technical consultation.
+    </p>
+    <a href="#quote" class="btn-primary trigger-quote-modal" data-service="<%= service.h1 || service.title %>" style="padding: 0.9rem 2.4rem; font-size: 1.05rem;">
+      Request Free Project Quote →
+    </a>
+  </div>
+
+  <!-- Related Services in Category -->
+  <% if (typeof categoryServices !== 'undefined' && categoryServices && categoryServices.length > 1) { %>
+    <div style="max-width: 1100px; margin: 0 auto 40px;">
+      <h3 style="color: var(--text-gray); font-size: 0.95rem; text-align: center; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase;">
+        RELATED <%= service.categoryName.toUpperCase() %> SERVICES
+      </h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+        <% categoryServices.forEach(rel => { %>
+          <% if (rel.slug !== service.slug) { %>
+            <a href="<%= rel.urlPath %>" style="color: #FFF; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 0.88rem; transition: all 0.2s;">
+              <%= rel.icon || '⚡' %> <%= rel.h1 || rel.title %>
+            </a>
+          <% } %>
         <% }); %>
       </div>
     </div>
   <% } %>
 
-  <!-- Call to Action Footer Card -->
-  <div style="max-width: 1100px; margin: 0 auto 60px; background: linear-gradient(135deg, rgba(255,0,117,0.2), rgba(255,107,0,0.2)); border: 1px solid var(--primary-pink); border-radius: 16px; padding: 40px 28px; text-align: center;">
-    <h2 style="color: #FFF; font-size: 2rem; margin-top: 0; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif;">
-      Ready to Upgrade Your <%= service.categoryName %>?
-    </h2>
-    <p style="color: var(--text-gray); max-width: 650px; margin: 0 auto 24px; font-size: 1rem;">
-      Speak with our lead engineers today for a free technical discovery call, custom proposal, and transparent pricing.
-    </p>
-    <a href="#quote" class="btn-primary trigger-quote-modal" data-service="<%= service.title %>" style="padding: 0.9rem 2.4rem; font-size: 1.05rem;">
-      Get Free Project Quote →
-    </a>
-  </div>
-
-  <!-- Other Services Directory Bar -->
+  <!-- All Categories Navigation Bar -->
   <div style="max-width: 1100px; margin: 0 auto; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 40px;">
-    <h3 style="color: var(--text-gray); font-size: 0.95rem; margin-bottom: 20px;">EXPLORE OTHER TECHNOLOGY SERVICES</h3>
+    <h3 style="color: var(--text-gray); font-size: 0.95rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">ALL SERVICE CATEGORIES</h3>
     <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
-      <% allServices.forEach(s => { %>
-        <% if (s.slug !== service.slug) { %>
-          <a href="/services/<%= s.slug %>" style="color: #FFF; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.85rem; transition: all 0.2s;">
-            <%= s.icon %> <%= s.categoryName %>
-          </a>
-        <% } %>
-      <% }); %>
-      <a href="/services" style="color: var(--primary-pink); background: rgba(255,0,117,0.1); border: 1px solid var(--primary-pink); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 700;">
-        View All Services Directory →
+      <a href="/services/development" style="color: #FFF; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,0,117,0.3); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.88rem;">
+        💻 Development (8 Pages)
+      </a>
+      <a href="/services/cloud-devops" style="color: #FFF; background: rgba(255,255,255,0.05); border: 1px solid rgba(0,240,255,0.3); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.88rem;">
+        ☁️ Cloud DevOps (5 Pages)
+      </a>
+      <a href="/services/cybersecurity" style="color: #FFF; background: rgba(255,255,255,0.05); border: 1px solid rgba(16,185,129,0.3); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.88rem;">
+        🛡️ Cybersecurity (10 Pages)
+      </a>
+      <a href="/services/ai-automation" style="color: #FFF; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,107,0,0.3); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-size: 0.88rem;">
+        🤖 AI & Automation (1 Page)
       </a>
     </div>
   </div>

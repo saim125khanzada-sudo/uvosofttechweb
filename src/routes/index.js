@@ -123,6 +123,14 @@ router.get('/about', loadUser, async (req, res, next) => {
   }
 });
 
+const {
+  servicesCategories,
+  detailedServices,
+  getAllCategories,
+  getServicesByCategory,
+  findDetailedService
+} = require('../data/servicesDetailedData');
+
 // 1. Services Directory (/services)
 router.get('/services', loadUser, async (req, res, next) => {
   try {
@@ -139,8 +147,9 @@ router.get('/services', loadUser, async (req, res, next) => {
     }
 
     res.render('public/services', {
-      title: 'Our Technology Services Directory',
-      services: servicesData,
+      title: 'Our Technology Services Directory | UVO SoftTech',
+      categories: servicesCategories,
+      services: detailedServices,
       navigationItems,
       settings: settingsMap,
       user: req.user || null,
@@ -150,10 +159,11 @@ router.get('/services', loadUser, async (req, res, next) => {
   }
 });
 
-// 2. Individual Dedicated Service Page (/services/:slug e.g. /services/it-backoffice-support or /services/IT Backoffice Support)
-router.get('/services/:slug', loadUser, async (req, res, next) => {
+// 2. Exact 2-Tier Category + Service URL Handler (/services/development/website-development etc.)
+router.get('/services/:categorySlug/:serviceSlug', loadUser, async (req, res, next) => {
   try {
-    const matchedService = findServiceBySlug(req.params.slug);
+    const { categorySlug, serviceSlug } = req.params;
+    const matchedService = findDetailedService(categorySlug, serviceSlug);
 
     if (!matchedService) {
       return res.status(404).render('public/error', {
@@ -162,6 +172,8 @@ router.get('/services/:slug', loadUser, async (req, res, next) => {
         user: req.user || null,
       });
     }
+
+    const categoryServices = getServicesByCategory(matchedService.categorySlug);
 
     const navigationItems = await safeDbQuery(() =>
       prisma.navigationItem.findMany({
@@ -178,9 +190,79 @@ router.get('/services/:slug', loadUser, async (req, res, next) => {
     res.render('public/service-detail', {
       title: `${matchedService.title} | UVO SoftTech`,
       service: matchedService,
-      allServices: servicesData,
+      categoryServices,
+      allServices: detailedServices,
       navigationItems,
       settings: settingsMap,
+      user: req.user || null,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 3. Category Landing Page or Single-Slug Fallback (/services/development or /services/website-development)
+router.get('/services/:slug', loadUser, async (req, res, next) => {
+  try {
+    const rawSlug = req.params.slug;
+    const matchedCategory = servicesCategories.find(c => c.slug === rawSlug || c.id === rawSlug);
+
+    // If it's a category landing page (e.g. /services/development or /services/cybersecurity)
+    if (matchedCategory) {
+      const categoryServices = getServicesByCategory(matchedCategory.slug);
+      const navigationItems = await safeDbQuery(() =>
+        prisma.navigationItem.findMany({
+          where: { isVisible: true },
+          orderBy: { sortOrder: 'asc' },
+        })
+      );
+      const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+      const settingsMap = {};
+      if (Array.isArray(settingsList)) {
+        settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+      }
+
+      return res.render('public/services', {
+        title: `${matchedCategory.name} Services | UVO SoftTech`,
+        currentCategory: matchedCategory,
+        categories: servicesCategories,
+        services: categoryServices,
+        navigationItems,
+        settings: settingsMap,
+        user: req.user || null,
+      });
+    }
+
+    // Otherwise try finding detailed service by single slug
+    const matchedService = findDetailedService(null, rawSlug);
+    if (matchedService) {
+      const categoryServices = getServicesByCategory(matchedService.categorySlug);
+      const navigationItems = await safeDbQuery(() =>
+        prisma.navigationItem.findMany({
+          where: { isVisible: true },
+          orderBy: { sortOrder: 'asc' },
+        })
+      );
+      const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+      const settingsMap = {};
+      if (Array.isArray(settingsList)) {
+        settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+      }
+
+      return res.render('public/service-detail', {
+        title: `${matchedService.title} | UVO SoftTech`,
+        service: matchedService,
+        categoryServices,
+        allServices: detailedServices,
+        navigationItems,
+        settings: settingsMap,
+        user: req.user || null,
+      });
+    }
+
+    return res.status(404).render('public/error', {
+      title: 'Service Page Not Found',
+      message: 'The requested technology service page does not exist or has been relocated.',
       user: req.user || null,
     });
   } catch (error) {
