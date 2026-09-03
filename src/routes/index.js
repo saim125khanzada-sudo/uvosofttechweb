@@ -17,6 +17,18 @@ function trySendStaticHtml(req, res) {
     const publicDir = path.join(__dirname, '../../public');
     const reqPath = decodeURIComponent(req.path);
 
+    if (reqPath === '/services' || reqPath === '/services/') {
+      const servicesHtml = path.join(publicDir, 'services/services.html');
+      if (fs.existsSync(servicesHtml) && fs.statSync(servicesHtml).isFile()) {
+        return res.sendFile(servicesHtml);
+      }
+    }
+
+    const directFile = path.join(publicDir, reqPath);
+    if (fs.existsSync(directFile) && fs.statSync(directFile).isFile()) {
+      return res.sendFile(directFile);
+    }
+
     const fileHtml = path.join(publicDir, reqPath + '.html');
     if (fs.existsSync(fileHtml) && fs.statSync(fileHtml).isFile()) {
       return res.sendFile(fileHtml);
