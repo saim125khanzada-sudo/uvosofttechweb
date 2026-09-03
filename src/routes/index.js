@@ -123,6 +123,9 @@ router.get('/about', loadUser, async (req, res, next) => {
   }
 });
 
+const fs = require('fs');
+const path = require('path');
+
 const {
   servicesCategories,
   detailedServices,
@@ -131,9 +134,32 @@ const {
   findDetailedService
 } = require('../data/servicesDetailedData');
 
+function trySendStaticHtml(req, res) {
+  try {
+    const publicDir = path.join(__dirname, '../../public');
+    const reqPath = decodeURIComponent(req.path);
+    
+    // Direct file check
+    const fileHtml = path.join(publicDir, reqPath + '.html');
+    if (fs.existsSync(fileHtml) && fs.statSync(fileHtml).isFile()) {
+      return res.sendFile(fileHtml);
+    }
+
+    // Directory index check
+    const dirIndexHtml = path.join(publicDir, reqPath, 'index.html');
+    if (fs.existsSync(dirIndexHtml) && fs.statSync(dirIndexHtml).isFile()) {
+      return res.sendFile(dirIndexHtml);
+    }
+  } catch (err) {
+    // Ignore static resolution error and fall through
+  }
+  return false;
+}
+
 // 1. Services Directory (/services)
 router.get('/services', loadUser, async (req, res, next) => {
   try {
+    if (trySendStaticHtml(req, res)) return;
     const navigationItems = await safeDbQuery(() =>
       prisma.navigationItem.findMany({
         where: { isVisible: true },
@@ -162,6 +188,7 @@ router.get('/services', loadUser, async (req, res, next) => {
 // 2. Exact 2-Tier Category + Service URL Handler (/services/development/website-development etc.)
 router.get('/services/:categorySlug/:serviceSlug', loadUser, async (req, res, next) => {
   try {
+    if (trySendStaticHtml(req, res)) return;
     const { categorySlug, serviceSlug } = req.params;
     const matchedService = findDetailedService(categorySlug, serviceSlug);
 
@@ -204,6 +231,7 @@ router.get('/services/:categorySlug/:serviceSlug', loadUser, async (req, res, ne
 // 3. Category Landing Page or Single-Slug Fallback (/services/development or /services/website-development)
 router.get('/services/:slug', loadUser, async (req, res, next) => {
   try {
+    if (trySendStaticHtml(req, res)) return;
     const rawSlug = req.params.slug;
     const matchedCategory = servicesCategories.find(c => c.slug === rawSlug || c.id === rawSlug);
 
