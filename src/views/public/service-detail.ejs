@@ -1,0 +1,79 @@
+<!-- Service Detail EJS Template -->
+<div style="max-width: 1100px; margin: 30px auto; padding: 0 20px;">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: 24px; font-size: 0.85rem; color: var(--text-gray);">
+    <a href="/" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
+    <a href="/services" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
+    <a href="/services/<%= service.categorySlug %>" style="color: var(--neon-blue); text-decoration: none;"><%= service.categorySlug %></a> &nbsp;/&nbsp;
+    <span style="color: #FFF;"><%= service.title %></span>
+  </div>
+
+  <!-- Hero Header -->
+  <div style="background: rgba(15,22,42,0.8); border: 1px solid rgba(0,240,255,0.3); border-left: 4px solid var(--neon-blue); border-radius: 12px; padding: 28px; margin-bottom: 35px; backdrop-filter: blur(10px);">
+    <span style="color: var(--neon-pink); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Targeted Solution Page</span>
+    <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; color: #FFF; margin-top: 8px; margin-bottom: 12px; line-height: 1.3;"><%= service.h1Heading %></h1>
+    <p style="color: var(--text-gray); font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px;"><%= service.heroSubtitle %></p>
+    <div style="margin-bottom: 16px;">
+      <% service.techBadges.forEach(function(b) { %>
+        <span style="display: inline-block; background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.3); color: var(--neon-blue); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; margin-bottom: 6px; font-weight: 500;"><%= b %></span>
+      <% }); %>
+    </div>
+    <div>
+      <a href="/contact" class="btn-primary" style="text-decoration:none; display:inline-block; margin-right:12px;">Get Custom Quote</a>
+      <a href="https://wa.me/923718055990" target="_blank" class="btn-secondary" style="text-decoration:none; display:inline-block;">Consult on WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+    <div>
+      <div style="background: rgba(15,22,42,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-bottom: 30px;">
+        <h2 style="font-family: 'Space Grotesk', sans-serif; color: #FFF; font-size: 1.5rem; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">Overview & Business Value</h2>
+        <p style="color: var(--text-gray); font-size: 0.98rem; line-height: 1.7; white-space: pre-line;"><%= service.pageContent %></p>
+      </div>
+
+      <div style="background: rgba(15,22,42,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; margin-bottom: 30px;">
+        <h2 style="font-family: 'Space Grotesk', sans-serif; color: #FFF; font-size: 1.4rem; margin-bottom: 16px;">Key Service Deliverables</h2>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <% service.features.forEach(function(f) { %>
+            <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: #FFF; font-size: 0.95rem;">
+              <span style="color: var(--neon-blue); font-weight: bold;">✓</span> <%= f %>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+
+      <div style="background: rgba(15,22,42,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+        <h3 style="color: #FFF; font-size: 1.1rem; margin-bottom: 10px;">SEO Keyword Focus</h3>
+        <div>
+          <% service.targetKeywords.forEach(function(k) { %>
+            <span style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-gray); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; margin-right: 6px; margin-bottom: 6px; display: inline-block;"># <%= k %></span>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div style="background: rgba(15,22,42,0.7); border: 1px solid rgba(255,0,117,0.3); border-radius: 12px; padding: 24px; margin-bottom: 24px; text-align: center;">
+        <h3 style="color: #FFF; font-size: 1.2rem; margin-bottom: 10px;">Need this Solution?</h3>
+        <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">Schedule a direct technical consultation with our engineering leads in Karachi.</p>
+        <a href="/contact" class="btn-primary" style="width: 100%; text-decoration: none; display: block; box-sizing: border-box;">Book Consultation</a>
+      </div>
+
+      <% if (typeof categoryServices !== 'undefined' && categoryServices.length > 0) { %>
+        <div style="background: rgba(15,22,42,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
+          <h3 style="color: #FFF; font-size: 1.1rem; margin-bottom: 14px;">Related Services</h3>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <% categoryServices.filter(function(rel) { return rel.serviceSlug !== service.serviceSlug; }).forEach(function(rel) { %>
+              <a href="/services/<%= rel.categorySlug %>/<%= rel.serviceSlug %>" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 14px;">
+                <h4 style="color: #FFF; font-size: 0.95rem; margin-bottom: 4px;"><%= rel.title %></h4>
+                <p style="color: var(--text-gray); font-size: 0.8rem; margin: 0;"><%= rel.heroSubtitle.slice(0, 80) %>...</p>
+              </a>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>

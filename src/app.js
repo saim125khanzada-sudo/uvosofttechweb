@@ -142,15 +142,6 @@ const adminApiRouter = require('./routes/api/admin');
 const publicApiRouter = require('./routes/api/public');
 const seoRouter = require('./routes/seo');
 
-// Force 404 for any /services requests
-app.all('/services*', (req, res) => {
-  res.status(404).render('public/error', {
-    title: '404 - Page Not Found',
-    message: 'The requested page does not exist or has been removed.',
-    user: req.user || null,
-  });
-});
-
 app.use('/', seoRouter);
 app.use('/', indexRouter);
 app.use('/auth', authRouter);

@@ -138,6 +138,18 @@
     <nav>
       <ul class="nav-links">
         <li><a href="/" class="nav-link <%= currentPath === '/' ? 'active' : '' %>">Home</a></li>
+        <li class="nav-item-dropdown" style="position: relative;">
+          <a href="/services" class="nav-link <%= currentPath.startsWith('/services') ? 'active' : '' %>">Services ▾</a>
+          <div class="nav-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10,15,30,0.98); border: 1px solid rgba(0,240,255,0.3); border-radius: 8px; padding: 12px; min-width: 280px; flex-direction: column; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 1000;">
+            <a href="/services/development" style="color: #fff; text-decoration: none; font-size: 0.85rem; padding: 6px 10px; display: block;">💻 Custom Software & Web Dev</a>
+            <a href="/services/development/ERP-Development" style="color: #fff; text-decoration: none; font-size: 0.85rem; padding: 6px 10px; display: block;">📊 ERP Development (Odoo / Dynamics)</a>
+            <a href="/services/development/website-development" style="color: #fff; text-decoration: none; font-size: 0.85rem; padding: 6px 10px; display: block;">🌐 Website Development</a>
+            <a href="/services/cloud-devops" style="color: #fff; text-decoration: none; font-size: 0.85rem; padding: 6px 10px; display: block;">☁️ Cloud Engineering & DevOps</a>
+            <a href="/services/cybersecurity" style="color: #fff; text-decoration: none; font-size: 0.85rem; padding: 6px 10px; display: block;">🛡️ Enterprise Cybersecurity</a>
+            <a href="/services/ai-automation" style="color: #fff; text-decoration: none; font-size: 0.85rem; padding: 6px 10px; display: block;">🤖 AI Engineering & Automation</a>
+            <a href="/services" style="color: var(--neon-pink) !important; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 4px; padding-top: 8px; display: block;">⚡ All 24+ Services Directory →</a>
+          </div>
+        </li>
         <li><a href="/store" class="nav-link <%= currentPath === '/store' || currentPath === '/products' ? 'active' : '' %>">Hardware Store</a></li>
         <li><a href="/blog" class="nav-link <%= currentPath === '/blog' ? 'active' : '' %>">Blogs</a></li>
         <li><a href="/about" class="nav-link <%= currentPath === '/about' ? 'active' : '' %>">About Us</a></li>

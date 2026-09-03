@@ -2,21 +2,176 @@ const express = require('express');
 const router = express.Router();
 const { loadUser } = require('../middleware/auth');
 
-// Explicit 404 handler for any leftover /services requests or /404 redirect
-router.all('/404', loadUser, (req, res) => {
-  res.status(404).render('public/error', {
-    title: '404 - Page Not Found',
-    message: 'The requested page does not exist or has been removed.',
-    user: req.user || null,
-  });
+const fs = require('fs');
+const path = require('path');
+const {
+  servicesCategories,
+  detailedServices,
+  getAllCategories,
+  getServicesByCategory,
+  findDetailedService
+} = require('../data/servicesDetailedData');
+
+function trySendStaticHtml(req, res) {
+  try {
+    const publicDir = path.join(__dirname, '../../public');
+    const reqPath = decodeURIComponent(req.path);
+
+    const fileHtml = path.join(publicDir, reqPath + '.html');
+    if (fs.existsSync(fileHtml) && fs.statSync(fileHtml).isFile()) {
+      return res.sendFile(fileHtml);
+    }
+
+    const dirIndexHtml = path.join(publicDir, reqPath, 'index.html');
+    if (fs.existsSync(dirIndexHtml) && fs.statSync(dirIndexHtml).isFile()) {
+      return res.sendFile(dirIndexHtml);
+    }
+  } catch (err) {
+    // Fallthrough to dynamic route rendering
+  }
+  return false;
+}
+
+// 1. Services Directory Hub (/services)
+router.get('/services', loadUser, async (req, res, next) => {
+  try {
+    if (trySendStaticHtml(req, res)) return;
+
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+    const settingsMap = {};
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
+
+    res.render('public/services', {
+      title: 'Our Technology Services Directory | UVO SoftTech',
+      categories: servicesCategories,
+      services: detailedServices,
+      navigationItems,
+      settings: settingsMap,
+      user: req.user || null,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.all('/services*', loadUser, (req, res) => {
-  res.status(404).render('public/error', {
-    title: '404 - Page Not Found',
-    message: 'The services section has been permanently removed.',
-    user: req.user || null,
-  });
+// 2. Exact 2-Tier Category + Service Handler (/services/development/website-development etc.)
+router.get('/services/:categorySlug/:serviceSlug', loadUser, async (req, res, next) => {
+  try {
+    if (trySendStaticHtml(req, res)) return;
+
+    const { categorySlug, serviceSlug } = req.params;
+    const matchedService = findDetailedService(categorySlug, serviceSlug);
+
+    if (!matchedService) {
+      return res.status(404).render('public/error', {
+        title: 'Service Page Not Found',
+        message: 'The requested technology service page does not exist or has been relocated.',
+        user: req.user || null,
+      });
+    }
+
+    const categoryServices = getServicesByCategory(matchedService.categorySlug);
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+    const settingsMap = {};
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
+
+    res.render('public/service-detail', {
+      title: `${matchedService.title} | UVO SoftTech`,
+      service: matchedService,
+      categoryServices,
+      allServices: detailedServices,
+      navigationItems,
+      settings: settingsMap,
+      user: req.user || null,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 3. Category Landing Page or Single-Slug Fallback (/services/development or /services/website-development)
+router.get('/services/:slug', loadUser, async (req, res, next) => {
+  try {
+    if (trySendStaticHtml(req, res)) return;
+
+    const rawSlug = req.params.slug;
+    const matchedCategory = servicesCategories.find(c => c.slug === rawSlug || c.id === rawSlug);
+
+    if (matchedCategory) {
+      const categoryServices = getServicesByCategory(matchedCategory.slug);
+      const navigationItems = await safeDbQuery(() =>
+        prisma.navigationItem.findMany({
+          where: { isVisible: true },
+          orderBy: { sortOrder: 'asc' },
+        })
+      );
+      const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+      const settingsMap = {};
+      if (Array.isArray(settingsList)) {
+        settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+      }
+
+      return res.render('public/services', {
+        title: `${matchedCategory.name} Services | UVO SoftTech`,
+        currentCategory: matchedCategory,
+        categories: servicesCategories,
+        services: categoryServices,
+        navigationItems,
+        settings: settingsMap,
+        user: req.user || null,
+      });
+    }
+
+    const matchedService = findDetailedService(null, rawSlug);
+    if (matchedService) {
+      const categoryServices = getServicesByCategory(matchedService.categorySlug);
+      const navigationItems = await safeDbQuery(() =>
+        prisma.navigationItem.findMany({
+          where: { isVisible: true },
+          orderBy: { sortOrder: 'asc' },
+        })
+      );
+      const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+      const settingsMap = {};
+      if (Array.isArray(settingsList)) {
+        settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+      }
+
+      return res.render('public/service-detail', {
+        title: `${matchedService.title} | UVO SoftTech`,
+        service: matchedService,
+        categoryServices,
+        allServices: detailedServices,
+        navigationItems,
+        settings: settingsMap,
+        user: req.user || null,
+      });
+    }
+
+    return res.status(404).render('public/error', {
+      title: 'Service Page Not Found',
+      message: 'The requested technology service page does not exist or has been relocated.',
+      user: req.user || null,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 let prisma = null;

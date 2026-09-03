@@ -6,29 +6,6 @@
       "includeFiles": "src/**"
     }
   },
-  "headers": [
-    {
-      "source": "/services(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, no-cache, must-revalidate, max-age=0"
-        }
-      ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/services",
-      "destination": "/404",
-      "permanent": false
-    },
-    {
-      "source": "/services/(.*)",
-      "destination": "/404",
-      "permanent": false
-    }
-  ],
   "rewrites": [
     {
       "source": "/(.*)",

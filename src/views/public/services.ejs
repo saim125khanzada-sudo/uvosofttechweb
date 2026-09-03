@@ -1,0 +1,33 @@
+<!-- Services Directory EJS Template -->
+<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+  <div style="text-align: center; margin-bottom: 50px;">
+    <span style="background: rgba(255,0,117,0.15); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
+      24+ Dedicated Technology Service Pages
+    </span>
+    <h1 style="font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; color: #FFF; margin-top: 16px; margin-bottom: 12px;">
+      Enterprise Technology <span style="background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Services Directory</span>
+    </h1>
+    <p style="color: var(--text-gray); font-size: 1.1rem; max-width: 750px; margin: 0 auto; line-height: 1.6;">
+      Explore Uvosoft Tech’s specialized technology solutions. Click any service page to view targeted SEO content, capabilities, tech stack details, and localized solutions for Karachi, Pakistan, and global markets.
+    </p>
+  </div>
+
+  <% if (typeof categories !== 'undefined' && categories.length > 0) { %>
+    <% categories.forEach(function(cat) { %>
+      <div style="margin-bottom: 50px;">
+        <h2 style="font-family: 'Space Grotesk', sans-serif; color: var(--neon-blue); font-size: 1.8rem; margin-bottom: 10px;"><%= cat.icon %> <%= cat.name %></h2>
+        <p style="color: var(--text-gray); margin-bottom: 20px; max-width: 800px;"><%= cat.description %></p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          <% var servicesInCat = services.filter(function(s) { return s.categorySlug === cat.slug; }); %>
+          <% servicesInCat.forEach(function(s) { %>
+            <a href="/services/<%= s.categorySlug %>/<%= s.serviceSlug %>" class="hero-service-card" style="text-decoration: none; background: rgba(15,22,42,0.7); border: 1px solid rgba(0,240,255,0.2); border-radius: 12px; padding: 20px; backdrop-filter: blur(10px);">
+              <h4 style="color: #FFF; font-size: 1.15rem; margin-bottom: 8px;"><%= s.title %></h4>
+              <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px;"><%= s.heroSubtitle %></p>
+              <span style="color: var(--neon-pink); font-size: 0.8rem; font-weight: bold;">View Service & Target Keywords →</span>
+            </a>
+          <% }); %>
+        </div>
+      </div>
+    <% }); %>
+  <% } %>
+</div>
