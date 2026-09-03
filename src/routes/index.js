@@ -122,15 +122,11 @@ router.get('/about', loadUser, async (req, res, next) => {
   }
 });
 
+const { servicesData, findServiceBySlug } = require('../data/servicesData');
+
+// 1. Services Directory (/services)
 router.get('/services', loadUser, async (req, res, next) => {
   try {
-    const categories = await safeDbQuery(() =>
-      prisma.serviceCategory.findMany({
-        where: { isActive: true },
-        include: { services: { where: { isActive: true }, orderBy: { sortOrder: 'asc' } } },
-        orderBy: { sortOrder: 'asc' },
-      })
-    );
     const navigationItems = await safeDbQuery(() =>
       prisma.navigationItem.findMany({
         where: { isVisible: true },
@@ -144,8 +140,46 @@ router.get('/services', loadUser, async (req, res, next) => {
     }
 
     res.render('public/services', {
-      title: 'Our Services',
-      categories,
+      title: 'Our Technology Services Directory',
+      services: servicesData,
+      navigationItems,
+      settings: settingsMap,
+      user: req.user || null,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 2. Individual Dedicated Service Page (/services/:slug e.g. /services/it-backoffice-support or /services/IT Backoffice Support)
+router.get('/services/:slug', loadUser, async (req, res, next) => {
+  try {
+    const matchedService = findServiceBySlug(req.params.slug);
+
+    if (!matchedService) {
+      return res.status(404).render('public/error', {
+        title: 'Service Page Not Found',
+        message: 'The requested technology service page does not exist or has been relocated.',
+        user: req.user || null,
+      });
+    }
+
+    const navigationItems = await safeDbQuery(() =>
+      prisma.navigationItem.findMany({
+        where: { isVisible: true },
+        orderBy: { sortOrder: 'asc' },
+      })
+    );
+    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
+    const settingsMap = {};
+    if (Array.isArray(settingsList)) {
+      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
+    }
+
+    res.render('public/service-detail', {
+      title: `${matchedService.title} | UVO SoftTech`,
+      service: matchedService,
+      allServices: servicesData,
       navigationItems,
       settings: settingsMap,
       user: req.user || null,

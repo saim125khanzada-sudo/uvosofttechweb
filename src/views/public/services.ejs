@@ -1,66 +1,39 @@
-<!-- Dedicated Services Page with Category Filter Tabs -->
-<section class="content-section" style="padding-top: 140px;">
-  <h1 class="section-title">Our <span>Technology Services</span></h1>
-  <p class="section-subtitle">Comprehensive IT solutions, custom development, cloud engineering, and cybersecurity services.</p>
-
-  <div class="tabs-container">
-    <button class="tab-btn active" onclick="filterServices('it')">IT Backoffice Support</button>
-    <button class="tab-btn" onclick="filterServices('dev')">Software & Mobile Dev</button>
-    <button class="tab-btn" onclick="filterServices('erp')">Odoo & Dynamics 365 ERP</button>
-    <button class="tab-btn" onclick="filterServices('cloud')">Cloud & DevOps</button>
-    <button class="tab-btn" onclick="filterServices('cyber')">Cybersecurity & Pentesting</button>
-    <button class="tab-btn" onclick="filterServices('ai')">AI Engineering & LLMs</button>
+<!-- Dedicated Services Directory Page -->
+<section class="content-section" style="padding-top: 140px; padding-bottom: 80px;">
+  <div style="text-align: center; max-width: 900px; margin: 0 auto 40px;">
+    <h1 class="section-title" style="font-size: clamp(2.2rem, 5vw, 3.4rem);">Our Technology <span>Services Directory</span></h1>
+    <p class="section-subtitle" style="font-size: 1.1rem; color: var(--text-gray); line-height: 1.6;">
+      Explore dedicated solution pages for enterprise IT backoffice support, custom software development, Odoo/Dynamics 365 ERP, cloud DevOps, cybersecurity, and AI LLM engineering.
+    </p>
   </div>
 
-  <div class="grid-container" id="servicesGrid">
-    <!-- Filtered by JavaScript filterServices() -->
+  <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; max-width: 1200px; margin: 0 auto;">
+    <% 
+      const serviceList = typeof services !== 'undefined' && services && services.length > 0 ? services : [
+        { slug: 'it-backoffice-support', icon: '🛠️', heroBadge: '24/7 Managed IT Operations', categoryName: 'IT Backoffice Support', title: 'IT Backoffice Support & Infrastructure Operations', subtitle: 'Reliable remote & local IT helpdesk, server management, active directory, network support, and firewalls.' },
+        { slug: 'software-mobile-dev', icon: '💻', heroBadge: 'Custom Software Engineering', categoryName: 'Software & Mobile Dev', title: 'Custom Software & Mobile App Development', subtitle: 'Tailored enterprise software, HRM/CRM portals, iOS/Android mobile apps, and cloud APIs.' },
+        { slug: 'odoo-dynamics-365-erp', icon: '📊', heroBadge: 'Enterprise ERP Implementation', categoryName: 'Odoo & Dynamics 365 ERP', title: 'Odoo ERP & Microsoft Dynamics 365 Solutions', subtitle: 'Full lifecycle ERP implementation, custom modules, POS sync, inventory, and accounting.' },
+        { slug: 'cloud-devops', icon: '☁️', heroBadge: 'Cloud Architecture & DevOps', categoryName: 'Cloud & DevOps', title: 'Cloud Engineering, Migration & DevOps Architecture', subtitle: 'AWS, Azure, and GCP architectures, CI/CD automated deployment pipelines, Kubernetes, and Cloud Cost Optimization.' },
+        { slug: 'cybersecurity-pentesting', icon: '🛡️', heroBadge: 'Offensive Security & Pentesting', categoryName: 'Cybersecurity & Pentesting', title: 'Enterprise Cybersecurity & Penetration Testing', subtitle: 'Web app pentesting, Active Directory security audits, SOC 24/7 monitoring, and vulnerability assessments.' },
+        { slug: 'ai-engineering-llms', icon: '🤖', heroBadge: 'Enterprise AI Solutions', categoryName: 'AI Engineering & LLMs', title: 'AI Engineering & Custom LLM Integration', subtitle: 'Generative AI, Retrieval-Augmented Generation (RAG) over corporate data, autonomous AI agents, and custom chatbots.' }
+      ];
+    %>
+
+    <% serviceList.forEach(s => { %>
+      <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 32px; border-color: rgba(255, 0, 117, 0.25); background: rgba(15, 23, 42, 0.75);">
+        <div>
+          <div style="font-size: 2.5rem; margin-bottom: 16px;"><%= s.icon %></div>
+          <div style="color: var(--primary-pink); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;"><%= s.heroBadge %></div>
+          <h2 style="font-size: 1.45rem; color: #FFF; margin-bottom: 12px; font-family: 'Space Grotesk', sans-serif; line-height: 1.3;"><%= s.title %></h2>
+          <p style="color: var(--text-gray); font-size: 0.93rem; line-height: 1.6; margin-bottom: 24px;"><%= s.subtitle %></p>
+        </div>
+
+        <div>
+          <a href="/services/<%= s.slug %>" class="btn-primary" style="display: block; text-align: center; font-size: 0.95rem; padding: 0.85rem 1rem; text-decoration: none;">
+            View Dedicated <%= s.categoryName %> Page →
+          </a>
+        </div>
+      </div>
+    <% }); %>
   </div>
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const services = {
-    it: [
-      { title: "Local & Remote IT Backoffice Support", desc: "Reliable local and remote IT backoffice support to ensure your daily operations run smoothly without interruptions. Troubleshooting, system maintenance, and user support." },
-      { title: "Windows / Linux Server Management", desc: "Server setup, virtualization, backup solutions, Active Directory management, file server configuration, and DHCP services for maximum uptime." },
-      { title: "Network Support (LAN, WAN, VLANs)", desc: "End-to-end network support, bandwidth management, structured cabling, and advanced configurations for switches, routers, and VLANs." },
-      { title: "Firewall Installation & Configuration", desc: "Implementation and management of security firewall solutions to protect your business network from unauthorized access and cyber threats." }
-    ],
-    dev: [
-      { title: "Custom Business Applications (HRM, CRM, ERP)", desc: "Tailored business apps including HRM, HCM, payroll, CRM, asset management, inventory, and gatekeeper security applications." },
-      { title: "Mobile Application Development", desc: "High-performance iOS and Android mobile applications built for security, scalability, and seamless user experience." },
-      { title: "Responsive Webapp & Portal Development", desc: "Modern, responsive, and fast web applications designed with enterprise security standards and API integrations." }
-    ],
-    erp: [
-      { title: "Odoo ERP Implementation & Customization", desc: "Full lifecycle Odoo Community and Enterprise setup, module customization, POS sync, inventory management, and multi-currency accounting." },
-      { title: "Microsoft Dynamics 365 Deployments", desc: "Implementation, customization, and migration for Dynamics 365 Finance & Operations and Business Central." }
-    ],
-    cloud: [
-      { title: "Cloud Migration & Architecture (AWS / Azure)", desc: "End-to-end cloud deployment, serverless microservices, Kubernetes container orchestration, and multi-cloud setup." },
-      { title: "Cloud Cost Optimization", desc: "Analyze cloud resource utilization, eliminate waste, and right-size infrastructure to save up to 50% on cloud bills." },
-      { title: "MDM & Mobile Application Management", desc: "Mobile Device Management (MDM) enrollment, remote device wipe, access control policies, and corporate security enforcement." }
-    ],
-    cyber: [
-      { title: "Application Security & Penetration Testing", desc: "Identify and remediate security vulnerabilities across SDLC. Web application, mobile, and API penetration testing." },
-      { title: "Active Directory & Infrastructure Pentesting", desc: "Simulate real-world attacks against enterprise Active Directory, domain controllers, and internal network infrastructure." },
-      { title: "24x7 Security Operations Center (SOC)", desc: "Continuous 24/7 security monitoring, log analysis, SIEM management, threat detection, and incident response." }
-    ],
-    ai: [
-      { title: "AI Engineering & LLM Integration", desc: "Generative AI, Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and intelligent AI agent workflows." }
-    ]
-  };
-
-  window.filterServices = function(category) {
-    const grid = document.getElementById('servicesGrid');
-    if (!grid || !services[category]) return;
-    grid.innerHTML = '';
-    services[category].forEach(s => {
-      grid.innerHTML += `<div class="glass-card"><h3>${s.title}</h3><p>${s.desc}</p></div>`;
-    });
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    if (event && event.target) event.target.classList.add('active');
-  };
-
-  filterServices('it');
-});
-</script>
