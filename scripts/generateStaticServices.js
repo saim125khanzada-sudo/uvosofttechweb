@@ -10,36 +10,100 @@ function ensureDir(dirPath) {
   }
 }
 
-function renderHeaderNav() {
+// Render navigation header with relative paths depending on depth
+function renderHeaderNav(relDepth = 0) {
+  let homeLink = 'index.html';
+  let servicesLink = 'public/services/services.html';
+  let devCatLink = 'public/services/development/development.html';
+  let erpLink = 'public/services/development/ERP-Development.html';
+  let webDevLink = 'public/services/development/website-development.html';
+  let cloudCatLink = 'public/services/cloud-devops/cloud-devops.html';
+  let cyberCatLink = 'public/services/cybersecurity/cybersecurity.html';
+  let aiCatLink = 'public/services/ai-automation/ai-automation.html';
+  let storeLink = 'store.html';
+  let blogLink = 'blog.html';
+  let aboutLink = 'about.html';
+  let contactLink = 'contact.html';
+
+  if (relDepth === 1) {
+    // Inside public/services/
+    homeLink = '../../index.html';
+    servicesLink = 'services.html';
+    devCatLink = 'development/development.html';
+    erpLink = 'development/ERP-Development.html';
+    webDevLink = 'development/website-development.html';
+    cloudCatLink = 'cloud-devops/cloud-devops.html';
+    cyberCatLink = 'cybersecurity/cybersecurity.html';
+    aiCatLink = 'ai-automation/ai-automation.html';
+    storeLink = '../../store.html';
+    blogLink = '../../blog.html';
+    aboutLink = '../../about.html';
+    contactLink = '../../contact.html';
+  } else if (relDepth === 2) {
+    // Inside public/services/category/ (e.g. public/services/development/)
+    homeLink = '../../../index.html';
+    servicesLink = '../services.html';
+    devCatLink = '../development/development.html';
+    erpLink = '../development/ERP-Development.html';
+    webDevLink = '../development/website-development.html';
+    cloudCatLink = '../cloud-devops/cloud-devops.html';
+    cyberCatLink = '../cybersecurity/cybersecurity.html';
+    aiCatLink = '../ai-automation/ai-automation.html';
+    storeLink = '../../../store.html';
+    blogLink = '../../../blog.html';
+    aboutLink = '../../../about.html';
+    contactLink = '../../../contact.html';
+  }
+
   return `
   <header>
-    <a href="/index.html" class="nav-logo"><div class="logo-dot"></div> UVOSOFT TECH</a>
+    <a href="${homeLink}" class="nav-logo"><div class="logo-dot"></div> UVOSOFT TECH</a>
     <nav>
       <ul>
-        <li><a href="/index.html">Home</a></li>
+        <li><a href="${homeLink}">Home</a></li>
         <li style="position: relative;" class="nav-dropdown-wrapper">
-          <a href="/public/services/services.html" class="active">Services ▾</a>
+          <a href="${servicesLink}" class="active">Services ▾</a>
           <div class="sub-nav-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10,15,30,0.95); border: 1px solid rgba(0,240,255,0.3); padding: 14px; border-radius: 8px; min-width: 280px; flex-direction: column; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 1000;">
-            <a href="/public/services/development/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">💻 Custom Software & Web Dev</a>
-            <a href="/public/services/development/ERP-Development.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">📊 ERP Development (Odoo & Dynamics)</a>
-            <a href="/public/services/development/website-development.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🌐 Website Development</a>
-            <a href="/public/services/cloud-devops/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">☁️ Cloud Engineering & DevOps</a>
-            <a href="/public/services/cybersecurity/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🛡️ Enterprise Cybersecurity</a>
-            <a href="/public/services/ai-automation/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🤖 AI Engineering & Automation</a>
-            <a href="/public/services/services.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--neon-blue); font-weight: bold;">⚡ All 24+ Services Directory →</a>
+            <a href="${devCatLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">💻 Custom Software & Web Dev</a>
+            <a href="${erpLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">📊 ERP Development (Odoo & Dynamics)</a>
+            <a href="${webDevLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🌐 Website Development</a>
+            <a href="${cloudCatLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">☁️ Cloud Engineering & DevOps</a>
+            <a href="${cyberCatLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🛡️ Enterprise Cybersecurity</a>
+            <a href="${aiCatLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🤖 AI Engineering & Automation</a>
+            <a href="${servicesLink}" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--neon-blue); font-weight: bold;">⚡ All 24+ Services Directory →</a>
           </div>
         </li>
-        <li><a href="/store.html">Store</a></li>
-        <li><a href="/blog.html">Blogs</a></li>
-        <li><a href="/about.html">About Us</a></li>
-        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="${storeLink}">Store</a></li>
+        <li><a href="${blogLink}">Blogs</a></li>
+        <li><a href="${aboutLink}">About Us</a></li>
+        <li><a href="${contactLink}">Contact</a></li>
       </ul>
     </nav>
-    <a href="/contact.html" class="btn-login" style="text-decoration:none;">Book Consultation</a>
+    <a href="${contactLink}" class="btn-login" style="text-decoration:none;">Book Consultation</a>
   </header>`;
 }
 
-function renderFooter() {
+function renderFooter(relDepth = 0) {
+  let devCatLink = 'public/services/development/development.html';
+  let erpLink = 'public/services/development/ERP-Development.html';
+  let cloudCatLink = 'public/services/cloud-devops/cloud-devops.html';
+  let cyberCatLink = 'public/services/cybersecurity/cybersecurity.html';
+  let aiCatLink = 'public/services/ai-automation/ai-automation.html';
+
+  if (relDepth === 1) {
+    devCatLink = 'development/development.html';
+    erpLink = 'development/ERP-Development.html';
+    cloudCatLink = 'cloud-devops/cloud-devops.html';
+    cyberCatLink = 'cybersecurity/cybersecurity.html';
+    aiCatLink = 'ai-automation/ai-automation.html';
+  } else if (relDepth === 2) {
+    devCatLink = '../development/development.html';
+    erpLink = '../development/ERP-Development.html';
+    cloudCatLink = '../cloud-devops/cloud-devops.html';
+    cyberCatLink = '../cybersecurity/cybersecurity.html';
+    aiCatLink = '../ai-automation/ai-automation.html';
+  }
+
   return `
   <footer class="footer-container" style="background: rgba(5,8,18,0.95); border-top: 1px solid rgba(255,255,255,0.1); padding: 40px 20px 20px; margin-top: 60px;">
     <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
@@ -50,11 +114,11 @@ function renderFooter() {
       <div>
         <h4 style="color: #FFF; font-family: 'Space Grotesk', sans-serif; margin-bottom: 12px;">Core Service Domains</h4>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem;">
-          <li><a href="/public/services/development/index.html" style="color: var(--text-gray); text-decoration: none;">Custom Software & Web Dev</a></li>
-          <li><a href="/public/services/development/ERP-Development.html" style="color: var(--text-gray); text-decoration: none;">ERP Development (Odoo / Dynamics 365)</a></li>
-          <li><a href="/public/services/cloud-devops/index.html" style="color: var(--text-gray); text-decoration: none;">Cloud Engineering & DevOps</a></li>
-          <li><a href="/public/services/cybersecurity/index.html" style="color: var(--text-gray); text-decoration: none;">Enterprise Cybersecurity & Pentesting</a></li>
-          <li><a href="/public/services/ai-automation/index.html" style="color: var(--text-gray); text-decoration: none;">AI Engineering & Automation</a></li>
+          <li><a href="${devCatLink}" style="color: var(--text-gray); text-decoration: none;">Custom Software & Web Dev</a></li>
+          <li><a href="${erpLink}" style="color: var(--text-gray); text-decoration: none;">ERP Development (Odoo / Dynamics 365)</a></li>
+          <li><a href="${cloudCatLink}" style="color: var(--text-gray); text-decoration: none;">Cloud Engineering & DevOps</a></li>
+          <li><a href="${cyberCatLink}" style="color: var(--text-gray); text-decoration: none;">Enterprise Cybersecurity & Pentesting</a></li>
+          <li><a href="${aiCatLink}" style="color: var(--text-gray); text-decoration: none;">AI Engineering & Automation</a></li>
         </ul>
       </div>
       <div>
@@ -125,22 +189,22 @@ function renderHtmlLayout(title, metaDescription, bodyContent, keywords = [], re
   <canvas id="matrix-canvas"></canvas>
   <canvas id="ai-canvas"></canvas>
 
-  ${renderHeaderNav()}
+  ${renderHeaderNav(relDepth)}
   
   <main style="min-height: 80vh; padding-top: 90px; position: relative; z-index: 2;">
     ${bodyContent}
   </main>
   
-  ${renderFooter()}
+  ${renderFooter(relDepth)}
 
   <script>
-    // Cursor & Parallax Glow
+    // Cursor Glow
     const cursorGlow = document.getElementById('cursorGlow');
     window.addEventListener('mousemove', e => {
       if(cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
     });
 
-    // Matrix Background Animation
+    // Matrix Rain
     const mCanvas = document.getElementById('matrix-canvas');
     if (mCanvas) {
       const mCtx = mCanvas.getContext('2d');
@@ -154,7 +218,7 @@ function renderHtmlLayout(title, metaDescription, bodyContent, keywords = [], re
       setInterval(drawMatrix, 40);
     }
 
-    // 3D Morphing AI Core Animation
+    // 3D Morphing AI Core
     const canvas = document.getElementById('ai-canvas');
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -162,8 +226,8 @@ function renderHtmlLayout(title, metaDescription, bodyContent, keywords = [], re
       function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; cx = w / 2; cy = h / 2; radius = Math.min(w, h) * 0.35; }
       resize();
       window.addEventListener('resize', resize);
-      const N = 160; let currentShape = [], targetShape = [], morphProgress = 1, restTimer = 0, rotX = 0, rotY = 0, dataPackets = [];
-      const palettes = [['#00F0FF', '#FF0055', '#FF7700'], ['#FF0055', '#FF7700', '#00F0FF'], ['#39FF14', '#00F0FF', '#BF00FF']];
+      const N = 160; let currentShape = [], targetShape = [], morphProgress = 1, rotX = 0, rotY = 0;
+      const palettes = [['#00F0FF', '#FF0055', '#FF7700'], ['#FF0055', '#FF7700', '#00F0FF']];
       let currentColors = palettes[0], targetColors = palettes[1], colorProgress = 1;
       function generateSphere() { let p=[]; for(let i=0;i<8;i++) for(let j=0;j<20;j++) { let t=(i/8)*Math.PI, p2=(j/20)*2*Math.PI; p.push({x:radius*Math.sin(t)*Math.cos(p2), y:radius*Math.cos(t), z:radius*Math.sin(t)*Math.sin(p2)}); } return p; }
       function generateRings() { let p=[]; for(let i=0;i<N;i++) { let t=((i%50)/50)*2*Math.PI, r=Math.floor(i/50); if(r===0)p.push({x:radius*Math.cos(t),y:radius*Math.sin(t),z:0}); else if(r===1)p.push({x:radius*Math.cos(t),y:0,z:radius*Math.sin(t)}); else p.push({x:0,y:radius*Math.cos(t),z:radius*Math.sin(t)}); } return p; }
@@ -193,7 +257,7 @@ function generateServicesHub() {
   const categoriesHtml = servicesCategories.map(cat => {
     const servicesInCat = getServicesByCategory(cat.slug);
     const serviceItemsHtml = servicesInCat.map(s => `
-      <a href="/public/services/${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+      <a href="${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
         <h4 style="color: #FFF; font-size: 1.15rem; margin-bottom: 8px;">${s.title}</h4>
         <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px;">${s.heroSubtitle}</p>
         <span style="color: var(--neon-pink); font-size: 0.8rem; font-weight: bold;">View Service Page →</span>
@@ -202,7 +266,9 @@ function generateServicesHub() {
 
     return `
     <div style="margin-bottom: 50px;">
-      <h2 style="font-family: 'Space Grotesk', sans-serif; color: var(--neon-blue); font-size: 1.8rem; margin-bottom: 10px;">${cat.icon} ${cat.name}</h2>
+      <h2 style="font-family: 'Space Grotesk', sans-serif; color: var(--neon-blue); font-size: 1.8rem; margin-bottom: 10px;">
+        <a href="${cat.slug}/${cat.slug}.html" style="color: var(--neon-blue); text-decoration: none;">${cat.icon} ${cat.name}</a>
+      </h2>
       <p style="color: var(--text-gray); margin-bottom: 20px; max-width: 800px;">${cat.description}</p>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
         ${serviceItemsHtml}
@@ -240,7 +306,7 @@ function generateServicesHub() {
   console.log('✓ Generated public/services/index.html & services.html');
 }
 
-// 2. Generate Category Landing Pages (public/services/development/index.html etc.)
+// 2. Generate Category Landing Pages (public/services/development/development.html & index.html etc.)
 function generateCategoryPages() {
   servicesCategories.forEach(cat => {
     const catDir = path.join(publicServicesDir, cat.slug);
@@ -248,7 +314,7 @@ function generateCategoryPages() {
 
     const servicesInCat = getServicesByCategory(cat.slug);
     const serviceCardsHtml = servicesInCat.map(s => `
-      <a href="/public/services/${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+      <a href="${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <h3 style="color: #FFF; font-size: 1.3rem; margin-bottom: 10px;">${s.title}</h3>
           <p style="color: var(--text-gray); font-size: 0.9rem; line-height: 1.5; margin-bottom: 16px;">${s.heroSubtitle}</p>
@@ -263,8 +329,8 @@ function generateCategoryPages() {
     const bodyContent = `
     <div style="max-width: 1200px; margin: 20px auto; padding: 0 20px;">
       <div style="margin-bottom: 30px; font-size: 0.9rem; color: var(--text-gray);">
-        <a href="/index.html" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
-        <a href="/public/services/services.html" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
+        <a href="../../../index.html" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
+        <a href="../services.html" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
         <span style="color: #FFF;">${cat.name}</span>
       </div>
       <div style="margin-bottom: 40px;">
@@ -284,9 +350,10 @@ function generateCategoryPages() {
       2
     );
 
-    fs.writeFileSync(path.join(catDir, 'index.html'), fullHtml, 'utf8');
+    // Write both category.html (e.g. development.html) AND index.html
     fs.writeFileSync(path.join(catDir, `${cat.slug}.html`), fullHtml, 'utf8');
-    console.log(`✓ Generated public/services/${cat.slug}/index.html`);
+    fs.writeFileSync(path.join(catDir, 'index.html'), fullHtml, 'utf8');
+    console.log(`✓ Generated public/services/${cat.slug}/${cat.slug}.html & index.html`);
   });
 }
 
@@ -307,7 +374,7 @@ function generateIndividualServicePages() {
 
     const relatedServices = getServicesByCategory(s.categorySlug).filter(rel => rel.serviceSlug !== s.serviceSlug);
     const relatedServicesHtml = relatedServices.map(rel => `
-      <a href="/public/services/${rel.categorySlug}/${rel.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; padding: 16px;">
+      <a href="${rel.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; padding: 16px;">
         <h4 style="color: #FFF; font-size: 1rem; margin-bottom: 6px;">${rel.title}</h4>
         <p style="color: var(--text-gray); font-size: 0.8rem; line-height: 1.4; margin: 0;">${rel.heroSubtitle.slice(0, 90)}...</p>
       </a>
@@ -317,9 +384,9 @@ function generateIndividualServicePages() {
     <div style="max-width: 1100px; margin: 20px auto; padding: 0 20px;">
       <!-- Breadcrumb -->
       <div style="margin-bottom: 24px; font-size: 0.85rem; color: var(--text-gray);">
-        <a href="/index.html" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
-        <a href="/public/services/services.html" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
-        <a href="/public/services/${s.categorySlug}/index.html" style="color: var(--neon-blue); text-decoration: none;">${s.categorySlug}</a> &nbsp;/&nbsp;
+        <a href="../../../index.html" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
+        <a href="../services.html" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
+        <a href="${s.categorySlug}.html" style="color: var(--neon-blue); text-decoration: none;">${s.categorySlug}</a> &nbsp;/&nbsp;
         <span style="color: #FFF;">${s.title}</span>
       </div>
 
@@ -332,7 +399,7 @@ function generateIndividualServicePages() {
           ${techBadgesHtml}
         </div>
         <div>
-          <a href="/contact.html" class="btn-primary" style="text-decoration:none; display:inline-block; margin-right:12px;">Get Custom Quote</a>
+          <a href="../../../contact.html" class="btn-primary" style="text-decoration:none; display:inline-block; margin-right:12px;">Get Custom Quote</a>
           <a href="https://wa.me/923718055990" target="_blank" class="btn-secondary" style="text-decoration:none; display:inline-block;">Consult on WhatsApp</a>
         </div>
       </div>
@@ -365,7 +432,7 @@ function generateIndividualServicePages() {
           <div class="hero-service-card" style="margin-bottom: 24px; text-align: center; border-color: rgba(255,0,117,0.3);">
             <h3 style="color: #FFF; font-size: 1.2rem; margin-bottom: 10px;">Need this Solution?</h3>
             <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">Schedule a direct technical consultation with our engineering leads in Karachi.</p>
-            <a href="/contact.html" class="btn-primary" style="width: 100%; text-decoration: none; display: block; box-sizing: border-box;">Book Consultation</a>
+            <a href="../../../contact.html" class="btn-primary" style="width: 100%; text-decoration: none; display: block; box-sizing: border-box;">Book Consultation</a>
           </div>
 
           ${relatedServices.length > 0 ? `
@@ -401,7 +468,7 @@ function generateIndividualServicePages() {
   });
 }
 
-console.log('--- Generating All 24 Static Service HTML Pages with Cyber Theme ---');
+console.log('--- Generating All 24 Static Service HTML Pages with Exact File Paths ---');
 generateServicesHub();
 generateCategoryPages();
 generateIndividualServicePages();
