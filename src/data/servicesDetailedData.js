@@ -535,29 +535,41 @@ function getAllCategories() {
 
 function getServicesByCategory(catSlug) {
   if (!catSlug) return [];
-  const cleanCat = catSlug.trim().toLowerCase();
-  return detailedServices.filter(s => s.categorySlug === cleanCat);
+  const cleanCat = decodeURIComponent(catSlug).trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  return detailedServices.filter(s => s.categorySlug.replace(/[^a-z0-9]/g, '') === cleanCat);
 }
 
 function findDetailedService(catSlug, serviceSlug) {
   if (!serviceSlug) return null;
-  const cleanService = decodeURIComponent(serviceSlug).trim().toLowerCase();
-  const cleanCat = catSlug ? decodeURIComponent(catSlug).trim().toLowerCase() : null;
+  const rawService = decodeURIComponent(serviceSlug).trim().toLowerCase();
+  const cleanService = rawService.replace(/[^a-z0-9]/g, '');
+  
+  let cleanCat = null;
+  if (catSlug) {
+    cleanCat = decodeURIComponent(catSlug).trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
 
-  // 1. Exact Category + Service Match
+  // 1. Match by Category + Service normalized alphanumeric string (supports ERP-Development, erp-development, etc.)
   if (cleanCat) {
-    const foundExact = detailedServices.find(s => s.categorySlug === cleanCat && (s.slug === cleanService || s.slug.replace(/-/g, '') === cleanService.replace(/-/g, '')));
-    if (foundExact) return foundExact;
+    const foundCat = detailedServices.find(s => {
+      const sCat = s.categorySlug.replace(/[^a-z0-9]/g, '');
+      const sSlug = s.slug.replace(/[^a-z0-9]/g, '');
+      return sCat === cleanCat && (sSlug === cleanService || s.h1.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanService));
+    });
+    if (foundCat) return foundCat;
   }
 
   // 2. Direct Service Slug Match across all categories
-  const foundBySlug = detailedServices.find(s => s.slug === cleanService || s.slug.replace(/-/g, '') === cleanService.replace(/-/g, ''));
+  const foundBySlug = detailedServices.find(s => {
+    const sSlug = s.slug.replace(/[^a-z0-9]/g, '');
+    return sSlug === cleanService;
+  });
   if (foundBySlug) return foundBySlug;
 
-  // 3. Match by original user request title or loose keywords
+  // 3. Match by H1 or Title substring
   for (const s of detailedServices) {
-    const sTitle = s.h1.toLowerCase();
-    if (sTitle.includes(cleanService) || cleanService.includes(s.slug)) {
+    const sTitle = s.h1.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (sTitle.includes(cleanService) || cleanService.includes(s.slug.replace(/[^a-z0-9]/g, ''))) {
       return s;
     }
   }
