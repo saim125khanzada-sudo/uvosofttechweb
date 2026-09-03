@@ -13,29 +13,29 @@ function ensureDir(dirPath) {
 function renderHeaderNav() {
   return `
   <header>
-    <a href="/" class="nav-logo"><div class="logo-dot"></div> UVOSOFT TECH</a>
+    <a href="/index.html" class="nav-logo"><div class="logo-dot"></div> UVOSOFT TECH</a>
     <nav>
       <ul>
-        <li><a href="/">Home</a></li>
+        <li><a href="/index.html">Home</a></li>
         <li style="position: relative;" class="nav-dropdown-wrapper">
-          <a href="/services" class="active">Services ▾</a>
+          <a href="/public/services/services.html" class="active">Services ▾</a>
           <div class="sub-nav-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background: rgba(10,15,30,0.95); border: 1px solid rgba(0,240,255,0.3); padding: 14px; border-radius: 8px; min-width: 280px; flex-direction: column; gap: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); z-index: 1000;">
-            <a href="/services/development" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">💻 Custom Software & Web Dev</a>
-            <a href="/services/development/ERP-Development" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">📊 ERP Development (Odoo & Dynamics)</a>
-            <a href="/services/development/website-development" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🌐 Website Development</a>
-            <a href="/services/cloud-devops" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">☁️ Cloud Engineering & DevOps</a>
-            <a href="/services/cybersecurity" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🛡️ Enterprise Cybersecurity</a>
-            <a href="/services/ai-automation" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🤖 AI Engineering & Automation</a>
-            <a href="/services" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--neon-blue); font-weight: bold;">⚡ All 24+ Services Directory →</a>
+            <a href="/public/services/development/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">💻 Custom Software & Web Dev</a>
+            <a href="/public/services/development/ERP-Development.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">📊 ERP Development (Odoo & Dynamics)</a>
+            <a href="/public/services/development/website-development.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🌐 Website Development</a>
+            <a href="/public/services/cloud-devops/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">☁️ Cloud Engineering & DevOps</a>
+            <a href="/public/services/cybersecurity/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🛡️ Enterprise Cybersecurity</a>
+            <a href="/public/services/ai-automation/index.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; color: #fff;">🤖 AI Engineering & Automation</a>
+            <a href="/public/services/services.html" style="text-transform: none; font-size: 0.85rem; padding: 6px 10px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--neon-blue); font-weight: bold;">⚡ All 24+ Services Directory →</a>
           </div>
         </li>
-        <li><a href="/store">Store</a></li>
-        <li><a href="/blog">Blogs</a></li>
-        <li><a href="/about">About Us</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/store.html">Store</a></li>
+        <li><a href="/blog.html">Blogs</a></li>
+        <li><a href="/about.html">About Us</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
     </nav>
-    <a href="/contact" class="btn-login" style="text-decoration:none;">Book Consultation</a>
+    <a href="/contact.html" class="btn-login" style="text-decoration:none;">Book Consultation</a>
   </header>`;
 }
 
@@ -50,11 +50,11 @@ function renderFooter() {
       <div>
         <h4 style="color: #FFF; font-family: 'Space Grotesk', sans-serif; margin-bottom: 12px;">Core Service Domains</h4>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem;">
-          <li><a href="/services/development" style="color: var(--text-gray); text-decoration: none;">Custom Software & Web Dev</a></li>
-          <li><a href="/services/development/ERP-Development" style="color: var(--text-gray); text-decoration: none;">ERP Development (Odoo / Dynamics 365)</a></li>
-          <li><a href="/services/cloud-devops" style="color: var(--text-gray); text-decoration: none;">Cloud Engineering & DevOps</a></li>
-          <li><a href="/services/cybersecurity" style="color: var(--text-gray); text-decoration: none;">Enterprise Cybersecurity & Pentesting</a></li>
-          <li><a href="/services/ai-automation" style="color: var(--text-gray); text-decoration: none;">AI Engineering & Automation</a></li>
+          <li><a href="/public/services/development/index.html" style="color: var(--text-gray); text-decoration: none;">Custom Software & Web Dev</a></li>
+          <li><a href="/public/services/development/ERP-Development.html" style="color: var(--text-gray); text-decoration: none;">ERP Development (Odoo / Dynamics 365)</a></li>
+          <li><a href="/public/services/cloud-devops/index.html" style="color: var(--text-gray); text-decoration: none;">Cloud Engineering & DevOps</a></li>
+          <li><a href="/public/services/cybersecurity/index.html" style="color: var(--text-gray); text-decoration: none;">Enterprise Cybersecurity & Pentesting</a></li>
+          <li><a href="/public/services/ai-automation/index.html" style="color: var(--text-gray); text-decoration: none;">AI Engineering & Automation</a></li>
         </ul>
       </div>
       <div>
@@ -70,7 +70,9 @@ function renderFooter() {
   </footer>`;
 }
 
-function renderHtmlLayout(title, metaDescription, bodyContent, keywords = []) {
+function renderHtmlLayout(title, metaDescription, bodyContent, keywords = [], relDepth = 0) {
+  const rootPrefix = relDepth === 0 ? '../../' : (relDepth === 1 ? '../../' : '../../../');
+  
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,20 +83,107 @@ function renderHtmlLayout(title, metaDescription, bodyContent, keywords = []) {
   ${keywords.length > 0 ? `<meta name="keywords" content="${keywords.join(', ')}">` : ''}
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="${rootPrefix}style.css">
   <link rel="stylesheet" href="/css/public.css">
+  <link rel="stylesheet" href="${rootPrefix}css/public.css">
   <style>
+    :root {
+      --bg-black: #05060A;
+      --neon-pink: #FF0055;
+      --neon-magenta: #FF0075;
+      --neon-orange: #FF7700;
+      --neon-blue: #00F0FF;
+      --text-white: #ffffff;
+      --text-gray: #94A3B8;
+    }
+    body {
+      background-color: #030305;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    #matrix-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; opacity: 0.15; pointer-events: none; }
+    #ai-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+    .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, transparent 0%, rgba(255, 0, 85, 0.03) 50%, transparent 100%); background-size: 100% 8px; animation: scanmove 8s linear infinite; }
+    .sweep-line { position: fixed; top: -10%; left: 0; width: 100%; height: 200px; background: linear-gradient(to bottom, transparent, rgba(255, 119, 0, 0.05), transparent); z-index: 1; pointer-events: none; animation: sweep 6s ease-in-out infinite; }
+    @keyframes scanmove { 0% { background-position: 0 0; } 100% { background-position: 0 100%; } }
+    @keyframes sweep { 0% { top: -20%; opacity: 0; } 50% { opacity: 1; } 100% { top: 120%; opacity: 0; } }
+    .cursor-glow { position: fixed; width: 320px; height: 320px; background: radial-gradient(circle, rgba(255, 0, 85, 0.18) 0%, rgba(255, 119, 0, 0.08) 50%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 100; transform: translate(-50%, -50%); mix-blend-mode: screen; }
+    
     .sub-nav-dropdown a:hover { color: var(--neon-blue) !important; background: rgba(255,255,255,0.05); }
     .nav-dropdown-wrapper:hover .sub-nav-dropdown { display: flex !important; }
-    .hero-service-card { background: rgba(15,22,42,0.7); border: 1px solid rgba(0,240,255,0.2); border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
-    .tech-badge { display: inline-block; background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.3); color: var(--neon-blue); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; margin-bottom: 6px; font-weight: 500; }
+    .hero-service-card { background: rgba(15,22,42,0.85); border: 1px solid rgba(0,240,255,0.25); border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.7); backdrop-filter: blur(12px); }
+    .tech-badge { display: inline-block; background: rgba(0,240,255,0.12); border: 1px solid rgba(0,240,255,0.35); color: var(--neon-blue); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; margin-right: 6px; margin-bottom: 6px; font-weight: 600; }
   </style>
 </head>
 <body>
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="scanline"></div>
+  <div class="sweep-line"></div>
+  <canvas id="matrix-canvas"></canvas>
+  <canvas id="ai-canvas"></canvas>
+
   ${renderHeaderNav()}
-  <main style="min-height: 80vh; padding-top: 20px;">
+  
+  <main style="min-height: 80vh; padding-top: 90px; position: relative; z-index: 2;">
     ${bodyContent}
   </main>
+  
   ${renderFooter()}
+
+  <script>
+    // Cursor & Parallax Glow
+    const cursorGlow = document.getElementById('cursorGlow');
+    window.addEventListener('mousemove', e => {
+      if(cursorGlow) { cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px'; }
+    });
+
+    // Matrix Background Animation
+    const mCanvas = document.getElementById('matrix-canvas');
+    if (mCanvas) {
+      const mCtx = mCanvas.getContext('2d');
+      mCanvas.width = window.innerWidth; mCanvas.height = window.innerHeight;
+      let drops = Array(Math.floor(mCanvas.width / 14)).fill(1);
+      function drawMatrix() {
+        mCtx.fillStyle = 'rgba(3, 3, 5, 0.1)'; mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+        mCtx.fillStyle = '#00F0FF'; mCtx.font = '14px monospace';
+        for (let i = 0; i < drops.length; i++) { const t = "0123456789</>{}"[(Math.random() * 16) | 0]; mCtx.fillText(t, i * 14, drops[i] * 14); if (drops[i] * 14 > mCanvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; }
+      }
+      setInterval(drawMatrix, 40);
+    }
+
+    // 3D Morphing AI Core Animation
+    const canvas = document.getElementById('ai-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let w, h, cx, cy, radius;
+      function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; cx = w / 2; cy = h / 2; radius = Math.min(w, h) * 0.35; }
+      resize();
+      window.addEventListener('resize', resize);
+      const N = 160; let currentShape = [], targetShape = [], morphProgress = 1, restTimer = 0, rotX = 0, rotY = 0, dataPackets = [];
+      const palettes = [['#00F0FF', '#FF0055', '#FF7700'], ['#FF0055', '#FF7700', '#00F0FF'], ['#39FF14', '#00F0FF', '#BF00FF']];
+      let currentColors = palettes[0], targetColors = palettes[1], colorProgress = 1;
+      function generateSphere() { let p=[]; for(let i=0;i<8;i++) for(let j=0;j<20;j++) { let t=(i/8)*Math.PI, p2=(j/20)*2*Math.PI; p.push({x:radius*Math.sin(t)*Math.cos(p2), y:radius*Math.cos(t), z:radius*Math.sin(t)*Math.sin(p2)}); } return p; }
+      function generateRings() { let p=[]; for(let i=0;i<N;i++) { let t=((i%50)/50)*2*Math.PI, r=Math.floor(i/50); if(r===0)p.push({x:radius*Math.cos(t),y:radius*Math.sin(t),z:0}); else if(r===1)p.push({x:radius*Math.cos(t),y:0,z:radius*Math.sin(t)}); else p.push({x:0,y:radius*Math.cos(t),z:radius*Math.sin(t)}); } return p; }
+      currentShape = generateSphere(); targetShape = generateRings();
+      let connections = []; for (let i = 0; i < 8; i++) { for (let j = 0; j < 20; j++) { let p1 = i * 20 + j; connections.push([p1, i * 20 + (j + 1) % 20]); if (i < 7) connections.push([p1, (i + 1) * 20 + j]); } }
+      function hexToRgb(hex) { return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function lerpColor(c1, c2, t) { let r1=hexToRgb(c1), r2=hexToRgb(c2); return \`rgb(\${Math.round(lerp(r1[0],r2[0],t))},\${Math.round(lerp(r1[1],r2[1],t))},\${Math.round(lerp(r1[2],r2[2],t))})\`; }
+      function drawAI() {
+        ctx.clearRect(0, 0, w, h); rotX += 0.002; rotY += 0.004;
+        let dp = []; for (let i = 0; i < N && i < currentShape.length && i < targetShape.length; i++) dp.push({x:lerp(currentShape[i].x,targetShape[i].x,morphProgress), y:lerp(currentShape[i].y,targetShape[i].y,morphProgress), z:lerp(currentShape[i].z,targetShape[i].z,morphProgress)});
+        const projected = dp.map(p => { let cY=Math.cos(rotY),sY=Math.sin(rotY),x1=p.x*cY-p.z*sY,z1=p.x*sY+p.z*cY,cX=Math.cos(rotX),sX=Math.sin(rotX),y1=p.y*cX-z1*sX,z2=p.y*sX+z1*cX,s=400/(400+z2); return {x:cx+x1*s,y:cy+y1*s,z:z2,scale:s}; });
+        let lc = lerpColor(currentColors[0], targetColors[0], colorProgress);
+        connections.forEach(c => { if(projected[c[0]] && projected[c[1]]) { let p1=projected[c[0]],p2=projected[c[1]],o=Math.min(p1.scale,p2.scale)*0.4; ctx.strokeStyle=lc.replace('rgb','rgba').replace(')',\`,\${o*0.35})\`); ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke(); } });
+        projected.forEach((p) => { ctx.fillStyle='rgba(0,240,255,'+(p.scale*0.7)+')'; ctx.beginPath(); ctx.arc(p.x,p.y,p.scale*2,0,Math.PI*2); ctx.fill(); });
+        requestAnimationFrame(drawAI);
+      }
+      drawAI();
+    }
+  </script>
 </body>
 </html>`;
 }
@@ -104,10 +193,10 @@ function generateServicesHub() {
   const categoriesHtml = servicesCategories.map(cat => {
     const servicesInCat = getServicesByCategory(cat.slug);
     const serviceItemsHtml = servicesInCat.map(s => `
-      <a href="/services/${s.categorySlug}/${s.serviceSlug}" class="hero-service-card" style="text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+      <a href="/public/services/${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
         <h4 style="color: #FFF; font-size: 1.15rem; margin-bottom: 8px;">${s.title}</h4>
         <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px;">${s.heroSubtitle}</p>
-        <span style="color: var(--neon-pink); font-size: 0.8rem; font-weight: bold;">View Service & Target Keywords →</span>
+        <span style="color: var(--neon-pink); font-size: 0.8rem; font-weight: bold;">View Service Page →</span>
       </a>
     `).join('');
 
@@ -122,7 +211,7 @@ function generateServicesHub() {
   }).join('');
 
   const bodyContent = `
-  <div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+  <div style="max-width: 1200px; margin: 20px auto; padding: 0 20px;">
     <div style="text-align: center; margin-bottom: 50px;">
       <span style="background: rgba(255,0,117,0.15); border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">
         24+ Dedicated Technology Service Pages
@@ -141,7 +230,8 @@ function generateServicesHub() {
     'Technology Services Directory',
     'Explore Uvosoft Tech 24+ specialized technology services in Website Development, Odoo & Dynamics 365 ERP, Cloud DevOps, Cybersecurity Pentesting, and AI Automation in Karachi, Pakistan.',
     bodyContent,
-    ['website development company Karachi', 'ERP development Karachi', 'cloud migration Pakistan', 'cybersecurity pentesting Karachi', 'AI automation Pakistan']
+    ['website development company Karachi', 'ERP development Karachi', 'cloud migration Pakistan', 'cybersecurity pentesting Karachi', 'AI automation Pakistan'],
+    1
   );
 
   ensureDir(publicServicesDir);
@@ -158,7 +248,7 @@ function generateCategoryPages() {
 
     const servicesInCat = getServicesByCategory(cat.slug);
     const serviceCardsHtml = servicesInCat.map(s => `
-      <a href="/services/${s.categorySlug}/${s.serviceSlug}" class="hero-service-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
+      <a href="/public/services/${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; display: flex; flex-direction: column; justify-content: space-between;">
         <div>
           <h3 style="color: #FFF; font-size: 1.3rem; margin-bottom: 10px;">${s.title}</h3>
           <p style="color: var(--text-gray); font-size: 0.9rem; line-height: 1.5; margin-bottom: 16px;">${s.heroSubtitle}</p>
@@ -171,10 +261,10 @@ function generateCategoryPages() {
     `).join('');
 
     const bodyContent = `
-    <div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+    <div style="max-width: 1200px; margin: 20px auto; padding: 0 20px;">
       <div style="margin-bottom: 30px; font-size: 0.9rem; color: var(--text-gray);">
-        <a href="/" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
-        <a href="/services" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
+        <a href="/index.html" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
+        <a href="/public/services/services.html" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
         <span style="color: #FFF;">${cat.name}</span>
       </div>
       <div style="margin-bottom: 40px;">
@@ -190,7 +280,8 @@ function generateCategoryPages() {
       `${cat.name} Services`,
       cat.description,
       bodyContent,
-      [cat.name, `${cat.slug} Karachi`, `${cat.slug} Pakistan`]
+      [cat.name, `${cat.slug} Karachi`, `${cat.slug} Pakistan`],
+      2
     );
 
     fs.writeFileSync(path.join(catDir, 'index.html'), fullHtml, 'utf8');
@@ -216,19 +307,19 @@ function generateIndividualServicePages() {
 
     const relatedServices = getServicesByCategory(s.categorySlug).filter(rel => rel.serviceSlug !== s.serviceSlug);
     const relatedServicesHtml = relatedServices.map(rel => `
-      <a href="/services/${rel.categorySlug}/${rel.serviceSlug}" class="hero-service-card" style="text-decoration: none; padding: 16px;">
+      <a href="/public/services/${rel.categorySlug}/${rel.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; padding: 16px;">
         <h4 style="color: #FFF; font-size: 1rem; margin-bottom: 6px;">${rel.title}</h4>
         <p style="color: var(--text-gray); font-size: 0.8rem; line-height: 1.4; margin: 0;">${rel.heroSubtitle.slice(0, 90)}...</p>
       </a>
     `).join('');
 
     const bodyContent = `
-    <div style="max-width: 1100px; margin: 30px auto; padding: 0 20px;">
+    <div style="max-width: 1100px; margin: 20px auto; padding: 0 20px;">
       <!-- Breadcrumb -->
       <div style="margin-bottom: 24px; font-size: 0.85rem; color: var(--text-gray);">
-        <a href="/" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
-        <a href="/services" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
-        <a href="/services/${s.categorySlug}" style="color: var(--neon-blue); text-decoration: none;">${s.categorySlug}</a> &nbsp;/&nbsp;
+        <a href="/index.html" style="color: var(--neon-blue); text-decoration: none;">Home</a> &nbsp;/&nbsp;
+        <a href="/public/services/services.html" style="color: var(--neon-blue); text-decoration: none;">Services</a> &nbsp;/&nbsp;
+        <a href="/public/services/${s.categorySlug}/index.html" style="color: var(--neon-blue); text-decoration: none;">${s.categorySlug}</a> &nbsp;/&nbsp;
         <span style="color: #FFF;">${s.title}</span>
       </div>
 
@@ -241,7 +332,7 @@ function generateIndividualServicePages() {
           ${techBadgesHtml}
         </div>
         <div>
-          <a href="/contact" class="btn-primary" style="text-decoration:none; display:inline-block; margin-right:12px;">Get Custom Quote</a>
+          <a href="/contact.html" class="btn-primary" style="text-decoration:none; display:inline-block; margin-right:12px;">Get Custom Quote</a>
           <a href="https://wa.me/923718055990" target="_blank" class="btn-secondary" style="text-decoration:none; display:inline-block;">Consult on WhatsApp</a>
         </div>
       </div>
@@ -274,7 +365,7 @@ function generateIndividualServicePages() {
           <div class="hero-service-card" style="margin-bottom: 24px; text-align: center; border-color: rgba(255,0,117,0.3);">
             <h3 style="color: #FFF; font-size: 1.2rem; margin-bottom: 10px;">Need this Solution?</h3>
             <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">Schedule a direct technical consultation with our engineering leads in Karachi.</p>
-            <a href="/contact" class="btn-primary" style="width: 100%; text-decoration: none; display: block; box-sizing: border-box;">Book Consultation</a>
+            <a href="/contact.html" class="btn-primary" style="width: 100%; text-decoration: none; display: block; box-sizing: border-box;">Book Consultation</a>
           </div>
 
           ${relatedServices.length > 0 ? `
@@ -289,18 +380,15 @@ function generateIndividualServicePages() {
       </div>
     </div>`;
 
-    const fullHtml = renderHtmlLayout(s.seoTitle, s.pageContent.slice(0, 160), bodyContent, s.targetKeywords);
+    const fullHtml = renderHtmlLayout(s.seoTitle, s.pageContent.slice(0, 160), bodyContent, s.targetKeywords, 2);
 
-    // 1. Direct file e.g. public/services/development/website-development.html
     const serviceFilePath = path.join(catDir, `${s.serviceSlug}.html`);
     fs.writeFileSync(serviceFilePath, fullHtml, 'utf8');
 
-    // 2. Folder index file e.g. public/services/development/website-development/index.html
     const serviceFolderDir = path.join(catDir, s.serviceSlug);
     ensureDir(serviceFolderDir);
     fs.writeFileSync(path.join(serviceFolderDir, 'index.html'), fullHtml, 'utf8');
 
-    // 3. Special case for lowercase ERP slug e.g. public/services/development/erp-development.html
     if (s.serviceSlug === 'ERP-Development') {
       const lowerFilePath = path.join(catDir, 'erp-development.html');
       fs.writeFileSync(lowerFilePath, fullHtml, 'utf8');
@@ -313,7 +401,7 @@ function generateIndividualServicePages() {
   });
 }
 
-console.log('--- Generating All 24 Static Service HTML Pages ---');
+console.log('--- Generating All 24 Static Service HTML Pages with Cyber Theme ---');
 generateServicesHub();
 generateCategoryPages();
 generateIndividualServicePages();
