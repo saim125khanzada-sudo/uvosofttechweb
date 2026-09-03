@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { loadUser } = require('../middleware/auth');
+const { servicesData, findServiceBySlug } = require('../data/servicesData');
 
 let prisma = null;
 try {
@@ -121,8 +122,6 @@ router.get('/about', loadUser, async (req, res, next) => {
     next(error);
   }
 });
-
-const { servicesData, findServiceBySlug } = require('../data/servicesData');
 
 // 1. Services Directory (/services)
 router.get('/services', loadUser, async (req, res, next) => {
