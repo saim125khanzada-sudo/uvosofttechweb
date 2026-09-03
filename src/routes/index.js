@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { loadUser } = require('../middleware/auth');
-const { servicesData, findServiceBySlug } = require('../data/servicesData');
+
+// Explicit 404 handler for any leftover /services requests
+router.all('/services*', loadUser, (req, res) => {
+  res.status(404).render('public/error', {
+    title: '404 - Page Not Found',
+    message: 'The services section has been permanently removed.',
+    user: req.user || null,
+  });
+});
 
 let prisma = null;
 try {
