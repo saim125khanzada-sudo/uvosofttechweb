@@ -44,146 +44,34 @@ function trySendStaticHtml(req, res) {
   return false;
 }
 
-// 1. Services Directory Hub (/services)
-router.get('/services', loadUser, async (req, res, next) => {
-  try {
-    if (trySendStaticHtml(req, res)) return;
-
-    const navigationItems = await safeDbQuery(() =>
-      prisma.navigationItem.findMany({
-        where: { isVisible: true },
-        orderBy: { sortOrder: 'asc' },
-      })
-    );
-    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
-    const settingsMap = {};
-    if (Array.isArray(settingsList)) {
-      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
-    }
-
-    res.render('public/services', {
-      title: 'Our Technology Services Directory | UVO SoftTech',
-      categories: servicesCategories,
-      services: detailedServices,
-      navigationItems,
-      settings: settingsMap,
-      user: req.user || null,
-    });
-  } catch (error) {
-    next(error);
-  }
+// 1. Direct Static File Routes for /services and all subpages
+router.get(['/services', '/services/', '/services/services.html', '/public/services/services.html'], (req, res) => {
+  const p1 = path.join(__dirname, '../../public/services/services.html');
+  if (fs.existsSync(p1)) return res.sendFile(p1);
+  const p2 = path.join(process.cwd(), 'public/services/services.html');
+  if (fs.existsSync(p2)) return res.sendFile(p2);
+  res.status(404).send('Services directory file not found');
 });
 
-// 2. Exact 2-Tier Category + Service Handler (/services/development/website-development etc.)
-router.get('/services/:categorySlug/:serviceSlug', loadUser, async (req, res, next) => {
-  try {
-    if (trySendStaticHtml(req, res)) return;
-
-    const { categorySlug, serviceSlug } = req.params;
-    const matchedService = findDetailedService(categorySlug, serviceSlug);
-
-    if (!matchedService) {
-      return res.status(404).render('public/error', {
-        title: 'Service Page Not Found',
-        message: 'The requested technology service page does not exist or has been relocated.',
-        user: req.user || null,
-      });
-    }
-
-    const categoryServices = getServicesByCategory(matchedService.categorySlug);
-    const navigationItems = await safeDbQuery(() =>
-      prisma.navigationItem.findMany({
-        where: { isVisible: true },
-        orderBy: { sortOrder: 'asc' },
-      })
-    );
-    const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
-    const settingsMap = {};
-    if (Array.isArray(settingsList)) {
-      settingsList.forEach(s => { settingsMap[s.key] = s.value; });
-    }
-
-    res.render('public/service-detail', {
-      title: `${matchedService.title} | UVO SoftTech`,
-      service: matchedService,
-      categoryServices,
-      allServices: detailedServices,
-      navigationItems,
-      settings: settingsMap,
-      user: req.user || null,
-    });
-  } catch (error) {
-    next(error);
-  }
+// Category & Service exact file routes
+router.get('/services/:cat/:file', (req, res, next) => {
+  const { cat, file } = req.params;
+  const fileName = file.endsWith('.html') ? file : `${file}.html`;
+  const p1 = path.join(__dirname, '../../public/services', cat, fileName);
+  if (fs.existsSync(p1)) return res.sendFile(p1);
+  const p2 = path.join(process.cwd(), 'public/services', cat, fileName);
+  if (fs.existsSync(p2)) return res.sendFile(p2);
+  next();
 });
 
-// 3. Category Landing Page or Single-Slug Fallback (/services/development or /services/website-development)
-router.get('/services/:slug', loadUser, async (req, res, next) => {
-  try {
-    if (trySendStaticHtml(req, res)) return;
-
-    const rawSlug = req.params.slug;
-    const matchedCategory = servicesCategories.find(c => c.slug === rawSlug || c.id === rawSlug);
-
-    if (matchedCategory) {
-      const categoryServices = getServicesByCategory(matchedCategory.slug);
-      const navigationItems = await safeDbQuery(() =>
-        prisma.navigationItem.findMany({
-          where: { isVisible: true },
-          orderBy: { sortOrder: 'asc' },
-        })
-      );
-      const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
-      const settingsMap = {};
-      if (Array.isArray(settingsList)) {
-        settingsList.forEach(s => { settingsMap[s.key] = s.value; });
-      }
-
-      return res.render('public/services', {
-        title: `${matchedCategory.name} Services | UVO SoftTech`,
-        currentCategory: matchedCategory,
-        categories: servicesCategories,
-        services: categoryServices,
-        navigationItems,
-        settings: settingsMap,
-        user: req.user || null,
-      });
-    }
-
-    const matchedService = findDetailedService(null, rawSlug);
-    if (matchedService) {
-      const categoryServices = getServicesByCategory(matchedService.categorySlug);
-      const navigationItems = await safeDbQuery(() =>
-        prisma.navigationItem.findMany({
-          where: { isVisible: true },
-          orderBy: { sortOrder: 'asc' },
-        })
-      );
-      const settingsList = await safeDbQuery(() => prisma.siteSetting.findMany());
-      const settingsMap = {};
-      if (Array.isArray(settingsList)) {
-        settingsList.forEach(s => { settingsMap[s.key] = s.value; });
-      }
-
-      return res.render('public/service-detail', {
-        title: `${matchedService.title} | UVO SoftTech`,
-        service: matchedService,
-        categoryServices,
-        allServices: detailedServices,
-        navigationItems,
-        settings: settingsMap,
-        user: req.user || null,
-      });
-    }
-
-    return res.status(404).render('public/error', {
-      title: 'Service Page Not Found',
-      message: 'The requested technology service page does not exist or has been relocated.',
-      user: req.user || null,
-    });
-  } catch (error) {
-    next(error);
-  }
+router.get('/public/services/:cat/:file', (req, res, next) => {
+  const { cat, file } = req.params;
+  const fileName = file.endsWith('.html') ? file : `${file}.html`;
+  const p1 = path.join(__dirname, '../../public/services', cat, fileName);
+  if (fs.existsSync(p1)) return res.sendFile(p1);
+  const p2 = path.join(process.cwd(), 'public/services', cat, fileName);
+  if (fs.existsSync(p2)) return res.sendFile(p2);
+  next();
 });
 
 let prisma = null;
