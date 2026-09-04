@@ -53,24 +53,33 @@ router.get(['/services', '/services/', '/services/services.html', '/public/servi
   res.status(404).send('Services directory file not found');
 });
 
-// Category & Service exact file routes
-router.get('/services/:cat/:file', (req, res, next) => {
-  const { cat, file } = req.params;
-  const fileName = file.endsWith('.html') ? file : `${file}.html`;
+const SERVICE_CATS = ['development', 'cloud-devops', 'cybersecurity', 'ai-automation'];
+
+// Category landing page routes (/development, /services/development, etc.)
+router.get(['/:cat', '/services/:cat', '/public/services/:cat'], (req, res, next) => {
+  const { cat } = req.params;
+  if (!SERVICE_CATS.includes(cat)) return next();
+  const fileName = `${cat}.html`;
   const p1 = path.join(__dirname, '../../public/services', cat, fileName);
   if (fs.existsSync(p1)) return res.sendFile(p1);
   const p2 = path.join(process.cwd(), 'public/services', cat, fileName);
   if (fs.existsSync(p2)) return res.sendFile(p2);
+  const pIndex = path.join(process.cwd(), 'public/services', cat, 'index.html');
+  if (fs.existsSync(pIndex)) return res.sendFile(pIndex);
   next();
 });
 
-router.get('/public/services/:cat/:file', (req, res, next) => {
+// Category & Service exact file routes (supports both /development/web-app and /services/development/web-app)
+router.get(['/:cat/:file', '/services/:cat/:file', '/public/services/:cat/:file'], (req, res, next) => {
   const { cat, file } = req.params;
-  const fileName = file.endsWith('.html') ? file : `${file}.html`;
-  const p1 = path.join(__dirname, '../../public/services', cat, fileName);
+  if (!SERVICE_CATS.includes(cat)) return next();
+  const cleanFile = file.endsWith('.html') ? file : `${file}.html`;
+  const p1 = path.join(__dirname, '../../public/services', cat, cleanFile);
   if (fs.existsSync(p1)) return res.sendFile(p1);
-  const p2 = path.join(process.cwd(), 'public/services', cat, fileName);
+  const p2 = path.join(process.cwd(), 'public/services', cat, cleanFile);
   if (fs.existsSync(p2)) return res.sendFile(p2);
+  const pFolderIndex = path.join(process.cwd(), 'public/services', cat, file, 'index.html');
+  if (fs.existsSync(pFolderIndex)) return res.sendFile(pFolderIndex);
   next();
 });
 

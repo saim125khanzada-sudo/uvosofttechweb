@@ -280,6 +280,13 @@
       }
       drawAI();
     }
+
+    // Adapt link destinations for Web / Vercel vs local file:// mode
+    if (window.location.protocol.startsWith('http')) {
+      document.querySelectorAll('a[data-web-href]').forEach(el => {
+        el.setAttribute('href', el.getAttribute('data-web-href'));
+      });
+    }
   </script>
 </body>
 </html>

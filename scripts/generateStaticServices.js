@@ -247,6 +247,13 @@ function renderHtmlLayout(title, metaDescription, bodyContent, keywords = [], re
       }
       drawAI();
     }
+
+    // Adapt link destinations for Web / Vercel vs local file:// mode
+    if (window.location.protocol.startsWith('http')) {
+      document.querySelectorAll('a[data-web-href]').forEach(el => {
+        el.setAttribute('href', el.getAttribute('data-web-href'));
+      });
+    }
   </script>
 </body>
 </html>`;
@@ -257,7 +264,7 @@ function generateServicesHub() {
   const categoriesHtml = servicesCategories.map(cat => {
     const servicesInCat = getServicesByCategory(cat.slug);
     const serviceItemsHtml = servicesInCat.map(s => `
-      <a href="${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+      <a href="${s.categorySlug}/${s.serviceSlug}.html" data-web-href="/services/${s.categorySlug}/${s.serviceSlug}.html" class="hero-service-card" style="text-decoration: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
         <h4 style="color: #FFF; font-size: 1.15rem; margin-bottom: 8px;">${s.title}</h4>
         <p style="color: var(--text-gray); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px;">${s.heroSubtitle}</p>
         <span style="color: var(--neon-pink); font-size: 0.8rem; font-weight: bold;">View Service Page →</span>
@@ -267,7 +274,7 @@ function generateServicesHub() {
     return `
     <div style="margin-bottom: 50px;">
       <h2 style="font-family: 'Space Grotesk', sans-serif; color: var(--neon-blue); font-size: 1.8rem; margin-bottom: 10px;">
-        <a href="${cat.slug}/${cat.slug}.html" style="color: var(--neon-blue); text-decoration: none;">${cat.icon} ${cat.name}</a>
+        <a href="${cat.slug}/${cat.slug}.html" data-web-href="/services/${cat.slug}/${cat.slug}.html" style="color: var(--neon-blue); text-decoration: none;">${cat.icon} ${cat.name}</a>
       </h2>
       <p style="color: var(--text-gray); margin-bottom: 20px; max-width: 800px;">${cat.description}</p>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
