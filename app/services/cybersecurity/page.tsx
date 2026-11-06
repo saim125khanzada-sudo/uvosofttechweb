@@ -1,0 +1,152 @@
+import React from "react";
+import { Metadata } from "next";
+import Link from "next/link";
+import {
+  Lock,
+  ArrowLeft,
+  CheckCircle2,
+  Shield,
+  Workflow,
+  Radio,
+  Terminal,
+} from "lucide-react";
+import { SERVICES } from "@/lib/services-data";
+import { ContactForm } from "@/components/forms/contact-form";
+
+export const metadata: Metadata = {
+  title: "Enterprise Cybersecurity Solutions & Managed SIEM | 24/7 SOC",
+  description:
+    "Round-the-clock Security Operations Center (SOC), autonomous SIEM pipeline deployment, offensive penetration testing, and ISO 27001 compliance.",
+  keywords: [
+    "Enterprise Cybersecurity Solutions & Managed SIEM",
+    "24/7 Managed SOC Operations",
+    "Offensive Penetration Testing",
+    "MITRE ATT&CK SIEM Correlation",
+  ],
+};
+
+export default function CybersecurityServicePage() {
+  const service = SERVICES.find((s) => s.slug === "cybersecurity")!;
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Enterprise Cybersecurity Solutions & Managed SIEM",
+    provider: {
+      "@type": "Organization",
+      name: "UVO SoftTech",
+    },
+    description: service.overview,
+    termsOfService: "24/7 SOC Retainer - Sub-15 Minute Breach Containment SLA",
+    areaServed: "Global",
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+
+      <div>
+        <Link
+          href="/services"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-emerald-400 transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Return to Services Directory</span>
+        </Link>
+      </div>
+
+      <div className="space-y-4 max-w-4xl">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="px-2.5 py-1 rounded text-xs font-mono bg-slate-900 border border-slate-800 text-emerald-400">
+            {service.serviceTier}
+          </span>
+          <span className="px-2.5 py-1 rounded text-xs font-mono bg-cobalt-950/60 border border-cobalt-500/30 text-cobalt-400">
+            {service.slaCommitment}
+          </span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Enterprise Cybersecurity Solutions & Managed SIEM
+        </h1>
+        <p className="text-base sm:text-lg text-slate-400 leading-relaxed font-sans">
+          {service.overview}
+        </p>
+      </div>
+
+      {/* Business Outcomes */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {service.businessOutcomes.map((outcome, idx) => (
+          <div
+            key={idx}
+            className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2"
+          >
+            <div className="font-mono text-xs font-semibold text-emerald-400">
+              Cyber Defense SLA 0{idx + 1}
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">{outcome}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Capabilities & Deliverables */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+          <Workflow className="w-5 h-5 text-emerald-400" />
+          <h2 className="text-xl font-bold text-white">SOC Capabilities & Security Deliverables</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {service.capabilities.map((cap) => (
+            <div
+              key={cap.name}
+              className="p-6 rounded-xl bg-slate-900/80 border border-slate-800 space-y-4"
+            >
+              <div>
+                <h3 className="text-base font-bold text-white">{cap.name}</h3>
+                <p className="text-xs text-slate-400 mt-1 leading-relaxed">{cap.description}</p>
+              </div>
+
+              <div className="space-y-1.5 pt-3 border-t border-slate-800/80">
+                <span className="text-[10px] font-mono uppercase text-slate-500">
+                  Target Deliverables:
+                </span>
+                <ul className="space-y-1 text-xs text-slate-300 font-mono">
+                  {cap.deliverables.map((del) => (
+                    <li key={del} className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      <span>{del}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Security Stack & Standards */}
+      <section className="p-6 rounded-xl bg-slate-950 border border-slate-800 space-y-4">
+        <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400">
+          SOC Sensor & Threat Intelligence Ecosystem
+        </h3>
+        <div className="flex flex-wrap gap-2">
+          {service.techStack.map((tech) => (
+            <span
+              key={tech}
+              className="px-3 py-1.5 rounded-md bg-slate-900 border border-slate-800 text-xs font-mono text-slate-200"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact & Consultation Form */}
+      <section className="pt-6">
+        <ContactForm initialService="Cybersecurity & SOC Operations" />
+      </section>
+    </div>
+  );
+}
